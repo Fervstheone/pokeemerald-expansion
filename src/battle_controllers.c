@@ -11,6 +11,7 @@
 #include "battle_setup.h"
 #include "battle_tv.h"
 #include "cable_club.h"
+#include "event_object_movement.h"
 #include "link.h"
 #include "link_rfu.h"
 #include "palette.h"
@@ -2100,7 +2101,7 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
         HandleLowHpMusicChange(&party[gBattlerPartyIndexes[battler]], battler);
 }
 
-void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit)
+void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool8 doSlideIn)
 {
     u16 species;
     u32 side = GetBattlerSide(battler);
@@ -2110,7 +2111,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit)
     gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
     species = GetIllusionMonSpecies(battler);
     if (species == SPECIES_NONE)
-        species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
+    species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     gBattleControllerData[battler] = CreateInvisibleSpriteWithCallback(SpriteCB_WaitForBattlerBallReleaseAnim);
     // Load sprite for opponent only, player sprite is expected to be already loaded.
     if (side == B_SIDE_OPPONENT)
@@ -2118,9 +2119,9 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit)
     SetMultiuseSpriteTemplateToPokemon(species, GetBattlerPosition(battler));
 
     gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
-                                        GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
-                                        GetBattlerSpriteDefault_Y(battler),
-                                        GetBattlerSpriteSubpriority(battler));
+      GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
+      GetBattlerSpriteDefault_Y(battler),
+      GetBattlerSpriteSubpriority(battler));
 
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
     gSprites[gBattlerSpriteIds[battler]].data[2] = species;
@@ -2131,7 +2132,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit)
 
     gSprites[gBattleControllerData[battler]].data[1] = gBattlerSpriteIds[battler];
     gSprites[gBattleControllerData[battler]].data[2] = battler;
-    gSprites[gBattleControllerData[battler]].data[0] = DoPokeballSendOutAnimation(battler, 0, (side == B_SIDE_OPPONENT) ? POKEBALL_OPPONENT_SENDOUT : POKEBALL_PLAYER_SENDOUT);
+    gSprites[gBattleControllerData[battler]].data[0] = DoPokeballSendOutAnimation(battler, 0, (side == B_SIDE_OPPONENT) ? POKEBALL_OPPONENT_SENDOUT : doSlideIn ? POKEBALL_PLAYER_SLIDEIN : POKEBALL_PLAYER_SENDOUT);
 }
 
 static void FreeMonSprite(u32 battler)
@@ -2455,7 +2456,7 @@ void BtlController_HandleSwitchInAnim(u32 battler, bool32 isPlayerSide, void (*c
     gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
     if (isPlayerSide)
         BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);
-    StartSendOutAnim(battler, gBattleResources->bufferA[battler][2]);
+    StartSendOutAnim(battler, gBattleResources->bufferA[battler][2], FALSE);
     gBattlerControllerFuncs[battler] = controllerCallback;
 }
 
@@ -2928,6 +2929,19 @@ static bool32 TwoMonsAtSendOut(u32 battler)
     return FALSE;
 }
 
+static bool8 ShouldDoSlideInAnim(void) {
+    struct ObjectEvent *followerObj = GetFollowerObject();
+    if (!followerObj || followerObj->invisible)
+        return FALSE;
+    if (gBattleTypeFlags & (
+        BATTLE_TYPE_LINK | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_FIRST_BATTLE |
+        BATTLE_TYPE_SAFARI | BATTLE_TYPE_WALLY_TUTORIAL | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TWO_OPPONENTS |
+        BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED | BATTLE_TYPE_TRAINER_HILL)
+    )
+        return FALSE;
+    return TRUE;
+}
+
 // Send out at start of battle
 static void Task_StartSendOutAnim(u8 taskId)
 {
@@ -2943,17 +2957,17 @@ static void Task_StartSendOutAnim(u8 taskId)
         if (TwoMonsAtSendOut(battler))
         {
             gBattleResources->bufferA[battler][1] = gBattlerPartyIndexes[battler];
-            StartSendOutAnim(battler, FALSE);
+            StartSendOutAnim(battler, FALSE, ShouldDoSlideInAnim());
 
             battlerPartner = battler ^ BIT_FLANK;
             gBattleResources->bufferA[battlerPartner][1] = gBattlerPartyIndexes[battlerPartner];
             BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battlerPartner]], battlerPartner);
-            StartSendOutAnim(battlerPartner, FALSE);
+            StartSendOutAnim(battlerPartner, FALSE, FALSE);
         }
         else
         {
             gBattleResources->bufferA[battler][1] = gBattlerPartyIndexes[battler];
-            StartSendOutAnim(battler, FALSE);
+            StartSendOutAnim(battler, FALSE, ShouldDoSlideInAnim());
         }
         gBattlerControllerFuncs[battler] = (void*)(GetWordTaskArg(taskId, tControllerFunc_1));
         DestroyTask(taskId);

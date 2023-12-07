@@ -4,6 +4,8 @@
 #include "constants/moves.h"
 
 #define SPECIES_SHINY_TAG 5000
+#define FOLLOWER_PAL_TAG 10000
+#define FOLLOWER_SHINY_TAG 15000
 #define N_FOLLOWER_HAPPY_MESSAGES 31
 #define N_FOLLOWER_NEUTRAL_MESSAGES 14
 #define N_FOLLOWER_SAD_MESSAGES 3
@@ -131,6 +133,9 @@ extern const union AnimCmd *const *const gTrainerBackAnimsPtrTable[];
 extern const struct MonCoords gTrainerBackPicCoords[];
 extern const struct CompressedSpriteSheet gTrainerBackPicTable[]; // functionally unused
 extern const struct CompressedSpritePalette gTrainerBackPicPaletteTable[];
+
+extern const struct CompressedSpritePalette gFollowerPaletteTable[];
+extern const struct CompressedSpritePalette gFollowerShinyPaletteTable[];
 
 extern const u8 gEnemyMonElevation[NUM_SPECIES + 1];
 
