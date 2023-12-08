@@ -3314,7 +3314,7 @@ const struct PokedexEntry gPokedexEntries[] =
 
     [NATIONAL_DEX_TAILLOW] =
     {
-        .categoryName = _("Tiny Swallow"),
+        .categoryName = _("TINYSWALLOW"),
         .height = 3,
         .weight = 23,
         .description = gTaillowPokedexText,

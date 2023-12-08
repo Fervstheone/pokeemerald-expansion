@@ -99,7 +99,7 @@ EventScript_UsedLure:
 	end
 
 Text_RepelWoreOff:
-	.string "REPEL's effect wore off…$"
+	.string "Repel's effect wore off…$"
 
 Text_UseAnotherRepel::
 	.string "REPEL's effect wore off!\n"
