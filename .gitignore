@@ -45,3 +45,4 @@ prefabs.json
 *.js
 agbcc/
 /*.zip
+src/data/map_group_count.h
