@@ -1,3 +1,4 @@
+#include "sprite.h"
 enum 
 {
     PAL_TAG_SQUIRTLE_SURF = 0x3001,
@@ -109,7 +110,7 @@ enum
     PAL_TAG_RAYQUAZA_SURF,
 };
 
-const struct SpritePalette sSurfablePokemonPalettes[] = {
+const struct SpritePalette gSurfablePokemonPaletteTable[] = {
     {gSurfablePokemonPalette_Squirtle,   PAL_TAG_SQUIRTLE_SURF},
     {gSurfablePokemonPalette_Wartortle,  PAL_TAG_WARTORTLE_SURF},
     {gSurfablePokemonPalette_Blastoise,  PAL_TAG_BLASTOISE_SURF},
@@ -222,7 +223,7 @@ const struct SpritePalette sSurfablePokemonPalettes[] = {
 //#endif
 };
 
-const struct SpritePalette sSurfablePokemonShinyPalettes[] = {
+const struct SpritePalette gSurfablePokemonShinyPaletteTable[] = {
     {gSurfablePokemonShinyPalette_Squirtle,   PAL_TAG_SQUIRTLE_SURF},
     {gSurfablePokemonShinyPalette_Wartortle,  PAL_TAG_WARTORTLE_SURF},
     {gSurfablePokemonShinyPalette_Blastoise,  PAL_TAG_BLASTOISE_SURF},

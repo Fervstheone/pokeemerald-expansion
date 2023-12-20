@@ -1,10 +1,15 @@
 #include "global.h"
+#include "menu.h"
+#include "overworld.h"
+#include "palette.h"
 #include "event_object_movement.h"
 #include "field_effect.h"
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
+#include "field_weather.h"
 #include "main.h"
 #include "party_menu.h"
+#include "pokemon.h"
 #include "sprite.h"
 #include "surfable.h"
 #include "constants/event_object_movement.h"
@@ -35,59 +40,50 @@ struct RideablePokemon
 
 static EWRAM_DATA u16 sCurrentSurfMon = {0};
 
-static u16 GetSurfMonSpecies(void)
+static u16 GetSurfablePokemonSpriteBySpecies(u16 species)
 {
     u8 i;
-
-    for (i = 0; i < 6; i++)
-    {
-        if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
-        {
-            u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
-            return species;
-        }
-    }
-    return 0xFFFF;
-}
-
-static u16 GetSurfablePokemonSprite(void)
-{
-    u8 i;
-    u16 mon = GetSurfMonSpecies();
 
     for (i = 0; i < ARRAY_COUNT(gSurfablePokemon); i++)
     {
-        if (mon == gSurfablePokemon[i].species)
+        if (species == gSurfablePokemon[i].species)
             return i;
     }
     return 0xFFFF;
 }
 
-static void LoadSurfOverworldPalette(void)
+static void LoadSurfOverworldPalette(u32 personality, u8 slot)
 {
     u8 i;
+    u8 tag;
+    bool8 isShiny;
+    isShiny = IsMonShiny(&gPlayerParty[slot]);
 
-    for (i = 0; i < PARTY_SIZE; i++)
-        if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
-            break;
-
-    if (IsMonShiny(&gPlayerParty[i]) == TRUE)
-        LoadSpritePalette(&sSurfablePokemonShinyPalettes[sCurrentSurfMon]);
-    else
-        LoadSpritePalette(&sSurfablePokemonPalettes[sCurrentSurfMon]);
+    if (isShiny){
+        LoadSpritePalette(&gSurfablePokemonShinyPaletteTable[sCurrentSurfMon]);
+        UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(gSurfablePokemonShinyPaletteTable[sCurrentSurfMon].tag), FALSE);
+    }
+    else{
+        HueShiftMonPalette((u16*)&gSurfablePokemonPaletteTable[sCurrentSurfMon], personality);
+        LoadSpritePalette(&gSurfablePokemonPaletteTable[sCurrentSurfMon]);
+        UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(gSurfablePokemonPaletteTable[sCurrentSurfMon].tag), FALSE);
+    }
 }
 
 u32 CreateSurfablePokemonSprite(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
+    u8 slot = gFieldEffectArguments[3];
+    u16 species = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
+    u32 personality = GetMonData(gPlayerParty, MON_DATA_PERSONALITY);
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 
-    sCurrentSurfMon = GetSurfablePokemonSprite();
+    sCurrentSurfMon = GetSurfablePokemonSpriteBySpecies(species);
     if (sCurrentSurfMon != 0xFFFF)
     {
-        LoadSurfOverworldPalette();
+        LoadSurfOverworldPalette(personality, slot);
         spriteId = CreateSpriteAtEnd(&gSurfablePokemonOverworldSprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
         if (gSurfablePokemonOverlaySprites[sCurrentSurfMon].tileTag == 0xFFFF)
         {

@@ -3077,6 +3077,7 @@ static void SurfFieldEffect_JumpOnSurfBlob(struct Task *task)
         gFieldEffectArguments[0] = task->tDestX;
         gFieldEffectArguments[1] = task->tDestY;
         gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
+        gFieldEffectArguments[3] = task->tMonId;
         objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
         task->tState++;
     }
