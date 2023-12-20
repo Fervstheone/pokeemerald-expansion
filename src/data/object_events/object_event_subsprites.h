@@ -1416,7 +1416,7 @@ static const struct SubspriteTable sOamTables_88x32[] = {
     {ARRAY_COUNT(sOamTable_88x32_3), sOamTable_88x32_3}
 };
 
-#if LARGE_OW_SUPPORT
+//#if LARGE_OW_SUPPORT
 // These tables allow (virtual) sprite sizes so that
 // some space can be saved by making graphics smaller.
 // Note: When using these for followers, the minimum
@@ -2894,4 +2894,4 @@ static const struct SubspriteTable sOamTables_64x64_Long[] = {
     SUBSPRITE_TABLE_ENTRY(sOamTable_64x64_Grass3), // long grass
     SUBSPRITE_TABLE_ENTRY(sOamTable_64x64_Grass4) // long grass priority 1
 };
-#endif
+//#endif
