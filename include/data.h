@@ -131,6 +131,8 @@ extern const struct CompressedSpritePalette gFollowerPaletteTable[];
 extern const struct CompressedSpritePalette gFollowerShinyPaletteTable[];
 
 extern const struct Trainer gTrainers[];
+extern const struct Trainer gBattlePartners[];
+
 extern const u8 gTrainerClassNames[][13];
 extern const u8 gMoveNames[MOVES_COUNT_DYNAMAX][MOVE_NAME_LENGTH + 1];
 extern const u8 *const gZMoveNames[];

@@ -386,7 +386,7 @@ struct SpeciesInfo /*0x8C*/
             u32 isUltraBeast:1;
             u32 isParadoxForm:1;
             u32 isMegaEvolution:1;
-            u32 isPrimalRevesion:1;
+            u32 isPrimalReversion:1;
             u32 isUltraBurst:1;
             u32 isGigantamax:1;
             u32 isAlolanForm:1;
@@ -397,26 +397,33 @@ struct SpeciesInfo /*0x8C*/
             u32 allPerfectIVs:1;
             u32 padding4:18;
             // Move Data
- /* 0x80 */ const struct LevelUpMove *const levelUpLearnset;
- /* 0x84 */ const u16 *const teachableLearnset;
- /* 0x88 */ const struct Evolution *const evolutions;
- /* 0x84 */ const u16 *const formSpeciesIdTable;
- /* 0x84 */ const struct FormChange *const formChangeTable;
+ /* 0x80 */ const struct LevelUpMove *levelUpLearnset;
+ /* 0x84 */ const u16 *teachableLearnset;
+ /* 0x88 */ const struct Evolution *evolutions;
+ /* 0x84 */ const u16 *formSpeciesIdTable;
+ /* 0x84 */ const struct FormChange *formChangeTable;
 };
 
 struct BattleMove
 {
     u16 effect;
     u8 power;
-    u8 type;
-    u8 accuracy;
+    u8 type:5;
+    u8 category:3;
+
+    u16 accuracy:7;
+    u16 recoil:7;
+    u16 criticalHitStage:2;
     u8 pp;
     u8 secondaryEffectChance;
+
     u16 target;
     s8 priority;
-    u8 split;
-    u16 argument;
-    u8 zMoveEffect;
+    union {
+        u8 effect;
+        u8 powerOverride;
+    } zMove;
+
     // Flags
     u32 makesContact:1;
     u32 ignoresProtect:1;
@@ -424,7 +431,7 @@ struct BattleMove
     u32 snatchAffected:1;
     u32 mirrorMoveBanned:1;
     u32 ignoresKingsRock:1;
-    u32 highCritRatio:1;
+    u32 alwaysCriticalHit:1;
     u32 twoTurnMove:1;
     u32 punchingMove:1;
     u32 sheerForceBoost:1;
@@ -462,6 +469,8 @@ struct BattleMove
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
     u32 skyBattleBanned:1;
+
+    u16 argument;
 };
 
 #define SPINDA_SPOT_WIDTH 16
@@ -710,5 +719,6 @@ u8 CalculatePartyCount(struct Pokemon *party);
 u16 SanitizeSpeciesId(u16 species);
 bool32 IsSpeciesEnabled(u16 species);
 u16 GetCryIdBySpecies(u16 species);
+u16 GetSpeciesPreEvolution(u16 species);
 
 #endif // GUARD_POKEMON_H
