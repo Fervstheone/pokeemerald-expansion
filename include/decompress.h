@@ -13,6 +13,8 @@ void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet 
 bool8 LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src);
 
 void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src);
+void LoadHueShiftedMonSpritePalette(const struct CompressedSpritePalette *src, u32 personality);
+void LoadHueShiftedMonSpritePaletteWithTag(const u32 *pal, u32 personality, u16 tag);
 void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag);
 void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer);
 bool8 LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src);

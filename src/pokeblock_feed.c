@@ -719,6 +719,7 @@ static bool8 LoadMonAndSceneGfx(struct Pokemon *mon)
 {
     u16 species;
     u32 personality, trainerId;
+    bool8 isShiny;
 
     switch (sPokeblockFeed->loadGfxState)
     {
@@ -734,7 +735,13 @@ static bool8 LoadMonAndSceneGfx(struct Pokemon *mon)
         species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
         personality = GetMonData(mon, MON_DATA_PERSONALITY);
         trainerId = GetMonData(mon, MON_DATA_OT_ID);
-        LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), species);
+        isShiny = IsMonShiny(mon);
+        
+        if(!isShiny)
+            LoadHueShiftedMonSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), personality, species);
+        else
+            LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), species);
+        
         SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_OPPONENT_LEFT);
         sPokeblockFeed->loadGfxState++;
         break;

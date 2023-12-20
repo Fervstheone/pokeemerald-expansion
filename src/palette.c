@@ -89,6 +89,159 @@ void LoadCompressedPalette(const u32 *src, u16 offset, u16 size)
     CpuCopy16(gPaletteDecompressionBuffer, &gPlttBufferFaded[offset], size);
 }
 
+static const u16 sCosTable[] = {
+    0x0400,
+    0x03FF,
+    0x03FE,
+    0x03FD,
+    0x03FA,
+    0x03F7,
+    0x03F4,
+    0x03EF,
+    0x03EB,
+    0x03E5,
+    0x03DF,
+    0x03D8,
+    0x03D1,
+    0x03C8,
+    0x03C0,
+    0x03B6,
+    0x03AD,
+    0x03A2,
+    0x0397,
+    0x038B,
+    0x037F,
+    0x0372,
+    0x0365,
+    0x0357,
+    0x0348,
+    0x0339,
+    0x0329,
+    0x0319,
+    0x0308,
+    0x02F7,
+    0x02E6,
+    0x02D4
+};
+
+static const u16 sSinTable[] = {
+    0x0000,
+    0x0019,
+    0x0033,
+    0x004D,
+    0x0067,
+    0x0081,
+    0x009B,
+    0x00B4,
+    0x00CE,
+    0x00E7,
+    0x0100,
+    0x0119,
+    0x0132,
+    0x014B,
+    0x0163,
+    0x017B,
+    0x0193,
+    0x01AB,
+    0x01C2,
+    0x01DA,
+    0x01F0,
+    0x0207,
+    0x021D,
+    0x0233,
+    0x0248,
+    0x025E,
+    0x0272,
+    0x0287,
+    0x029B,
+    0x02AE,
+    0x02C1,
+    0x02D4
+};
+
+//Chosen to provide the most amount of precision without overflowing in our use case
+typedef s32 fixed;
+#define FIX_SHIFT 10
+
+#define ONE        (fixed) (1  << FIX_SHIFT)
+#define THREE      (fixed) (3  << FIX_SHIFT)
+#define THIRTY_TWO (fixed) (32 << FIX_SHIFT)
+#define ONE_HALF   (fixed) (1  << (FIX_SHIFT-1))
+#define ONE_THIRD  (fixed) (0x155)
+#define TWO_THIRDS (fixed) (0x2AA)
+#define SQRT_1_3   (fixed) (0x24F)
+
+///Multiply two fixed point values
+static inline fixed FxMul(fixed fa, fixed fb) { return (fa*fb)>>FIX_SHIFT; }
+
+///Take a fixed point value and round it, clamp to 0 or 31, then shift down to integer
+static inline s32 RoundClampShift(fixed v) {
+    v += ONE_HALF;
+    if (v < 0)           return 0;
+    if (v >= THIRTY_TWO) return 31;
+    return v >> FIX_SHIFT;
+}
+
+/***
+ * Performs a hue shift on the colors in a given palette. Index must be from 0 to 63.
+ * Values 0-31 shift right, while values 32-63 shift left (but 32 is treated as 0, 33 as 1, etc.).
+ ***/
+void HueShiftMonPalette(u16* colors, u32 personality) {
+    //Use third personality byte to determine color;
+    //Limit the index to valid bounds
+    u32 index = (personality >> 16) & (64-1);
+
+    //sCosTable and sSinTable are two tables for precalculated cosine values, one after other, each with 32
+    //elements of two bytes. The values are represented in fixed point, and the table doesn't go very far around the
+    //circle (currently represent about +/-45 degrees).
+    //The index into the table is treated a little strangely. an index of 0 corresponds to cos(0) and sin(0).
+    //values of index after 32 are treated like -(index-32). for cosine, because cos(x) == cos(-x), I can just
+    //chop off bits after the first 5 and index into the table. For sine, sin(-x) == -sin(x), so I flip the sign of the
+    //value in the table at (index-32). This is all done to save space.
+    fixed cosA = sCosTable[index & 31],
+          sinA = index >= 32 ? -(fixed)(sSinTable[index-32]) : sSinTable[index];
+
+    //The following code performs an approximate hue shift on each color in the palette, taken from this post on stack
+    //overflow, optimized to work with this fixed point stuff: https://stackoverflow.com/a/8510751/963007
+    fixed val1 = ONE_THIRD + FxMul(cosA, TWO_THIRDS);
+    fixed val2 = FxMul(ONE - cosA, ONE_THIRD) - FxMul(SQRT_1_3, sinA);
+    fixed val3 = FxMul(ONE - cosA, ONE_THIRD) + FxMul(SQRT_1_3, sinA);
+
+    u8 i;
+    u16 color;
+    fixed r, g, b;
+    s32 rx, gx, bx;
+
+    for (i = 1; i < 16; i++) { //Skip past first color, which is transparency
+        color = colors[i];
+
+        //Unpack the color
+        r     = (color & 0x1F) << FIX_SHIFT;
+        color = color >> 5;
+        g     = (color & 0x1F) << FIX_SHIFT;
+        color = color >> 5;
+        b     = (color & 0x1F) << FIX_SHIFT;
+
+        //Hue shift, clamping at the max component value (31)
+        rx = RoundClampShift(FxMul(r, val1) + FxMul(g, val2) + FxMul(b, val3));
+        gx = RoundClampShift(FxMul(r, val3) + FxMul(g, val1) + FxMul(b, val2));
+        bx = RoundClampShift(FxMul(r, val2) + FxMul(g, val3) + FxMul(b, val1));
+
+        //Pack the color
+        colors[i] = rx | (gx << 5) | (bx << 10);
+    }
+}
+
+void LoadHueShiftedMonPalette(const u32 *src, u16 offset, u16 size, u32 personality)
+{
+    LZDecompressWram(src, gPaletteDecompressionBuffer);
+
+    HueShiftMonPalette((u16*) gPaletteDecompressionBuffer, personality);
+
+    CpuCopy16(gPaletteDecompressionBuffer, gPlttBufferUnfaded + offset, size);
+    CpuCopy16(gPaletteDecompressionBuffer, gPlttBufferFaded + offset, size);
+}
+
 void LoadPalette(const void *src, u16 offset, u16 size)
 {
     CpuCopy16(src, &gPlttBufferUnfaded[offset], size);

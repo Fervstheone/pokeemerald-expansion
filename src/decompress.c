@@ -3,6 +3,7 @@
 #include "data.h"
 #include "decompress.h"
 #include "pokemon.h"
+#include "palette.h"
 #include "pokemon_debug.h"
 #include "text.h"
 
@@ -47,6 +48,32 @@ void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src)
     LZ77UnCompWram(src->data, gDecompressionBuffer);
     dest.data = (void *) gDecompressionBuffer;
     dest.tag = src->tag;
+    LoadSpritePalette(&dest);
+}
+
+void LoadHueShiftedMonSpritePalette(const struct CompressedSpritePalette *src, u32 personality)
+{
+    struct SpritePalette dest;
+
+    LZ77UnCompWram(src->data, gDecompressionBuffer);
+    
+    HueShiftMonPalette((u16*) gDecompressionBuffer, personality);
+
+    dest.data = (void*) gDecompressionBuffer;
+    dest.tag = src->tag;
+    LoadSpritePalette(&dest);
+}
+
+void LoadHueShiftedMonSpritePaletteWithTag(const u32 *pal, u32 personality, u16 tag)
+{
+    struct SpritePalette dest;
+
+    LZ77UnCompWram(pal, gDecompressionBuffer);
+
+    HueShiftMonPalette((u16*) gDecompressionBuffer, personality);
+
+    dest.data = (void *) gDecompressionBuffer;
+    dest.tag = tag;
     LoadSpritePalette(&dest);
 }
 
