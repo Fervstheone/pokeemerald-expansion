@@ -96,7 +96,7 @@ u32 CreateSurfablePokemonSprite(void)
     }
     else
     { // Create surf blob
-        spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[7], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
+        spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
     }
 
     if (spriteId != MAX_SPRITES)
@@ -138,12 +138,18 @@ static void UpdateSurfMonOverlay(struct Sprite *sprite)
 {
     struct ObjectEvent *playerObj;
     struct Sprite *linkedSprite;
+    u8 subpriority;
 
     playerObj = &gObjectEvents[gPlayerAvatar.objectEventId];
     linkedSprite = &gSprites[playerObj->spriteId];
 
     SynchroniseSurfAnim(playerObj, sprite);
     SynchroniseSurfPosition(playerObj, sprite);
+
+    // Reset the subpriority for the overlay sprite so it shows on top of the player
+    // We need this here so the subprio is correct after a screen transition (e.g. after exiting a battle)
+    subpriority = gSprites[gPlayerAvatar.spriteId].subpriority - 1;
+    sprite->subpriority = subpriority;
 
     if (linkedSprite->animNum < MOVEMENT_ACTION_DELAY_16)
     {
