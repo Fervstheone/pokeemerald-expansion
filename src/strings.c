@@ -181,6 +181,8 @@ const u8 gText_FlyToWhere[] = _("Fly to where?");
 const u8 gMenuText_Use[] = _("Use");
 const u8 gMenuText_Toss[] = _("Toss");
 const u8 gMenuText_Register[] = _("Register");
+const u8 gMenuText_RegisterL[] = _("Register L");
+const u8 gMenuText_RegisterR[] = _("Register R");
 const u8 gMenuText_Give[] = _("Give");
 const u8 gMenuText_CheckTag[] = _("Check tag");
 const u8 gMenuText_Confirm[] = _("Confirm");
@@ -1844,3 +1846,5 @@ const u8 gText_Berries[] = _("Berries");
 const u8 gText_ExpShareOn[] = _("The Exp. Share has been turned on.{PAUSE_UNTIL_PRESS}");
 const u8 gText_ExpShareOff[] = _("The Exp. Share has been turned off.{PAUSE_UNTIL_PRESS}");
 const u8 gText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
+
+const u8 gText_DexNavDescription[] = _("Search for wild Pokémon.");
