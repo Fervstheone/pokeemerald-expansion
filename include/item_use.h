@@ -53,5 +53,6 @@ enum {
 };
 
 bool32 CanThrowBall(void);
+void ItemUseOutOfBattle_PokeBall(u8);
 
 #endif // GUARD_ITEM_USE_H

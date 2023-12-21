@@ -158,6 +158,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_POKE_BALL - FIRST_BALL,
     },
 
@@ -171,6 +172,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_GREAT_BALL - FIRST_BALL,
     },
 
@@ -184,6 +186,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_ULTRA_BALL - FIRST_BALL,
     },
 
@@ -197,6 +200,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_MASTER_BALL - FIRST_BALL,
     },
 
@@ -210,6 +214,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_PREMIER_BALL - FIRST_BALL,
     },
 
@@ -223,6 +228,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_HEAL_BALL - FIRST_BALL,
     },
 
@@ -236,6 +242,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_NET_BALL - FIRST_BALL,
     },
 
@@ -249,6 +256,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_NEST_BALL - FIRST_BALL,
     },
 
@@ -262,6 +270,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_DIVE_BALL - FIRST_BALL,
     },
 
@@ -275,6 +284,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_DUSK_BALL - FIRST_BALL,
     },
 
@@ -288,6 +298,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_TIMER_BALL - FIRST_BALL,
     },
 
@@ -301,6 +312,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_QUICK_BALL - FIRST_BALL,
     },
 
@@ -314,6 +326,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_REPEAT_BALL - FIRST_BALL,
     },
 
@@ -327,6 +340,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_LUXURY_BALL - FIRST_BALL,
     },
 
@@ -340,6 +354,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_LEVEL_BALL - FIRST_BALL,
     },
 
@@ -353,6 +368,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_LURE_BALL - FIRST_BALL,
     },
 
@@ -366,6 +382,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_MOON_BALL - FIRST_BALL,
     },
 
@@ -379,6 +396,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_FRIEND_BALL - FIRST_BALL,
     },
 
@@ -392,6 +410,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_LOVE_BALL - FIRST_BALL,
     },
 
@@ -405,6 +424,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_FAST_BALL - FIRST_BALL,
     },
 
@@ -418,6 +438,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_HEAVY_BALL - FIRST_BALL,
     },
 
@@ -436,6 +457,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_DREAM_BALL - FIRST_BALL,
     },
 
@@ -449,6 +471,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_SAFARI_BALL - FIRST_BALL,
     },
 
@@ -462,6 +485,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_SPORT_BALL - FIRST_BALL,
     },
 
@@ -474,6 +498,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_PARK_BALL - FIRST_BALL,
     },
 
@@ -486,6 +511,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_BEAST_BALL - FIRST_BALL,
     },
 
@@ -499,6 +525,7 @@ const struct Item gItems[] =
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .secondaryId = ITEM_CHERISH_BALL - FIRST_BALL,
     },
 

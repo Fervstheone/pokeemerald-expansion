@@ -1448,3 +1448,10 @@ void Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker(u8 taskId)
 }
 
 #undef tUsingRegisteredKeyItem
+
+void ItemUseOutOfBattle_PokeBall(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_PokeBall;
+    gBagMenu->newScreenCallback = CB2_ShowPartyMenuForItemUse;
+    Task_FadeAndCloseBagMenu(taskId);
+}
