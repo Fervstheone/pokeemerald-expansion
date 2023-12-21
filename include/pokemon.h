@@ -101,6 +101,7 @@ enum {
     MON_DATA_SPATK2,
     MON_DATA_SPDEF2,
     MON_DATA_NATURE,
+    MON_DATA_HIDDEN_NATURE 
 };
 
 struct BoxPokemon
@@ -150,6 +151,7 @@ struct BoxPokemon
              u8 pp2:6;
              u8 pp3:6;
              u8 pp4:6;
+             u8 hiddenNature:5;
 }; /* size = 0x3C (60) bytes */
 
 struct Pokemon
@@ -565,7 +567,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 bool8 HealStatusConditions(struct Pokemon *mon, u32 battlePartyId, u32 healMask, u8 battlerId);
 u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit);
 u8 *UseStatIncreaseItem(u16 itemId);
-u8 GetNature(struct Pokemon *mon);
+u8 GetNature(struct Pokemon *mon, bool32 checkHidden);
 u8 GetNatureFromPersonality(u32 personality);
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem, struct Pokemon *tradePartner);
 bool8 IsMonPastEvolutionLevel(struct Pokemon *mon);
