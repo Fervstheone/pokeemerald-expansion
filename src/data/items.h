@@ -88,6 +88,14 @@ static const u8 sNectarDesc[]         = _("Flower nectar that\n"
                                           "changes the form\n"
                                           "of certain Pokémon.");
 
+static const u8 sCharizarditeDesc[]   = _("This stone enables\n"
+                                          "Charizard to Mega\n"
+                                          "Evolve in battle.");
+
+static const u8 sMewtwoniteDesc[]     = _("This stone enables\n"
+                                          "Mewtwo to Mega\n"
+                                          "Evolve in battle.");
+
 static const u8 sSeaIncenseDesc[]     = _("A hold item that\n"
                                           "slightly boosts\n"
                                           "Water-type moves.");
@@ -4258,9 +4266,7 @@ const struct Item gItems[] =
         .name = _("CharizarditeX"),
         .price = 0,
         .holdEffect = HOLD_EFFECT_MEGA_STONE,
-        .description = COMPOUND_STRING("This stone enables\n"
-                                       "Charizard to Mega\n"
-                                       "Evolve in battle."),
+        .description = sCharizarditeDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -4272,9 +4278,7 @@ const struct Item gItems[] =
         .name = _("CharizarditeY"),
         .price = 0,
         .holdEffect = HOLD_EFFECT_MEGA_STONE,
-        .description = COMPOUND_STRING("This stone enables\n"
-                                       "Charizard to Mega\n"
-                                       "Evolve in battle."),
+        .description = sCharizarditeDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -4426,9 +4430,7 @@ const struct Item gItems[] =
         .name = _("Mewtwonite X"),
         .price = 0,
         .holdEffect = HOLD_EFFECT_MEGA_STONE,
-        .description = COMPOUND_STRING("This stone enables\n"
-                                       "Mewtwo to Mega\n"
-                                       "Evolve in battle."),
+        .description = sMewtwoniteDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -4440,9 +4442,7 @@ const struct Item gItems[] =
         .name = _("Mewtwonite Y"),
         .price = 0,
         .holdEffect = HOLD_EFFECT_MEGA_STONE,
-        .description = COMPOUND_STRING("This stone enables\n"
-                                       "Mewtwo to Mega\n"
-                                       "Evolve in battle."),
+        .description = sMewtwoniteDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
