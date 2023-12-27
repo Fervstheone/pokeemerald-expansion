@@ -1,6 +1,7 @@
 #ifndef FPMATH_H_
 #define FPMATH_H_
 
+#include "gba/types.h"
 typedef s16 q4_12_t;
 typedef u32 uq4_12_t;
 
