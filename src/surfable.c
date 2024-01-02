@@ -40,9 +40,28 @@ struct RideablePokemon
 
 static EWRAM_DATA u16 sCurrentSurfMon = {0};
 
-static u16 GetSurfablePokemonSpriteBySpecies(u16 species)
+static u16 GetSurfMonSpecies(u8 slot)
+{
+    if (gSaveBlock1Ptr->surfmonSpecies == SPECIES_NONE)
+    {
+        if (MonKnowsMove(&gPlayerParty[slot], MOVE_SURF))
+        {
+            gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
+            return gSaveBlock1Ptr->surfmonSpecies;
+        }
+        else
+            return 0xFFFF;
+    }
+    else
+    {
+        return gSaveBlock1Ptr->surfmonSpecies;
+    }
+}
+
+static u16 GetSurfablePokemonSpriteBySpecies(u8 slot)
 {
     u8 i;
+    u16 species = GetSurfMonSpecies(slot);
 
     for (i = 0; i < ARRAY_COUNT(gSurfablePokemon); i++)
     {
@@ -75,12 +94,11 @@ u32 CreateSurfablePokemonSprite(void)
     u8 spriteId;
     struct Sprite *sprite;
     u8 slot = gFieldEffectArguments[3];
-    u16 species = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
     u32 personality = GetMonData(gPlayerParty, MON_DATA_PERSONALITY);
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 
-    sCurrentSurfMon = GetSurfablePokemonSpriteBySpecies(species);
+    sCurrentSurfMon = GetSurfablePokemonSpriteBySpecies(slot);
     if (sCurrentSurfMon != 0xFFFF)
     {
         LoadSurfOverworldPalette(personality, slot);

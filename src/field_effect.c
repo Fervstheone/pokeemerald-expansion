@@ -7,6 +7,7 @@
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
+#include "party_menu.h"
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "fldeff.h"
@@ -3078,6 +3079,7 @@ static void SurfFieldEffect_JumpOnSurfBlob(struct Task *task)
         gFieldEffectArguments[1] = task->tDestY;
         gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
         gFieldEffectArguments[3] = task->tMonId;
+        gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_SPECIES);
         objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
         task->tState++;
     }

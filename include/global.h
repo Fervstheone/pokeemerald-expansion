@@ -1101,6 +1101,7 @@ struct SaveBlock1
     // sizeof: 0x3???
     /*0x3D88*/ u16 registeredItemL;
     /*0x3D8A*/ u16 registeredItemR;
+    /*0x3D??*/ u16 surfmonSpecies;
     // sizeof: 0x3D8C
 };
 
