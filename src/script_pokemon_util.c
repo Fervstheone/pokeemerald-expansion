@@ -16,6 +16,7 @@
 #include "party_menu.h"
 #include "pokedex.h"
 #include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "random.h"
 #include "script.h"
 #include "sprite.h"
@@ -260,7 +261,7 @@ void ReducePlayerPartyToSelectedMons(void)
 
     CpuFill32(0, party, sizeof party);
 
-    // copy the selected pokemon according to the order.
+    // copy the selected Pokémon according to the order.
     for (i = 0; i < MAX_FRONTIER_PARTY_SIZE; i++)
         if (gSelectedOrderFromParty[i]) // as long as the order keeps going (did the player select 1 mon? 2? 3?), do not stop
             party[i] = gPlayerParty[gSelectedOrderFromParty[i] - 1]; // index is 0 based, not literal
@@ -272,4 +273,73 @@ void ReducePlayerPartyToSelectedMons(void)
         gPlayerParty[i] = party[i];
 
     CalculatePlayerPartyCount();
+}
+
+void CanHyperTrain(struct ScriptContext *ctx)
+{
+    u32 stat = ScriptReadByte(ctx);
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    if (stat < NUM_STATS
+     && partyIndex < PARTY_SIZE
+     && !GetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat)
+     && GetMonData(&gPlayerParty[partyIndex], MON_DATA_HP_IV + stat) < MAX_PER_STAT_IVS)
+    {
+        gSpecialVar_Result = TRUE;
+    }
+    else
+    {
+        gSpecialVar_Result = FALSE;
+    }
+}
+
+void HyperTrain(struct ScriptContext *ctx)
+{
+    u32 stat = ScriptReadByte(ctx);
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    if (stat < NUM_STATS && partyIndex < PARTY_SIZE)
+    {
+        bool32 data = TRUE;
+        SetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat, &data);
+        CalculateMonStats(&gPlayerParty[partyIndex]);
+    }
+}
+
+void HasGigantamaxFactor(struct ScriptContext *ctx)
+{
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    if (partyIndex < PARTY_SIZE)
+        gSpecialVar_Result = GetMonData(&gPlayerParty[partyIndex], MON_DATA_GIGANTAMAX_FACTOR);
+    else
+        gSpecialVar_Result = FALSE;
+}
+
+static const u16 sGigantaxFactorLockedSpecies[] =
+{
+    SPECIES_MELMETAL,
+};
+
+void ToggleGigantamaxFactor(struct ScriptContext *ctx)
+{
+    u32 i;
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    u32 species;
+
+    gSpecialVar_Result = FALSE;
+
+    if (partyIndex < PARTY_SIZE)
+    {
+        bool32 gigantamaxFactor;
+
+        species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES);
+        for (i = 0; i < ARRAY_COUNT(sGigantaxFactorLockedSpecies); i++)
+        {
+            if (species == sGigantaxFactorLockedSpecies[i])
+                return;
+        }
+
+        gigantamaxFactor = GetMonData(&gPlayerParty[partyIndex], MON_DATA_GIGANTAMAX_FACTOR);
+        gigantamaxFactor = !gigantamaxFactor;
+        SetMonData(&gPlayerParty[partyIndex], MON_DATA_GIGANTAMAX_FACTOR, &gigantamaxFactor);
+        gSpecialVar_Result = TRUE;
+    }
 }

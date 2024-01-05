@@ -12,8 +12,8 @@
 // Property labels for Get(Box)MonData / Set(Box)MonData
 enum {
     MON_DATA_PERSONALITY,
+    MON_DATA_STATUS,
     MON_DATA_OT_ID,
-    MON_DATA_NICKNAME,
     MON_DATA_LANGUAGE,
     MON_DATA_SANITY_IS_BAD_EGG,
     MON_DATA_SANITY_HAS_SPECIES,
@@ -21,7 +21,11 @@ enum {
     MON_DATA_OT_NAME,
     MON_DATA_MARKINGS,
     MON_DATA_CHECKSUM,
+    MON_DATA_HP,
+    MON_DATA_IS_SHINY,
+    MON_DATA_HIDDEN_NATURE,
     MON_DATA_ENCRYPT_SEPARATOR,
+    MON_DATA_NICKNAME,
     MON_DATA_SPECIES,
     MON_DATA_HELD_ITEM,
     MON_DATA_MOVE1,
@@ -66,9 +70,7 @@ enum {
     MON_DATA_CUTE_RIBBON,
     MON_DATA_SMART_RIBBON,
     MON_DATA_TOUGH_RIBBON,
-    MON_DATA_STATUS,
     MON_DATA_LEVEL,
-    MON_DATA_HP,
     MON_DATA_MAX_HP,
     MON_DATA_ATK,
     MON_DATA_DEF,
@@ -101,7 +103,16 @@ enum {
     MON_DATA_SPATK2,
     MON_DATA_SPDEF2,
     MON_DATA_NATURE,
-    MON_DATA_HIDDEN_NATURE 
+    MON_DATA_HYPER_TRAINED_HP,
+    MON_DATA_HYPER_TRAINED_ATK,
+    MON_DATA_HYPER_TRAINED_DEF,
+    MON_DATA_HYPER_TRAINED_SPEED,
+    MON_DATA_HYPER_TRAINED_SPATK,
+    MON_DATA_HYPER_TRAINED_SPDEF,
+    MON_DATA_IS_SHADOW,
+    MON_DATA_DYNAMAX_LEVEL,
+    MON_DATA_GIGANTAMAX_FACTOR,
+    MON_DATA_TERA_TYPE,
 };
 
 struct BoxPokemon
@@ -152,6 +163,12 @@ struct BoxPokemon
              u8 pp3:6;
              u8 pp4:6;
              u8 hiddenNature:5;
+             u8 hyperTrainedHP:1;
+             u8 hyperTrainedAttack:1;
+             u8 hyperTrainedDefense:1;
+             u8 hyperTrainedSpeed:1;
+             u8 hyperTrainedSpAttack:1;
+             u8 hyperTrainedSpDefense:1;
 }; /* size = 0x3C (60) bytes */
 
 struct Pokemon
@@ -231,6 +248,7 @@ struct BattlePokemon
     /*0x51*/ u32 status2;
     /*0x55*/ u32 otId;
     /*0x59*/ u8 metLevel;
+    /*0x5A*/ bool8 isShiny;
 };
 
 struct Evolution
@@ -297,7 +315,9 @@ struct SpeciesInfo /*0x8C*/
  /* 0x64 */ const u32 *shinyPaletteFemale;
  /* 0x68 */ const u8 *iconSprite;
  /* 0x6C */ const u8 *iconSpriteFemale;
+#if P_FOOTPRINTS
  /* 0x70 */ const u8 *footprint;
+#endif
             // All Pokémon pics are 64x64, but this data table defines where in this 64x64 frame the sprite's non-transparent pixels actually are.
  /* 0x74 */ u8 frontPicSize; // The dimensions of this drawn pixel area.
  /* 0x74 */ u8 frontPicSizeFemale; // The dimensions of this drawn pixel area.
@@ -398,8 +418,22 @@ struct BattleMove
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
     u32 skyBattleBanned:1;
-    u16 argument;
     u32 sketchBanned:1;
+    u16 argument;
+};
+
+struct Ability
+{
+    u8 name[ABILITY_NAME_LENGTH + 1];
+    const u8 *description;
+    s8 aiRating;
+    u8 cantBeCopied:1; // cannot be copied by Role Play or Doodle
+    u8 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
+    u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
+    u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
+    u8 cantBeOverwritten:1; // cannot be overwritten by Entrainment, Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed except for Truant
+    u8 breakable:1; // can be bypassed by Mold Breaker and clones
+    u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
 };
 
 #define SPINDA_SPOT_WIDTH 16
@@ -470,6 +504,7 @@ extern const u16 gUnionRoomFacilityClasses[];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const s8 gNatureStatTable[][5];
 extern const u32 sExpCandyExperienceTable[];
+extern const struct Ability gAbilities[];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
@@ -603,7 +638,7 @@ void PlayBattleBGM(void);
 void PlayMapChosenOrBattleBGM(u16 songId);
 void CreateTask_PlayMapChosenOrBattleBGM(u16 songId);
 const u32 *GetMonFrontSpritePal(struct Pokemon *mon);
-const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 personality);
+const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, bool32 isShiny, u32 personality);
 bool8 IsMoveHM(u16 move);
 bool8 IsMonSpriteNotFlipped(u16 species);
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor);
@@ -615,7 +650,6 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon);
 void SetMonPreventsSwitchingString(void);
 void SetWildMonHeldItem(void);
 bool8 IsMonShiny(struct Pokemon *mon);
-bool8 IsShinyOtIdPersonality(u32 otId, u32 personality);
 const u8 *GetTrainerPartnerName(void);
 void BattleAnimateFrontSprite(struct Sprite *sprite, u16 species, bool8 noCry, u8 panMode);
 void DoMonFrontSpriteAnimation(struct Sprite *sprite, u16 species, bool8 noCry, u8 panModeAnimFlag);

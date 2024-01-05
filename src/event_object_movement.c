@@ -5112,7 +5112,7 @@ static bool8 EndFollowerTransformEffect(struct ObjectEvent *objectEvent, struct 
     sprite->data[7] = 0;
     return FALSE;
 }
-
+//FIX THIS DUMBFUCK
 static bool8 TryStartFollowerTransformEffect(struct ObjectEvent *objectEvent, struct Sprite *sprite) {
     u32 multi;
     if (OW_SPECIES(objectEvent) == SPECIES_CASTFORM && OW_FORM(objectEvent) != (multi = GetOverworldCastformForm())) {
@@ -5120,13 +5120,13 @@ static bool8 TryStartFollowerTransformEffect(struct ObjectEvent *objectEvent, st
         objectEvent->graphicsId &= OBJ_EVENT_GFX_SPECIES_MASK;
         objectEvent->graphicsId |= multi << OBJ_EVENT_GFX_SPECIES_BITS;
         return TRUE;
-    } else if ((gRngValue >> 16) < 18 && GetLocalWildMon(FALSE)
+    } else /*if ((gRngValue_old >> 16) < 18 && GetLocalWildMon(FALSE)
             && (OW_SPECIES(objectEvent) == SPECIES_MEW || OW_SPECIES(objectEvent) == SPECIES_DITTO)) {
         sprite->data[7] = TRANSFORM_TYPE_RANDOM_WILD << 8;
-        PlaySE(SE_M_MINIMIZE);
-        return TRUE;
-    }
-    return FALSE;
+        PlaySE(SE_M_MINIMIZE);*/
+        return FALSE;
+    //}
+    //return FALSE;
 }
 
 static bool8 UpdateFollowerTransformEffect(struct ObjectEvent *objectEvent, struct Sprite *sprite) {
