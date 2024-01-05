@@ -603,6 +603,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_TallGrass,
         .entryTilemap = gBattleTerrainAnimTilemap_TallGrass,
         .palette = gBattleTerrainPalette_TallGrass,
+        .nightPalette = gBattleTerrainPalette_TallGrass_Night,
+        .twilightPalette = gBattleTerrainPalette_TallGrass,
     },
 
     [BATTLE_TERRAIN_LONG_GRASS] =
@@ -612,6 +614,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_LongGrass,
         .entryTilemap = gBattleTerrainAnimTilemap_LongGrass,
         .palette = gBattleTerrainPalette_LongGrass,
+        .nightPalette = gBattleTerrainPalette_LongGrass_Night,
+        .twilightPalette = gBattleTerrainPalette_LongGrass,
     },
 
     [BATTLE_TERRAIN_SAND] =
@@ -621,6 +625,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Sand,
         .entryTilemap = gBattleTerrainAnimTilemap_Sand,
         .palette = gBattleTerrainPalette_Sand,
+        .nightPalette = gBattleTerrainPalette_Sand_Night,
+        .twilightPalette = gBattleTerrainPalette_Sand,
     },
 
     [BATTLE_TERRAIN_UNDERWATER] =
@@ -630,6 +636,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Underwater,
         .entryTilemap = gBattleTerrainAnimTilemap_Underwater,
         .palette = gBattleTerrainPalette_Underwater,
+        .nightPalette = gBattleTerrainPalette_Underwater,
+        .twilightPalette = gBattleTerrainPalette_Underwater,
     },
 
     [BATTLE_TERRAIN_WATER] =
@@ -639,6 +647,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Water,
         .entryTilemap = gBattleTerrainAnimTilemap_Water,
         .palette = gBattleTerrainPalette_Water,
+        .nightPalette = gBattleTerrainPalette_Water_Night,
+        .twilightPalette = gBattleTerrainPalette_Water,
     },
 
     [BATTLE_TERRAIN_POND] =
@@ -648,6 +658,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_PondWater,
         .entryTilemap = gBattleTerrainAnimTilemap_PondWater,
         .palette = gBattleTerrainPalette_PondWater,
+        .nightPalette = gBattleTerrainPalette_PondWater_Night,
+        .twilightPalette = gBattleTerrainPalette_PondWater,
     },
 
     [BATTLE_TERRAIN_MOUNTAIN] =
@@ -657,6 +669,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Rock,
         .entryTilemap = gBattleTerrainAnimTilemap_Rock,
         .palette = gBattleTerrainPalette_Rock,
+        .nightPalette = gBattleTerrainPalette_Rock_Night,
+        .twilightPalette = gBattleTerrainPalette_Rock,
     },
 
     [BATTLE_TERRAIN_CAVE] =
@@ -666,6 +680,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Cave,
         .entryTilemap = gBattleTerrainAnimTilemap_Cave,
         .palette = gBattleTerrainPalette_Cave,
+        .nightPalette = gBattleTerrainPalette_Cave,
+        .twilightPalette = gBattleTerrainPalette_Cave,
     },
 
     [BATTLE_TERRAIN_BUILDING] =
@@ -675,6 +691,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Building,
         .entryTilemap = gBattleTerrainAnimTilemap_Building,
         .palette = gBattleTerrainPalette_Building,
+        .nightPalette = gBattleTerrainPalette_Building,
+        .twilightPalette = gBattleTerrainPalette_Building,
     },
 
     [BATTLE_TERRAIN_PLAIN] =
@@ -684,6 +702,8 @@ const struct BattleBackground sBattleTerrainTable[] =
         .entryTileset = gBattleTerrainAnimTiles_Building,
         .entryTilemap = gBattleTerrainAnimTilemap_Building,
         .palette = gBattleTerrainPalette_Plain,
+        .nightPalette = gBattleTerrainPalette_Plain_Night,
+        .twilightPalette = gBattleTerrainPalette_Plain,
     },
 };
 
@@ -818,31 +838,12 @@ void DrawMainBattleBackground(void)
             UpdateTimeOfDay();
             LZDecompressVram(sBattleTerrainTable[gBattleTerrain].tileset, (void *)(BG_CHAR_ADDR(2)));
             LZDecompressVram(sBattleTerrainTable[gBattleTerrain].tilemap, (void *)(BG_SCREEN_ADDR(26)));
-            if ((gBattleTerrain == BATTLE_TERRAIN_GRASS) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_TallGrass_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-            
-            else if ((gBattleTerrain == BATTLE_TERRAIN_LONG_GRASS) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_LongGrass_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-            
-            else if ((gBattleTerrain == BATTLE_TERRAIN_WATER) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_Water_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-
-            else if ((gBattleTerrain == BATTLE_TERRAIN_POND) && (gMapHeader.mapType == MAP_TYPE_UNDERGROUND))
-                    LoadCompressedPalette(gBattleTerrainPalette_PondWater_Cave, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-            else if ((gBattleTerrain == BATTLE_TERRAIN_POND) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_UNDERGROUND))
-                LoadCompressedPalette(gBattleTerrainPalette_PondWater_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-
-            else if ((gBattleTerrain == BATTLE_TERRAIN_PLAIN) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_Plain_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-            
-            else if ((gBattleTerrain == BATTLE_TERRAIN_MOUNTAIN) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_Rock_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-            
-            else if ((gBattleTerrain == BATTLE_TERRAIN_SAND) && (gTimeOfDay == TIME_OF_DAY_NIGHT) && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
-                LoadCompressedPalette(gBattleTerrainPalette_Sand_Night, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-
+            if(gTimeOfDay == TIME_OF_DAY_NIGHT && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
+                LoadCompressedPalette(sBattleTerrainTable[gBattleTerrain].nightPalette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+            else if(gTimeOfDay == TIME_OF_DAY_TWILIGHT && !(gMapHeader.mapType == MAP_TYPE_INDOOR))
+                LoadCompressedPalette(sBattleTerrainTable[gBattleTerrain].twilightPalette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
             else
-            LoadCompressedPalette(sBattleTerrainTable[gBattleTerrain].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+                LoadCompressedPalette(sBattleTerrainTable[gBattleTerrain].palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
             break;
         case MAP_BATTLE_SCENE_GYM:
             LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));

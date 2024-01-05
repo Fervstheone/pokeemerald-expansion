@@ -1867,7 +1867,7 @@ u8 GetImprisonedMovesCount(u32 battler, u16 move)
 
     return imprisonedMoves;
 }
-
+//CHANGE THIS LATER DUMBUFUCK remove mega and change frontier
 u32 GetBattlerAffectionHearts(u32 battler)
 {
     u8 side = GetBattlerSide(battler);

@@ -168,7 +168,7 @@ SSTidalRooms_Text_NotSuspiciousTakeThis:
 	.string "someone! I'd never do such a thing!\l"
 	.string "It's clean! You can use it!$"
 
-SSTidalRooms_Text_ExplainSnatch: @CHANGE THIS DUMBUFUCK
+SSTidalRooms_Text_ExplainSnatch: @CHANGE THIS DUMBFUCK
 	.string "Snatch steals the beneficial effects\n"
 	.string "of certain moves before they can be\l"
 	.string "used by a foe or ally.$"
