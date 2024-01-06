@@ -248,6 +248,15 @@ void LoadPalette(const void *src, u16 offset, u16 size)
     CpuCopy16(src, &gPlttBufferFaded[offset], size);
 }
 
+void LoadHueShiftedPalette(const void *src, u16 offset, u16 size, u32 personality)
+{
+    HueShiftMonPalette((u16*) src, personality);
+
+    CpuCopy16(src, &gPlttBufferUnfaded[offset], size);
+    CpuCopy16(src, &gPlttBufferFaded[offset], size);
+}
+
+
 // Drop in replacement for LoadPalette, uses CpuFastCopy, size must be 0 % 32
 void LoadPaletteFast(const void *src, u16 offset, u16 size) {
     if ((u32)src & 3) // In case palette is not 4 byte aligned
@@ -255,6 +264,18 @@ void LoadPaletteFast(const void *src, u16 offset, u16 size) {
     CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
     // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
     CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+}
+
+void LoadHueShiftedPaletteFast(const void *src, u16 offset, u16 size, u32 personality)
+{
+    if ((u32)src & 3) // In case palette is not 4 byte aligned
+        return LoadHueShiftedPalette(src, offset, size, personality);
+    
+    HueShiftMonPalette((u16*) src, personality);    
+    CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
+    // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
+    CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+
 }
 
 void FillPalette(u16 value, u16 offset, u16 size)

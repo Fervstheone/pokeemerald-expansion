@@ -2402,6 +2402,13 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_HYPER_TRAINED_SPDEF:
         retVal = boxMon->hyperTrainedSpDefense;
         break;
+    case MON_DATA_IS_SHINY:
+      {
+        //u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
+        //retVal = (shinyValue < SHINY_ODDS) ^ boxMon->shinyModifier;
+        retVal = boxMon->shinyModifier;
+        break;
+      }
     default:
         break;
     }
@@ -2678,6 +2685,14 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     case MON_DATA_HIDDEN_NATURE:
         SET8(boxMon->hiddenNature);
         break;
+    case MON_DATA_IS_SHINY:
+        {
+            u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
+            bool32 isShiny;
+            SET8(isShiny);
+            boxMon->shinyModifier = (shinyValue < SHINY_ODDS) ^ isShiny;
+            break;
+        }
     default:
         break;
     }

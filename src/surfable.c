@@ -83,8 +83,7 @@ static void LoadSurfOverworldPalette(u32 personality, u8 slot)
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(gSurfablePokemonShinyPaletteTable[sCurrentSurfMon].tag), FALSE);
     }
     else{
-        HueShiftMonPalette((u16*)&gSurfablePokemonPaletteTable[sCurrentSurfMon], personality);
-        LoadSpritePalette(&gSurfablePokemonPaletteTable[sCurrentSurfMon]);
+        LoadHueShiftedSpritePalette(&gSurfablePokemonPaletteTable[sCurrentSurfMon], personality);
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(gSurfablePokemonPaletteTable[sCurrentSurfMon].tag), FALSE);
     }
 }

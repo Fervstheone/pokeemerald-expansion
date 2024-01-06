@@ -169,6 +169,7 @@ struct BoxPokemon
              u8 hyperTrainedSpeed:1;
              u8 hyperTrainedSpAttack:1;
              u8 hyperTrainedSpDefense:1;
+             u16 shinyModifier:1;
 }; /* size = 0x3C (60) bytes */
 
 struct Pokemon

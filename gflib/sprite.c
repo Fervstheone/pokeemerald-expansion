@@ -89,6 +89,7 @@ static void ApplyAffineAnimFrame(u8 matrixNum, struct AffineAnimFrameCmd *frameC
 static u8 IndexOfSpriteTileTag(u16 tag);
 static void AllocSpriteTileRange(u16 tag, u16 start, u16 count);
 static void DoLoadSpritePalette(const u16 *src, u16 paletteOffset);
+static void DoLoadHueShiftedSpritePalette(const u16 *src, u16 paletteOffset, u32 personality);
 static void UpdateSpriteMatrixAnchorPos(struct Sprite *, s32, s32);
 
 typedef void (*AnimFunc)(struct Sprite *);
@@ -1578,6 +1579,33 @@ u8 LoadSpritePalette(const struct SpritePalette *palette)
     }
 }
 
+
+u8 LoadHueShiftedSpritePalette(const struct SpritePalette *palette, u32 personality)
+{
+    u8 index = IndexOfSpritePaletteTag(palette->tag);
+    u8 i;
+    u16 *debugPtr = (u16*) 0x0203d800;
+
+    if (index != 0xFF)
+        return index;
+
+    index = IndexOfSpritePaletteTag(TAG_NONE);
+
+    if (index == 0xFF)
+    {
+        return 0xFF;
+    }
+    else
+    {
+        sSpritePaletteTags[index] = palette->tag;
+        for (i = 0; i < 16; i++) {
+          debugPtr[i] = sSpritePaletteTags[i];
+        }
+        DoLoadHueShiftedSpritePalette(palette->data, PLTT_ID(index), personality);
+        return index;
+    }
+}
+
 void LoadSpritePalettes(const struct SpritePalette *palettes)
 {
     u8 i;
@@ -1596,6 +1624,11 @@ u8 LoadSpritePaletteInSlot(const struct SpritePalette *palette, u8 paletteNum) {
 void DoLoadSpritePalette(const u16 *src, u16 paletteOffset)
 {
     LoadPaletteFast(src, paletteOffset + OBJ_PLTT_OFFSET, PLTT_SIZE_4BPP);
+}
+
+void DoLoadHueShiftedSpritePalette(const u16 *src, u16 paletteOffset, u32 personality)
+{
+    LoadHueShiftedPaletteFast(src, paletteOffset + OBJ_PLTT_OFFSET, PLTT_SIZE_4BPP, personality);
 }
 
 u8 AllocSpritePalette(u16 tag)

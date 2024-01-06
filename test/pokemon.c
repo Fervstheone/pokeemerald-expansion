@@ -18,7 +18,7 @@ TEST("Nature independent from Hidden Nature")
     }
     CreateMonWithNature(&mon, SPECIES_WOBBUFFET, 100, 0, nature);
     SetMonData(&mon, MON_DATA_HIDDEN_NATURE, &hiddenNature);
-    EXPECT_EQ(GetNature(&mon), nature);
+    EXPECT_EQ(GetNature(&mon, FALSE), nature);
     EXPECT_EQ(GetMonData(&mon, MON_DATA_HIDDEN_NATURE), hiddenNature);
 }
 
