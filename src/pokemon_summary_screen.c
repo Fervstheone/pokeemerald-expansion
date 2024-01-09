@@ -1,3 +1,4 @@
+#include "gba/defines.h"
 #include "global.h"
 #include "main.h"
 #include "battle.h"
@@ -170,6 +171,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u16 friendship;
         u8 OTGender;
         u8 nature;
+        u8 hiddenNature;
         u8 ppBonuses;
         u8 sanity;
         bool8 fatefulEncounter;
@@ -284,6 +286,7 @@ static void PrintInfoPage(void);
 static void PrintMemoPage(void);
 static void BufferMonTrainerMemo(void);
 static void BufferNatureString(void);
+static void BufferMintString(void);
 static void BufferCharacteristicString(void);
 static void GetMetLevelString(u8 *a);
 static bool8 DoesMonOTMatchOwner(void);
@@ -1543,7 +1546,8 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
     case 2:
         if (sMonSummaryScreen->monList.mons == gPlayerParty || sMonSummaryScreen->mode == SUMMARY_MODE_BOX || sMonSummaryScreen->handleDeoxys == TRUE)
         {
-            sum->nature = GetNature(mon, TRUE);
+            sum->nature = GetNature(mon, FALSE);
+            sum->hiddenNature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
             sum->currentHP = GetMonData(mon, MON_DATA_HP);
             sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);
             sum->atk = GetMonData(mon, MON_DATA_ATK);
@@ -2879,11 +2883,14 @@ static void BufferMonTrainerMemo(void)
     struct PokeSummary *sum = &sMonSummaryScreen->summary;
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     const u8 *text;
-
+    bool8 isMinted = FALSE;
     DynamicPlaceholderTextUtil_Reset();
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, sMemoNatureTextColor);
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, sMemoMiscTextColor);
     BufferNatureString();
+    if ((GetMonData(mon, MON_DATA_HIDDEN_NATURE) != HIDDEN_NATURE_NONE) && (sum->hiddenNature != sum->nature))
+        isMinted = TRUE;
+        BufferMintString();
     BufferCharacteristicString();
 
     if (InBattleFactory() == TRUE || InSlateportBattleTent() == TRUE || IsInGamePartnerMon() == TRUE)
@@ -2929,23 +2936,42 @@ static void BufferMonTrainerMemo(void)
             if (sum->metLocation == METLOC_IN_GAME_TRADE)
             {
                 DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, sum->OTName);
-                if (sum->species == SPECIES_ESPEON || sum->species == SPECIES_UMBREON)
-                    text = gText_TrainerMemo_OldFriend; //Colosseum starter
-                 else
-                    text = gText_TrainerMemo_ReceivedFrom; //Duking's Plusle
+                if (isMinted)
+                {
+                    if (sum->species == SPECIES_ESPEON || sum->species == SPECIES_UMBREON)
+                        text = gText_TrainerMemo_MintOldFriend; //Colosseum starter
+                    else
+                        text = gText_TrainerMemo_MintReceivedFrom; //Duking's Plusle
+                }
+                else 
+                {
+                    if (sum->species == SPECIES_ESPEON || sum->species == SPECIES_UMBREON)
+                        text = gText_TrainerMemo_OldFriend; //Colosseum starter
+                    else
+                        text = gText_TrainerMemo_ReceivedFrom; //Duking's Plusle 
+                }
             }
             else if (sum->fatefulEncounter && sum->metLocation == 0 && (sum->species == SPECIES_EEVEE || sum->species == SPECIES_VAPOREON || sum->species == SPECIES_JOLTEON || sum->species == SPECIES_FLAREON || sum->species == SPECIES_ESPEON || sum->species == SPECIES_UMBREON))
             {
                 DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, sum->OTName);
-                text = gText_TrainerMemo_ObtainedFromDad; //XD starter
+                if (isMinted)
+                    text = gText_TrainerMemo_MintObtainedFromDad; //XD starter
+                else
+                    text = gText_TrainerMemo_ObtainedFromDad;
             }
             else
             {
                 DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
                 #if CONFIG_TRUST_OUTSIDERS
-                text = gText_TrainerMemo_Standard;
+                if (isMinted)
+                    text = gText_TrainerMemo_MintStandard;
+                else
+                    text = gText_TrainerMemo_Standard;
                 #else
-                text = gText_TrainerMemo_Untrusted;
+                if (isMinted)
+                    text = gText_TrainerMemo_MintUntrusted;
+                else
+                    text = gText_TrainerMemo_Untrusted;
                 #endif
             }
         }
@@ -2953,34 +2979,62 @@ static void BufferMonTrainerMemo(void)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
             #if CONFIG_TRUST_OUTSIDERS
-            text = gText_TrainerMemo_Hatched;
+            if(isMinted)
+                text = gText_TrainerMemo_MintHatched;
+            else
+                text = gText_TrainerMemo_Hatched;
             #else
             if (DoesMonOTMatchOwner())
-                text = gText_TrainerMemo_Hatched;
+                if(isMinted)
+                    text = gText_TrainerMemo_MintHatched;
+                else
+                    text = gText_TrainerMemo_Hatched;
             else
-                text = gText_TrainerMemo_HatchedUntrusted;
+                if(isMinted)
+                    text = gText_TrainerMemo_MintHatchedUntrusted;
+                else
+                    text = gText_TrainerMemo_HatchedUntrusted;
             #endif
         }
         else if (sum->metLocation == METLOC_FATEFUL_ENCOUNTER)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
-            text = gText_TrainerMemo_Fateful;
+            if(isMinted)
+                text = gText_TrainerMemo_MintFateful;
+            else
+                text = gText_TrainerMemo_Fateful;
         }
         else if (sum->metLocation != METLOC_IN_GAME_TRADE)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
             #if CONFIG_TRUST_OUTSIDERS
-            text = gText_TrainerMemo_Standard;
+            if (isMinted)
+                text = gText_TrainerMemo_MintStandard;
+            else
+                text = gText_TrainerMemo_Standard;
             #else
             if (DoesMonOTMatchOwner())
-                text = gText_TrainerMemo_Standard;
+            {
+                if (isMinted)
+                    text = gText_TrainerMemo_MintStandard;
+                else
+                    text = gText_TrainerMemo_Standard;
+            }
             else
-                text = gText_TrainerMemo_Untrusted;
+            {
+                if (isMinted)
+                    text = gText_TrainerMemo_MintUntrusted;
+                else
+                    text = gText_TrainerMemo_Untrusted;
+            }
             #endif
         }
         else
         {
-            text = gText_TrainerMemo_Trade;
+            if (isMinted)
+                text = gText_TrainerMemo_MintTrade;
+            else
+                text = gText_TrainerMemo_Trade;
         }
         #else
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(5, sRegionString_Unknown);
@@ -2993,34 +3047,66 @@ static void BufferMonTrainerMemo(void)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
             #if CONFIG_TRUST_OUTSIDERS
-            text = gText_TrainerMemo_Hatched;
+            if(isMinted)
+                text = gText_TrainerMemo_MintHatched;
+            else
+                text = gText_TrainerMemo_Hatched;
             #else
             if (DoesMonOTMatchOwner())
-                text = gText_TrainerMemo_Hatched;
+            {
+                if(isMinted)
+                    text = gText_TrainerMemo_MintHatched;
+                else
+                    text = gText_TrainerMemo_Hatched;
+            }
             else
-                text = gText_TrainerMemo_HatchedUntrusted;
+            {
+                if(isMinted)
+                    text = gText_TrainerMemo_MintHatchedUntrusted;
+                else
+                    text = gText_TrainerMemo_HatchedUntrusted;
+            }
             #endif
         }
         else if (sum->metLocation == METLOC_FATEFUL_ENCOUNTER)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
-            text = gText_TrainerMemo_Fateful;
+            if(isMinted)
+                text = gText_TrainerMemo_MintFateful;
+            else
+                text = gText_TrainerMemo_Fateful;
         }
         else if (sum->metLocation != METLOC_IN_GAME_TRADE)
         {
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
             #if CONFIG_TRUST_OUTSIDERS
-            text = gText_TrainerMemo_Standard;
+            if (isMinted)
+                text = gText_TrainerMemo_MintStandard;
+            else
+                text = gText_TrainerMemo_Standard;
             #else
             if (DoesMonOTMatchOwner())
-                text = gText_TrainerMemo_Standard;
+            {
+                if (isMinted)
+                    text = gText_TrainerMemo_MintStandard;
+                else
+                    text = gText_TrainerMemo_Standard;
+            }
             else
-                text = gText_TrainerMemo_Untrusted;
+            {
+                if (isMinted)
+                    text = gText_TrainerMemo_MintUntrusted;
+                else
+                    text = gText_TrainerMemo_Untrusted;
+            }
             #endif
         }
         else
         {
-            text = gText_TrainerMemo_Trade;
+            if (isMinted)
+                text = gText_TrainerMemo_MintTrade;
+            else
+                text = gText_TrainerMemo_Trade;
         }
         #endif
 
@@ -3034,6 +3120,12 @@ static void BufferNatureString(void)
 {
     struct PokemonSummaryScreenData *sumStruct = sMonSummaryScreen;
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, gNatureNamePointers[sumStruct->summary.nature]);
+}
+
+static void BufferMintString(void)
+{
+    struct PokemonSummaryScreenData *sumStruct = sMonSummaryScreen;
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(8, gNatureNamePointers[sumStruct->summary.hiddenNature]);
 }
 
 static void BufferCharacteristicString(void)
@@ -3266,8 +3358,12 @@ static void PrintSkillsPage(void)
     u16 *dst;
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    const s8 *natureMod = gNatureStatTable[sMonSummaryScreen->summary.nature];
-
+    u8 comp;
+    const s8 *natureMod;
+    if ((sMonSummaryScreen->summary.hiddenNature == sMonSummaryScreen->summary.nature)|| (sMonSummaryScreen->summary.hiddenNature == HIDDEN_NATURE_NONE))
+        natureMod = gNatureStatTable[sMonSummaryScreen->summary.nature];
+    else
+        natureMod = gNatureStatTable[sMonSummaryScreen->summary.hiddenNature];
     FillWindowPixelBuffer(PSS_LABEL_PANE_RIGHT, PIXEL_FILL(0));
 
     PrintTextOnWindow(PSS_LABEL_PANE_RIGHT, gText_HP3, 12, 1, 0, PSS_COLOR_WHITE_BLACK_SHADOW);

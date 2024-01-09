@@ -296,11 +296,61 @@ void HyperTrain(struct ScriptContext *ctx)
 {
     u32 stat = ScriptReadByte(ctx);
     u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+
     if (stat < NUM_STATS && partyIndex < PARTY_SIZE)
     {
         bool32 data = TRUE;
-        SetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat, &data);
-        CalculateMonStats(&gPlayerParty[partyIndex]);
+        bool32 minData = FALSE;
+        if (!GetMonData(&gPlayerParty[partyIndex], MON_DATA_MIN_TRAINED_HP + stat))
+        {
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat, &data);
+            CalculateMonStats(&gPlayerParty[partyIndex]);
+        }
+        else
+        {
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_MIN_TRAINED_HP + stat, &minData);
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat, &data);
+            CalculateMonStats(&gPlayerParty[partyIndex]);
+        }
+    }
+}
+
+void CanMinTrain(struct ScriptContext *ctx)
+{
+    u32 stat = ScriptReadByte(ctx);
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    if (stat < NUM_STATS
+     && partyIndex < PARTY_SIZE
+     && !GetMonData(&gPlayerParty[partyIndex], MON_DATA_MIN_TRAINED_HP + stat)
+     && GetMonData(&gPlayerParty[partyIndex], MON_DATA_HP_IV + stat) != 0)
+    {
+        gSpecialVar_Result = TRUE;
+    }
+    else
+    {
+        gSpecialVar_Result = FALSE;
+    }
+}
+
+void MinTraining(struct ScriptContext *ctx)
+{
+    u32 stat = ScriptReadByte(ctx);
+    u32 partyIndex = VarGet(ScriptReadHalfword(ctx));
+    if (stat < NUM_STATS && partyIndex < PARTY_SIZE)
+    {
+        bool32 hyperData = FALSE;
+        bool32 data = TRUE;
+        if (!GetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat))
+        {
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_MIN_TRAINED_HP + stat, &data);
+            CalculateMonStats(&gPlayerParty[partyIndex]);
+        }
+        else 
+        {
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_HYPER_TRAINED_HP + stat, &hyperData);
+            SetMonData(&gPlayerParty[partyIndex], MON_DATA_MIN_TRAINED_HP + stat, &data);
+            CalculateMonStats(&gPlayerParty[partyIndex]);
+        }
     }
 }
 

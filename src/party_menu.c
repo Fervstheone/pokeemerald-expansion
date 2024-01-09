@@ -1,3 +1,4 @@
+#include "constants/pokemon.h"
 #include "global.h"
 #include "malloc.h"
 #include "battle.h"
@@ -4867,8 +4868,8 @@ void ItemUseCB_AbilityPatch(u8 taskId, TaskFunc task)
 
 void Task_Mint(u8 taskId)
 {
-    static const u8 askText[] = _("It might affect {STR_VAR_1}'s stats.\nAre you sure you want to use it?");
-    static const u8 doneText[] = _("{STR_VAR_1}'s stats may have changed due\nto the effects of the {STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+    static const u8 askText[] = _("Would you like to give {STR_VAR_1} \nthe {STR_VAR_2} Mint?");
+    static const u8 doneText[] = _("{STR_VAR_1} is feeling more {STR_VAR_2} now!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
@@ -4886,7 +4887,7 @@ void Task_Mint(u8 taskId)
         }
         gPartyMenuUseExitCallback = TRUE;
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        CopyItemName(gSpecialVar_ItemId, gStringVar2);
+        StringCopy(gStringVar2, gNatureNamePointers[tNewNature]);
         StringExpandPlaceholders(gStringVar4, askText);
         PlaySE(SE_SELECT);
         DisplayPartyMenuMessage(gStringVar4, 1);
@@ -7774,25 +7775,43 @@ void ItemUseCB_PokeBall(u8 taskId, TaskFunc task)
         RemoveBagItem(newBall, 1);
     }
 }
-// mints
-#define tState          data[0]
-#define tSpecies        data[1]
-#define tCurrNature     data[2]
-#define tMonId          data[3]
-#define tOldFunc        4
-#define tNewNature      data[6]
+static const u8 sText_AskBoost[] = _("Would you like to Boost {STR_VAR_1}'s\n{STR_VAR_2} Stat to it's maximum potential?");
+static const u8 sText_AskSupress[] = _("Would you like to Suppress {STR_VAR_1}'s\n{STR_VAR_2} Stat to it's minimum potential?");
+static const u8 sText_HyperTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} Stat was fully Boosted!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_MinTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} Stat was fully Supressed!{PAUSE_UNTIL_PRESS}");
 
-static const u8 sText_AskMint[] = _("Would you like to change {STR_VAR_1}'s\nnature to {STR_VAR_2}?");
-static const u8 sText_MintDone[] = _("{STR_VAR_1}'s nature became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
-static void Task_Mints(u8 taskId)
+const u8 *const gStatTextPointers[NUM_STATS] =
+{
+    [STAT_HP]    =  COMPOUND_STRING("HP"),
+    [STAT_ATK]   =  COMPOUND_STRING("Attack"),
+    [STAT_DEF]   =  COMPOUND_STRING("Defense"),
+    [STAT_SPEED] =  COMPOUND_STRING("Speed"),
+    [STAT_SPATK] =  COMPOUND_STRING("Sp. Attack"),
+    [STAT_SPDEF] =  COMPOUND_STRING("Sp. Defense"),
+};
+
+
+#define tState          data[0]
+#define tStat           data[1]
+#define tOldFunc        4
+#define tMonId          data[3]
+
+static void Task_HyperTrain(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    
+    bool32 canTrain = FALSE;
+    bool32 boostData = TRUE;
+    bool32 minData = FALSE;
     switch (tState)
     {
     case 0:
-        // Can't use.
-        if (tCurrNature == tNewNature)
+
+        if(tStat < NUM_STATS
+         && !GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)
+         && (GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) < MAX_PER_STAT_IVS || GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)))
+            canTrain = TRUE;
+
+        if(!canTrain)
         {
             gPartyMenuUseExitCallback = FALSE;
             PlaySE(SE_SELECT);
@@ -7804,13 +7823,14 @@ static void Task_Mints(u8 taskId)
         
         gPartyMenuUseExitCallback = TRUE;
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, gNatureNamePointers[tNewNature]);
-        StringExpandPlaceholders(gStringVar4, sText_AskMint);
+        StringCopy(gStringVar2, gStatTextPointers[tStat]);
+        StringExpandPlaceholders(gStringVar4, sText_AskBoost);
         PlaySE(SE_SELECT);
         DisplayPartyMenuMessage(gStringVar4, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
+
     case 1:
         if (!IsPartyMenuTextPrinterActive())
         {
@@ -7818,6 +7838,7 @@ static void Task_Mints(u8 taskId)
             tState++;
         }
         break;
+
     case 2:
         switch (Menu_ProcessInputNoWrapClearOnChoose())
         {
@@ -7838,37 +7859,164 @@ static void Task_Mints(u8 taskId)
             return;
         }
         break;
+
     case 3:
         PlaySE(SE_USE_ITEM);
-        StringExpandPlaceholders(gStringVar4, sText_MintDone);
+        StringExpandPlaceholders(gStringVar4, sText_HyperTrained);
         DisplayPartyMenuMessage(gStringVar4, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
+
     case 4:
         if (!IsPartyMenuTextPrinterActive())
             tState++;
         break;
+
     case 5:
-        SetMonData(&gPlayerParty[tMonId], MON_DATA_HIDDEN_NATURE, &tNewNature);
-        CalculateMonStats(&gPlayerParty[tMonId]);
-        
+            if (tStat < NUM_STATS)
+            {
+                if (!GetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat))
+                {
+                    SetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
+                    CalculateMonStats(&gPlayerParty[tMonId]);
+                }
+                else
+                {
+                    SetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
+                    SetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
+                    CalculateMonStats(&gPlayerParty[gPartyMenu.slotId]);
+                }
+            }
         RemoveBagItem(gSpecialVar_ItemId, 1);
         gTasks[taskId].func = Task_ClosePartyMenu;
         break;
     }
 }
 
-void ItemUseCB_Mints(u8 taskId, TaskFunc task)
+static void Task_MinTrain(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    bool32 canTrain = FALSE;
+    bool32 boostData = FALSE;
+    bool32 minData = TRUE;
+    switch (tState)
+    {
+    case 0:
+    
+    if(tStat < NUM_STATS
+     && !GetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat)
+     && (GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) != 0 || GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)))
+        canTrain = TRUE;
+        if(!canTrain)
+        {
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            DisplayPartyMenuMessage(gText_WontHaveEffect, 1);
+            ScheduleBgCopyTilemapToVram(2);
+            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            return;
+        }
+        
+        gPartyMenuUseExitCallback = TRUE;
+        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
+        StringCopy(gStringVar2, gStatTextPointers[tStat]);
+        StringExpandPlaceholders(gStringVar4, sText_AskSupress);
+        PlaySE(SE_SELECT);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+
+    case 1:
+        if (!IsPartyMenuTextPrinterActive())
+        {
+            PartyMenuDisplayYesNoMenu();
+            tState++;
+        }
+        break;
+
+    case 2:
+        switch (Menu_ProcessInputNoWrapClearOnChoose())
+        {
+        case 0:
+            tState++;
+            break;
+        case 1:
+        case MENU_B_PRESSED:
+            gPartyMenuUseExitCallback = FALSE;
+            PlaySE(SE_SELECT);
+            ScheduleBgCopyTilemapToVram(2);
+            
+            // Don't exit party selections screen, return to choosing a mon.
+            ClearStdWindowAndFrameToTransparent(6, 0);
+            ClearWindowTilemap(6);
+            DisplayPartyMenuStdMessage(PARTY_MSG_USE_ON_WHICH_MON);
+            gTasks[taskId].func = (TaskFunc)GetWordTaskArg(taskId, tOldFunc);
+            return;
+
+        }
+        break;
+
+    case 3:
+        PlaySE(SE_USE_ITEM);
+        StringExpandPlaceholders(gStringVar4, sText_MinTrained);
+        DisplayPartyMenuMessage(gStringVar4, 1);
+        ScheduleBgCopyTilemapToVram(2);
+        tState++;
+        break;
+
+    case 4:
+        if (!IsPartyMenuTextPrinterActive())
+            tState++;
+        break;
+
+    case 5:
+        if (tStat < NUM_STATS)
+        {
+            if (!GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat))
+            {
+                SetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
+                CalculateMonStats(&gPlayerParty[tMonId]);
+            }
+            else 
+            {
+                SetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
+                SetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
+                CalculateMonStats(&gPlayerParty[tMonId]);
+            }
+        }
+        RemoveBagItem(gSpecialVar_ItemId, 1);
+        gTasks[taskId].func = Task_ClosePartyMenu;
+        break;
+    }
+}
+
+
+void ItemUseCB_MinTrain(u8 taskId, TaskFunc task)
 {
     s16 *data = gTasks[taskId].data;
 
     tState = 0;
     tMonId = gPartyMenu.slotId;
-    tSpecies = GetMonData(&gPlayerParty[tMonId], MON_DATA_SPECIES, NULL);
-    tCurrNature = GetNature(&gPlayerParty[tMonId], TRUE);
-    tNewNature = ItemId_GetSecondaryId(gSpecialVar_ItemId);
+    tStat = ItemId_GetSecondaryId(gSpecialVar_ItemId);
     SetWordTaskArg(taskId, tOldFunc, (uintptr_t)(gTasks[taskId].func));
-    gTasks[taskId].func = Task_Mints;
+    gTasks[taskId].func = Task_MinTrain;
 }
+
+void ItemUseCB_HyperTrain(u8 taskId, TaskFunc task)
+{
+    s16 *data = gTasks[taskId].data;
+
+    tState = 0;
+    tMonId = gPartyMenu.slotId;
+    tStat = ItemId_GetSecondaryId(gSpecialVar_ItemId);
+    SetWordTaskArg(taskId, tOldFunc, (uintptr_t)(gTasks[taskId].func));
+    gTasks[taskId].func = Task_HyperTrain;
+}
+
+#undef tState
+#undef tStat
+#undef tOldFunc
+#undef tMonId
 

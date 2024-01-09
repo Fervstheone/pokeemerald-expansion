@@ -45,3 +45,5 @@ prefabs.json
 agbcc/
 /*.zip
 src/data/map_group_count.h
+tools/poryscript/font_config.json
+tools/poryscript/poryscript

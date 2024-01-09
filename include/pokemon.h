@@ -109,6 +109,12 @@ enum {
     MON_DATA_HYPER_TRAINED_SPEED,
     MON_DATA_HYPER_TRAINED_SPATK,
     MON_DATA_HYPER_TRAINED_SPDEF,
+    MON_DATA_MIN_TRAINED_HP,
+    MON_DATA_MIN_TRAINED_ATK,
+    MON_DATA_MIN_TRAINED_DEF,
+    MON_DATA_MIN_TRAINED_SPEED,
+    MON_DATA_MIN_TRAINED_SPATK,
+    MON_DATA_MIN_TRAINED_SPDEF,
     MON_DATA_IS_SHADOW,
     MON_DATA_DYNAMAX_LEVEL,
     MON_DATA_GIGANTAMAX_FACTOR,
@@ -169,6 +175,12 @@ struct BoxPokemon
              u8 hyperTrainedSpeed:1;
              u8 hyperTrainedSpAttack:1;
              u8 hyperTrainedSpDefense:1;
+             u8 minTrainedHP:1;
+             u8 minTrainedAttack:1;
+             u8 minTrainedDefense:1;
+             u8 minTrainedSpeed:1;
+             u8 minTrainedSpAttack:1;
+             u8 minTrainedSpDefense:1;
              u16 shinyModifier:1;
 }; /* size = 0x3C (60) bytes */
 

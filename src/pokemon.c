@@ -1419,17 +1419,17 @@ void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
-    s32 hpIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_HP_IV, NULL);
+    s32 hpIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_HP) ? 0 : GetMonData(mon, MON_DATA_HP_IV, NULL);;
     s32 hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    s32 attackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_ATK_IV, NULL);
+    s32 attackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_ATK) ? 0 : GetMonData(mon, MON_DATA_ATK_IV, NULL);
     s32 attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    s32 defenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_DEF_IV, NULL);
+    s32 defenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_DEF) ? 0 : GetMonData(mon, MON_DATA_DEF_IV, NULL);
     s32 defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    s32 speedIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPEED_IV, NULL);
+    s32 speedIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPEED) ? 0 : GetMonData(mon, MON_DATA_SPEED_IV, NULL);
     s32 speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    s32 spAttackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPATK_IV, NULL);
+    s32 spAttackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPATK) ? 0 : GetMonData(mon, MON_DATA_SPATK_IV, NULL);
     s32 spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    s32 spDefenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
+    s32 spDefenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPDEF) ? 0 : GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
     s32 spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);
@@ -2402,6 +2402,24 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_HYPER_TRAINED_SPDEF:
         retVal = boxMon->hyperTrainedSpDefense;
         break;
+    case MON_DATA_MIN_TRAINED_HP:
+        retVal = boxMon->minTrainedHP;
+        break;
+    case MON_DATA_MIN_TRAINED_ATK:
+        retVal = boxMon->minTrainedAttack;
+        break;
+    case MON_DATA_MIN_TRAINED_DEF:
+        retVal = boxMon->minTrainedDefense;
+        break;
+    case MON_DATA_MIN_TRAINED_SPEED:
+        retVal = boxMon->minTrainedSpeed;
+        break;
+    case MON_DATA_MIN_TRAINED_SPATK:
+        retVal = boxMon->minTrainedSpAttack;
+        break;
+    case MON_DATA_MIN_TRAINED_SPDEF:
+        retVal = boxMon->minTrainedSpDefense;
+        break;
     case MON_DATA_IS_SHINY:
       {
         //u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
@@ -2681,6 +2699,24 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_HYPER_TRAINED_SPDEF:
         SET8(boxMon->hyperTrainedSpDefense);
+        break;
+    case MON_DATA_MIN_TRAINED_HP:
+        SET8(boxMon->minTrainedHP);
+        break;
+    case MON_DATA_MIN_TRAINED_ATK:
+        SET8(boxMon->minTrainedAttack);
+        break;
+    case MON_DATA_MIN_TRAINED_DEF:
+        SET8(boxMon->minTrainedDefense);
+        break;
+    case MON_DATA_MIN_TRAINED_SPEED:
+        SET8(boxMon->minTrainedSpeed);
+        break;
+    case MON_DATA_MIN_TRAINED_SPATK:
+        SET8(boxMon->minTrainedSpAttack);
+        break;
+    case MON_DATA_MIN_TRAINED_SPDEF:
+        SET8(boxMon->minTrainedSpDefense);
         break;
     case MON_DATA_HIDDEN_NATURE:
         SET8(boxMon->hiddenNature);

@@ -76,6 +76,12 @@ const u8 gText_TrainerMemo_Trade[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature
 const u8 gText_TrainerMemo_Fateful[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n\nObtained in a\n{DYNAMIC 0}fateful encounter{DYNAMIC 1} at {LV_2}{DYNAMIC 3}.\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_Untrusted[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nApparently met at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_HatchedUntrusted[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nApparently hatched at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintStandard[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nMet at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintHatched[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nHatched at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintTrade[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\nObtained in {DYNAMIC 0}a trade{DYNAMIC 1}.\n\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintFateful[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\nObtained in a\n{DYNAMIC 0}fateful encounter{DYNAMIC 1} at {LV_2}{DYNAMIC 3}.\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintUntrusted[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nApparently met at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintHatchedUntrusted[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature.\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint.\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 5}{DYNAMIC 1}\nApparently hatched at {LV_2}{DYNAMIC 3}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 #if CONFIG_DECAPITALIZE_MET_LOCATION_STRINGS
 const u8 gText_TrainerMemo_EggFromDayCare[] = _("An odd Pokémon Egg found\nby {DYNAMIC 0}the Day Care couple{DYNAMIC 1}.\n\n\n“The Egg Watch”\n{DYNAMIC 2}");
 const u8 gText_TrainerMemo_EggTraded[] = _("An peculiar Pokémon Egg\nobtained in a trade.\n\n\n“The Egg Watch”\n{DYNAMIC 2}");
@@ -89,6 +95,9 @@ const u8 gText_TrainerMemo_BadEgg[] = _("A very mysterious\nPokémon Egg.\n\n\n�
 const u8 gText_TrainerMemo_OldFriend[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}'s old friend\nfrom {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_ReceivedFrom[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\nreceived from {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}\nin {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_ObtainedFromDad[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\ngiven to {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1} by his dad\nin {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintOldFriend[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}'s old friend\nfrom {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintReceivedFrom[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\nreceived from {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}\nin {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintObtainedFromDad[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\ngiven to {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1} by his dad\nin {DYNAMIC 0}Orre{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 
 //Battle Tower from Ruby/Sapphire
 const u8 gMapName_BattleTower[] = _("Battle Tower");
@@ -145,7 +154,9 @@ const u8 gText_TrainerMemo_BadEgg[] = _("A very mysterious\nPOKéMON EGG.\n\n\n�
 const u8 gText_TrainerMemo_OldFriend[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}'s old friend\nfrom {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_ReceivedFrom[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\nreceived from {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}\nin {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 const u8 gText_TrainerMemo_ObtainedFromDad[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n\ngiven to {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1} by his dad\nin {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
-
+const u8 gText_TrainerMemo_MintOldFriend[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}'s old friend\nfrom {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintReceivedFrom[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\nreceived from {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}\nin {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
+const u8 gText_TrainerMemo_MintObtainedFromDad[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1} nature,\n{DYNAMIC 0}{DYNAMIC 8}{DYNAMIC 1} mint,\ngiven to {DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1} by his dad\nin {DYNAMIC 0}ORRE{DYNAMIC 1}.\n\n{DYNAMIC 6}\n{DYNAMIC 7}");
 
 //Battle Tower from Ruby/Sapphire
 const u8 gMapName_BattleTower[] = _("BATTLE TOWER");

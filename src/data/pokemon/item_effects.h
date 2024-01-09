@@ -552,18 +552,18 @@ const u8 *const gItemEffectTable[ITEMS_COUNT] =
     [ITEM_SWIFT_FEATHER]      = gItemEffect_SpeedFeather,
 
     //Mochi
-    [ITEM_HEALTH_MOCHI]       = gItemEffect_HpMochi,
-    [ITEM_MUSCLE_MOCHI]       = gItemEffect_AtkMochi,
-    [ITEM_RESIST_MOCHI]       = gItemEffect_DefMochi,
-    [ITEM_GENIUS_MOCHI]       = gItemEffect_SpatkMochi,
-    [ITEM_CLEVER_MOCHI]       = gItemEffect_SpdefMochi,
-    [ITEM_SWIFT_MOCHI]        = gItemEffect_SpeedMochi,
+    //[ITEM_HEALTH_MOCHI]       = gItemEffect_HpMochi,
+    //[ITEM_MUSCLE_MOCHI]       = gItemEffect_AtkMochi,
+    //[ITEM_RESIST_MOCHI]       = gItemEffect_DefMochi,
+    //[ITEM_GENIUS_MOCHI]       = gItemEffect_SpatkMochi,
+    //[ITEM_CLEVER_MOCHI]       = gItemEffect_SpdefMochi,
+    //[ITEM_SWIFT_MOCHI]        = gItemEffect_SpeedMochi,
     [ITEM_FRESH_START_MOCHI]  = gItemEffect_ResetMochi,
 
     // Candy
     [ITEM_RARE_CANDY]         = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_XS]       = gItemEffect_RareCandy,
-    [ITEM_EXP_CANDY_S]        = gItemEffect_RareCandy,
+    //[ITEM_EXP_CANDY_S]        = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_M]        = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_L]        = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_XL]       = gItemEffect_RareCandy,

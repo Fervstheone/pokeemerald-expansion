@@ -2081,6 +2081,21 @@
 	.2byte \slot
 	.endm
 
+	@ Sets VAR_RESULT to TRUE if stat can be Min trained, or to
+	@ FALSE otherwise.
+	.macro canmintrain stat:req, slot:req
+	callnative CanMinTrain
+	.byte \stat
+	.2byte \slot
+	.endm
+
+	@ Min Trains a stat.
+	.macro mintrain stat:req, slot:req
+	callnative MinTrain
+	.byte \stat
+	.2byte \slot
+	.endm
+
 	@ Sets VAR_RESULT to TRUE if the Pokemon has the Gigantamax Factor,
 	@ or to FALSE otherwise.
 	.macro hasgigantamaxfactor slot:req
