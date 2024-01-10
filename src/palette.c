@@ -470,7 +470,6 @@ static u8 PaletteStruct_GetPalNum(u16 id)
 // Like normal palette fade, but respects sprite/tile palettes immune to time of day fading
 static u8 UpdateTimeOfDayPaletteFade(void)
 {
-    u8 paletteNum;
     u16 paletteOffset;
     u16 selectedPalettes;
     u16 timePalettes = 0; // palettes passed to the time-blender

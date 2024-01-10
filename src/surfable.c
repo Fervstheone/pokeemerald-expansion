@@ -1,10 +1,15 @@
 #include "global.h"
+#include "menu.h"
+#include "overworld.h"
+#include "palette.h"
 #include "event_object_movement.h"
 #include "field_effect.h"
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
+#include "field_weather.h"
 #include "main.h"
 #include "party_menu.h"
+#include "pokemon.h"
 #include "sprite.h"
 #include "surfable.h"
 #include "constants/event_object_movement.h"
@@ -35,59 +40,65 @@ struct RideablePokemon
 
 static EWRAM_DATA u16 sCurrentSurfMon = {0};
 
-static u16 GetSurfMonSpecies(void)
+static u16 GetSurfMonSpecies(u8 slot)
 {
-    u8 i;
-
-    for (i = 0; i < 6; i++)
+    if (gSaveBlock1Ptr->surfmonSpecies == SPECIES_NONE)
     {
-        if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
+        if (MonKnowsMove(&gPlayerParty[slot], MOVE_SURF))
         {
-            u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
-            return species;
+            gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
+            return gSaveBlock1Ptr->surfmonSpecies;
         }
+        else
+            return 0xFFFF;
     }
-    return 0xFFFF;
+    else
+    {
+        return gSaveBlock1Ptr->surfmonSpecies;
+    }
 }
 
-static u16 GetSurfablePokemonSprite(void)
+static u16 GetSurfablePokemonSpriteBySpecies(u8 slot)
 {
     u8 i;
-    u16 mon = GetSurfMonSpecies();
+    u16 species = GetSurfMonSpecies(slot);
 
     for (i = 0; i < ARRAY_COUNT(gSurfablePokemon); i++)
     {
-        if (mon == gSurfablePokemon[i].species)
+        if (species == gSurfablePokemon[i].species)
             return i;
     }
     return 0xFFFF;
 }
 
-static void LoadSurfOverworldPalette(void)
+static void LoadSurfOverworldPalette(u32 personality, u8 slot)
 {
-    u8 i;
+    bool8 isShiny;
+    isShiny = IsMonShiny(&gPlayerParty[slot]);
 
-    for (i = 0; i < PARTY_SIZE; i++)
-        if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
-            break;
-
-    if (IsMonShiny(&gPlayerParty[i]) == TRUE)
+    if (isShiny){
         LoadSpritePalette(&sSurfablePokemonShinyPalettes[sCurrentSurfMon]);
-    else
+        UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(sSurfablePokemonShinyPalettes[sCurrentSurfMon].tag), FALSE);
+    }
+    else{
         LoadSpritePalette(&sSurfablePokemonPalettes[sCurrentSurfMon]);
+        UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(sSurfablePokemonPalettes[sCurrentSurfMon].tag), FALSE);
+    }
 }
 
 u32 CreateSurfablePokemonSprite(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
+    u8 slot = gFieldEffectArguments[3];
+    u32 personality = GetMonData(gPlayerParty, MON_DATA_PERSONALITY);
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 
-    sCurrentSurfMon = GetSurfablePokemonSprite();
+    sCurrentSurfMon = GetSurfablePokemonSpriteBySpecies(slot);
     if (sCurrentSurfMon != 0xFFFF)
     {
-        LoadSurfOverworldPalette();
+        LoadSurfOverworldPalette(personality, slot);
         spriteId = CreateSpriteAtEnd(&gSurfablePokemonOverworldSprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
         if (gSurfablePokemonOverlaySprites[sCurrentSurfMon].tileTag == 0xFFFF)
         {
@@ -95,9 +106,8 @@ u32 CreateSurfablePokemonSprite(void)
         }
     }
     else
-    { 
-        // Create surf blob
-        LoadObjectEventPalette(gSaveBlock2Ptr->playerGender ? FLDEFF_PAL_TAG_MAY : FLDEFF_PAL_TAG_BRENDAN);
+    { // Create surf blob
+    //LoadFieldEffectPalette(SurfBlob)
         spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
     }
 

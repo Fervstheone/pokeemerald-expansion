@@ -204,6 +204,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+    gSaveBlock1Ptr->surfmonSpecies = SPECIES_NONE;
 }
 
 static void ResetMiniGamesRecords(void)
