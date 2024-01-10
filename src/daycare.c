@@ -3,6 +3,7 @@
 #include "battle.h"
 #include "daycare.h"
 #include "string_util.h"
+#include "level_caps.h"
 #include "mail.h"
 #include "pokemon_storage_system.h"
 #include "event_data.h"
@@ -229,15 +230,13 @@ static void StorePokemonInDaycare(struct Pokemon *mon, struct DaycareMon *daycar
     }
 
     daycareMon->mon = mon->box;
-    BoxMonRestorePP(&daycareMon->mon);
     daycareMon->steps = 0;
     ZeroMonData(mon);
     CompactPartySlots();
     CalculatePlayerPartyCount();
 
-#if P_EGG_MOVE_TRANSFER >= GEN_8
-    TransferEggMoves();
-#endif
+    if (P_EGG_MOVE_TRANSFER >= GEN_8)
+        TransferEggMoves();
 }
 
 static void StorePokemonInEmptyDaycareSlot(struct Pokemon *mon, struct DayCare *daycare)
@@ -252,10 +251,10 @@ void StoreSelectedPokemonInDaycare(void)
     StorePokemonInEmptyDaycareSlot(&gPlayerParty[monId], &gSaveBlock1Ptr->daycare);
 }
 
-// Shifts the second daycare pokemon slot into the first slot.
+// Shifts the second daycare Pokémon slot into the first slot.
 static void ShiftDaycareSlots(struct DayCare *daycare)
 {
-    // This condition is only satisfied when the player takes out the first pokemon from the daycare.
+    // This condition is only satisfied when the player takes out the first Pokémon from the daycare.
     if (GetBoxMonData(&daycare->mons[1].mon, MON_DATA_SPECIES) != SPECIES_NONE
         && GetBoxMonData(&daycare->mons[0].mon, MON_DATA_SPECIES) == SPECIES_NONE)
     {
@@ -318,7 +317,7 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
         species = newSpecies;
     }
 
-    if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL)
+    if (GetMonData(&pokemon, MON_DATA_LEVEL) < GetCurrentLevelCap())
     {
         experience = GetMonData(&pokemon, MON_DATA_EXP) + daycareMon->steps;
         SetMonData(&pokemon, MON_DATA_EXP, &experience);
@@ -367,6 +366,8 @@ static u8 GetNumLevelsGainedFromSteps(struct DaycareMon *daycareMon)
 
     levelBefore = GetLevelFromBoxMonExp(&daycareMon->mon);
     levelAfter = GetLevelAfterDaycareSteps(&daycareMon->mon, daycareMon->steps);
+    if (levelAfter > GetCurrentLevelCap())
+        levelAfter = GetCurrentLevelCap();
     return levelAfter - levelBefore;
 }
 
@@ -698,16 +699,19 @@ static void InheritPokeball(struct Pokemon *egg, struct BoxPokemon *father, stru
     if (motherBall == ITEM_MASTER_BALL || motherBall == ITEM_CHERISH_BALL)
         motherBall = ITEM_POKE_BALL;
 
-#if P_BALL_INHERITING >= GEN_7
-    if (fatherSpecies == motherSpecies)
-        inheritBall = (Random() % 2 == 0 ? motherBall : fatherBall);
-    else if (motherSpecies != SPECIES_DITTO)
+    if (P_BALL_INHERITING >= GEN_7)
+    {
+        if (fatherSpecies == motherSpecies)
+            inheritBall = (Random() % 2 == 0 ? motherBall : fatherBall);
+        else if (motherSpecies != SPECIES_DITTO)
+            inheritBall = motherBall;
+        else
+            inheritBall = fatherBall;
+    }
+    else if (P_BALL_INHERITING == GEN_6)
+    {
         inheritBall = motherBall;
-    else
-        inheritBall = fatherBall;
-#elif P_BALL_INHERITING == GEN_6
-    inheritBall = motherBall;
-#endif
+    }
     SetMonData(egg, MON_DATA_POKEBALL, &inheritBall);
 }
 
@@ -719,28 +723,25 @@ static void InheritAbility(struct Pokemon *egg, struct BoxPokemon *father, struc
     u8 inheritAbility = motherAbility;
 
     if (motherSpecies == SPECIES_DITTO)
-    #if P_ABILITY_INHERITANCE < GEN_6
-        return;
-    #else
-        inheritAbility = fatherAbility;
-    #endif
+    {
+        if (P_ABILITY_INHERITANCE >= GEN_6)
+            inheritAbility = fatherAbility;
+        else
+            return;
+    }
 
     if (inheritAbility < 2 && (Random() % 10 < 8))
     {
         SetMonData(egg, MON_DATA_ABILITY_NUM, &inheritAbility);
     }
-#if P_ABILITY_INHERITANCE < GEN_6
-    else if (Random() % 10 < 8)
-#else
-    else if (Random() % 10 < 6)
-#endif
+    else if (Random() % 10 < (P_ABILITY_INHERITANCE >= GEN_6 ? 6 : 8))
     {
         // Hidden Abilities have a different chance of being passed down
         SetMonData(egg, MON_DATA_ABILITY_NUM, &inheritAbility);
     }
 }
 
-// Counts the number of egg moves a pokemon learns and stores the moves in
+// Counts the number of egg moves a Pokémon learns and stores the moves in
 // the given array.
 static u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves)
 {
@@ -1088,9 +1089,8 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
     InheritIVs(&egg, daycare);
     InheritPokeball(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
-#if P_ABILITY_INHERITANCE >= GEN_6
-    InheritAbility(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
-#endif
+    if (P_ABILITY_INHERITANCE >= GEN_6)
+        InheritAbility(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
 
     GiveMoveIfItem(&egg, daycare);
 
