@@ -219,6 +219,12 @@ const union AnimCmd *const gAnims_MonPic[MAX_MON_PIC_FRAMES] =
     sAnim_MonPic_1,
 };
 
+#define FOLLOWER_PAL(species, pal) [SPECIES_##species] = {pal, SPECIES_##species + FOLLOWER_PAL_TAG}
+#define FOLLOWER_SHINY_PAL(species, pal) [SPECIES_##species] = {pal, SPECIES_##species + FOLLOWER_SHINY_TAG}
+
+#include "data/object_events/follower_palette_table.h"
+
 #include "data/trainer_parties.h"
 #include "data/trainers.h"
 #include "data/text/move_names.h"
+#include "data/text/follower_messages.h"

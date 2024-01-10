@@ -116,14 +116,14 @@ ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN)
 
 ifeq ($(MODERN),0)
 CC1             := tools/agbcc/bin/agbcc$(EXE)
-override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -g
+override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -g -Wno-error=unused-but-set-variable
 ROM := $(ROM_NAME)
 OBJ_DIR := $(OBJ_DIR_NAME)
 LIBPATH := -L ../../tools/agbcc/lib
 LIB := $(LIBPATH) -lgcc -lc -L../../libagbsyscall -lagbsyscall
 else
 CC1              = $(shell $(PATH_MODERNCC) --print-prog-name=cc1) -quiet
-override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
+override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init -Wno-error=unused-but-set-variable -Wno-error=maybe-uninitialized -Wno-error=unused-variable
 ifeq ($(ANALYZE),1)
 override CFLAGS += -fanalyzer
 endif
@@ -351,6 +351,11 @@ endif
 
 ifeq ($(DINFO),1)
 override CFLAGS += -g
+endif
+
+ifeq ($(DDEBUG),1)
+override ASFLAGS += --defsym DEBUG=1
+override CPPFLAGS += -D DEBUG=1
 endif
 
 # The dep rules have to be explicit or else missing files won't be reported.
