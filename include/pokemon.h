@@ -108,6 +108,12 @@ enum {
     MON_DATA_HYPER_TRAINED_SPEED,
     MON_DATA_HYPER_TRAINED_SPATK,
     MON_DATA_HYPER_TRAINED_SPDEF,
+    MON_DATA_MIN_TRAINED_HP,
+    MON_DATA_MIN_TRAINED_ATK,
+    MON_DATA_MIN_TRAINED_DEF,
+    MON_DATA_MIN_TRAINED_SPEED,
+    MON_DATA_MIN_TRAINED_SPATK,
+    MON_DATA_MIN_TRAINED_SPDEF,
     MON_DATA_IS_SHADOW,
     MON_DATA_DYNAMAX_LEVEL,
     MON_DATA_GIGANTAMAX_FACTOR,
@@ -119,7 +125,7 @@ struct PokemonSubstruct0
     u16 species:11; // 2047 species.
     u16 teraType:5; // 30 types.
     u16 heldItem:10; // 1023 items.
-    u16 unused_02:6;
+    //u16 unused_02:6;
     u32 experience:21;
     u32 nickname11:8; // 11th character of nickname.
     u32 unused_04:3;
@@ -133,11 +139,14 @@ struct PokemonSubstruct0
 struct PokemonSubstruct1
 {
     u16 move1:11; // 2047 moves.
-    u16 unused_00:5;
+    u8 minTrainedHP:1;
+    u8 minTrainedAttack:1;
     u16 move2:11; // 2047 moves.
-    u16 unused_02:5;
+    u8 minTrainedDefense:1;
+    u8 minTrainedSpeed:1;
     u16 move3:11; // 2047 moves.
-    u16 unused_04:5;
+    u8 minTrainedSpAttack:1;
+    u8 minTrainedSpDefense:1;
     u16 move4:11; // 2047 moves.
     u16 unused_06:3;
     u16 hyperTrainedHP:1;
