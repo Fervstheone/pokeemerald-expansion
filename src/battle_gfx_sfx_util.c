@@ -622,6 +622,10 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
         lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, currentPersonality);
 
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
+    
+    if (!isShiny)
+        HueShiftMonPalette((u16*) gDecompressionBuffer, currentPersonality);
+
     LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
     LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
 
@@ -933,6 +937,10 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
     paletteOffset = OBJ_PLTT_ID(battlerAtk);
     lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, isShiny, personalityValue);
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
+
+    if (!isShiny)
+        HueShiftMonPalette((u16*) gDecompressionBuffer, personalityValue);
+
     LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
 
     if (!megaEvo)

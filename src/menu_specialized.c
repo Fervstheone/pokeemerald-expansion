@@ -1069,6 +1069,7 @@ void GetConditionMenuMonConditions(struct ConditionGraph *graph, u8 *numSparkles
 
 void GetConditionMenuMonGfx(void *tilesDst, void *palDst, u16 boxId, u16 monId, u16 partyId, u16 numMons, bool8 excludesCancel)
 {
+    
     if (!excludesCancel)
         numMons--;
 
@@ -1080,6 +1081,9 @@ void GetConditionMenuMonGfx(void *tilesDst, void *palDst, u16 boxId, u16 monId, 
 
         LoadSpecialPokePic(tilesDst, species, personality, TRUE);
         LZ77UnCompWram(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), palDst);
+        
+        if (!isShiny)
+            HueShiftMonPalette((u16*) palDst, personality);
     }
 }
 
