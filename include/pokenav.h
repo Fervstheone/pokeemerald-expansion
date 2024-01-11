@@ -118,6 +118,7 @@ enum
 {
     POKENAV_MAIN_MENU = POKENAV_MENU_IDS_START, // The main menu where the player selects Hoenn Map/Condition/Match Call/Ribbons
     POKENAV_MAIN_MENU_CURSOR_ON_MAP,
+    POKENAV_MAIN_MENU_CURSOR_ON_DEXNAV,
     POKENAV_CONDITION_MENU,                     // The first Condition screen where the player selects Party or Search
     POKENAV_CONDITION_SEARCH_MENU,              // The Condition search menu where the player selects a search parameter
     POKENAV_MAIN_MENU_CURSOR_ON_MATCH_CALL,
@@ -128,6 +129,7 @@ enum
     POKENAV_CONDITION_GRAPH_SEARCH,             // The Condition graph screen when a search result has been selected
     POKENAV_RETURN_CONDITION_SEARCH,            // Exited the graph screen back to the list of Condition search results
     POKENAV_MATCH_CALL,
+    POKENAV_DEXNAV,
     POKENAV_RIBBONS_MON_LIST,                   // The list of Pokémon with ribbons
     POKENAV_RIBBONS_SUMMARY_SCREEN,             // The ribbon summary screen shown when a Pokémon has been selected
     POKENAV_RIBBONS_RETURN_TO_MON_LIST,         // Exited the summary screen back to the ribbon list
@@ -137,7 +139,8 @@ enum
 {
     POKENAV_MENU_TYPE_DEFAULT,
     POKENAV_MENU_TYPE_UNLOCK_MC,
-    POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS,
+    POKENAV_MENU_TYPE_UNLOCK_DEXNAV,
+    POKENAV_MENU_TYPE_UNLOCK_DEXNAV_RIBBONS,
     POKENAV_MENU_TYPE_CONDITION,
     POKENAV_MENU_TYPE_CONDITION_SEARCH,
     POKENAV_MENU_TYPE_COUNT
@@ -150,6 +153,7 @@ enum
     POKENAV_MENUITEM_MAP,
     POKENAV_MENUITEM_CONDITION,
     POKENAV_MENUITEM_MATCH_CALL,
+    POKENAV_MENUITEM_DEXNAV,
     POKENAV_MENUITEM_RIBBONS,
     POKENAV_MENUITEM_SWITCH_OFF,
     POKENAV_MENUITEM_CONDITION_PARTY,
@@ -246,6 +250,7 @@ enum RegionMapFuncIds
     POKENAV_MENU_FUNC_NO_RIBBON_WINNERS,
     POKENAV_MENU_FUNC_RESHOW_DESCRIPTION,
     POKENAV_MENU_FUNC_OPEN_FEATURE,
+    POKENAV_MENU_FUNC_OPEN_DEXNAV,
 };
 
 enum
@@ -394,6 +399,8 @@ int GetPokenavMenuType(void);
 int GetPokenavCursorPos(void);
 int GetCurrentMenuItemId(void);
 u16 GetHelpBarTextId(void);
+bool32 PokenavCallback_Init_MainMenuCursorOnDexNav(void);
+void FreePokenavResources(void);
 
 // pokenav_menu_handler_gfx.c
 bool32 OpenPokenavMenuInitial(void);

@@ -208,6 +208,8 @@ extern const u8 gMenuText_Toss[];
 extern const u8 gMenuText_Give[];
 extern const u8 gMenuText_Give2[];
 extern const u8 gMenuText_Register[];
+extern const u8 gMenuText_RegisterL[];
+extern const u8 gMenuText_RegisterR[];
 extern const u8 gMenuText_Check[];
 extern const u8 gMenuText_Walk[];
 extern const u8 gMenuText_Deselect[];
@@ -3042,6 +3044,8 @@ extern const u8 gText_Summary2[];
 extern const u8 gText_PkmnForSwap[];
 extern const u8 gText_SamePkmnInPartyAlready[];
 extern const u8 gText_Cancel3[];
+
+extern const u8 gText_DexNavDescription[];
 
 // Naming Screen
 extern const u8 gText_MoveOkBack[];
