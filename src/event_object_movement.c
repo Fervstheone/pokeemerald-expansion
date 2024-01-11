@@ -1697,7 +1697,7 @@ static u8 LoadDynamicFollowerPaletteFromGraphicsId(u16 graphicsId, bool8 shiny, 
     u16 species = ((graphicsId & OBJ_EVENT_GFX_SPECIES_MASK) - OBJ_EVENT_GFX_MON_BASE);
     u8 form = (graphicsId >> OBJ_EVENT_GFX_SPECIES_BITS);
     const struct CompressedSpritePalette *spritePalette = &(shiny ? gFollowerShinyPaletteTable : gFollowerPaletteTable)[species];
-    u8 paletteNum = LoadDynamicFollowerPalette(species, form, shiny, 0);
+    u8 paletteNum = LoadDynamicFollowerPalette(species, form, shiny, GetMonData(GetFirstLiveMon(), MON_DATA_PERSONALITY));
     if (template)
         template->paletteTag = spritePalette->tag;
     return paletteNum;
@@ -1907,6 +1907,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent) {
     const struct ObjectEventGraphicsInfo *graphicsInfo = SpeciesToGraphicsInfo(species, form);
     struct Sprite *sprite = &gSprites[objEvent->spriteId];
     u32 i = FindObjectEventPaletteIndexByTag(graphicsInfo->paletteTag);
+    u32 personality = GetMonData(GetFirstLiveMon(), MON_DATA_PERSONALITY);
 
     // Forbid changing form to a new size/shape
     // TODO: Reposition sprite, reallocate tiles if form size changes
@@ -1926,7 +1927,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent) {
         sprite->inUse = FALSE;
         FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
         sprite->inUse = TRUE;
-        sprite->oam.paletteNum = LoadDynamicFollowerPalette(species, form, shiny, 0);
+        sprite->oam.paletteNum = LoadDynamicFollowerPalette(species, form, shiny, personality);
     } else if (i != 0xFF) {
         UpdateSpritePalette(&sObjectEventSpritePalettes[i], sprite);
     }
@@ -2039,6 +2040,7 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
     // Follower appearance changed; move to player and set invisible
     if (species != OW_SPECIES(objEvent) || shiny != objEvent->shiny || form != OW_FORM(objEvent)) {
       MoveObjectEventToMapCoords(objEvent, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y);
+      personality = GetMonData(GetFirstLiveMon(), MON_DATA_PERSONALITY);
       FollowerSetGraphics(objEvent, species, form, shiny, TRUE, personality);
       objEvent->invisible = TRUE;
     }
@@ -7100,7 +7102,7 @@ bool8 MovementAction_ExitPokeball_Step1(struct ObjectEvent *objectEvent, struct 
         sprite->affineAnimEnded = TRUE;
         FreeSpriteOamMatrix(sprite);
         sprite->oam.affineMode = ST_OAM_AFFINE_OFF;
-        FollowerSetGraphics(objectEvent, OW_SPECIES(objectEvent), OW_FORM(objectEvent), objectEvent->shiny, TRUE, 0);
+        FollowerSetGraphics(objectEvent, OW_SPECIES(objectEvent), OW_FORM(objectEvent), objectEvent->shiny, TRUE, personality);
     }
     return FALSE;
 }
@@ -7149,7 +7151,7 @@ bool8 MovementAction_EnterPokeball_Step1(struct ObjectEvent *objectEvent, struct
 
 bool8 MovementAction_EnterPokeball_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    FollowerSetGraphics(objectEvent, OW_SPECIES(objectEvent), OW_FORM(objectEvent), objectEvent->shiny, FALSE, 0);
+    FollowerSetGraphics(objectEvent, OW_SPECIES(objectEvent), OW_FORM(objectEvent), objectEvent->shiny, FALSE, GetMonData(GetFirstLiveMon(), MON_DATA_PERSONALITY));
     objectEvent->invisible = TRUE;
     sprite->data[1] = 0;
     sprite->data[6] = 0;
