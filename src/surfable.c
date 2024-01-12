@@ -1,4 +1,5 @@
 #include "global.h"
+#include "decompress.h"
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
@@ -77,11 +78,11 @@ static void LoadSurfOverworldPalette(u32 personality, u8 slot)
     isShiny = IsMonShiny(&gPlayerParty[slot]);
 
     if (isShiny){
-        LoadSpritePalette(&sSurfablePokemonShinyPalettes[sCurrentSurfMon]);
+        LoadCompressedSpritePalette(&sSurfablePokemonShinyPalettes[sCurrentSurfMon]);
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(sSurfablePokemonShinyPalettes[sCurrentSurfMon].tag), FALSE);
     }
     else{
-        LoadSpritePalette(&sSurfablePokemonPalettes[sCurrentSurfMon]);
+        LoadCompressedSpritePalette(&sSurfablePokemonPalettes[sCurrentSurfMon]);
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(sSurfablePokemonPalettes[sCurrentSurfMon].tag), FALSE);
     }
 }
