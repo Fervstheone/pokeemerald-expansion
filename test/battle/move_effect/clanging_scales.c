@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_CLANGING_SCALES].effect == EFFECT_ATTACKER_DEFENSE_DOWN_HIT);
+    ASSUME(gBattleMoves[MOVE_CLANGING_SCALES].effect == MOVE_EFFECT_DEF_MINUS_1);
 }
 
 DOUBLE_BATTLE_TEST("Clanging Scales lowers defense by one stage if it hits both targets")
