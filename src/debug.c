@@ -4152,6 +4152,36 @@ static void DebugAction_PCBag_Fill_PocketItems(u8 taskId)
         if (ItemId_GetPocket(itemId) == POCKET_ITEMS && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
             AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
     }
+
+    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    {
+        if (ItemId_GetPocket(itemId) == POCKET_MEGA_STONES && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
+            AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
+    }
+
+    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    {
+        if (ItemId_GetPocket(itemId) == POCKET_POWER_UP && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
+            AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
+    }
+
+    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    {
+        if (ItemId_GetPocket(itemId) == POCKET_BATTLE_ITEMS && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
+            AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
+    }
+
+    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    {
+        if (ItemId_GetPocket(itemId) == POCKET_Z_CRYSTALS && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
+            AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
+    }
+
+    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    {
+        if (ItemId_GetPocket(itemId) == POCKET_MEDICINE && CheckBagHasSpace(itemId, MAX_BAG_ITEM_CAPACITY))
+            AddBagItem(itemId, MAX_BAG_ITEM_CAPACITY);
+    }
 }
 
 static void DebugAction_PCBag_Fill_PocketPokeBalls(u8 taskId)
