@@ -363,8 +363,13 @@ static void VBlankCB_ContestPainting(void)
 
 static void InitContestMonPixels(u16 species, bool8 backPic)
 {
+    bool8 isShiny = gContestPaintingWinner->isShiny;
     const void *pal = GetMonSpritePalFromSpeciesAndPersonality(species, gContestPaintingWinner->isShiny, gContestPaintingWinner->personality);
     LZDecompressVram(pal, gContestPaintingMonPalette);
+
+    if (!isShiny)
+        HueShiftMonPalette(gContestPaintingMonPalette, gContestPaintingWinner->personality);
+
     if (!backPic)
     {
         HandleLoadSpecialPokePic(TRUE,

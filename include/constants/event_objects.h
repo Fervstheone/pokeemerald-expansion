@@ -291,7 +291,7 @@
 // If true, adds a small amount of overhead
 // to OW code so that large (48x48, 64x64) OWs
 // will display correctly under bridges, etc.
-#define LARGE_OW_SUPPORT TRUE
+#define LARGE_OW_SUPPORT FALSE
 
 // See global.h for the toggle of OW_GFX_COMPRESS
 // Compressed gfx are incompatible with non-power-of-two sprite sizes:
