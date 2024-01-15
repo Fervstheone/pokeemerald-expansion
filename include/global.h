@@ -910,6 +910,13 @@ struct WonderCardMetadata
     u16 stampData[2][MAX_STAMP_CARD_STAMPS]; // First element is STAMP_SPECIES, second is STAMP_ID
 };
 
+struct SurfMon
+{
+    u16 surfMonSpecies;
+    u8  isShiny;
+
+};
+
 struct MysteryGiftSave
 {
     u32 newsCrc;
@@ -1062,7 +1069,7 @@ struct SaveBlock1
     /*0x3???*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3???*/ struct TrainerHillSave trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
-    /*0x3???*/ u32 surfmonSpecies;
+    /*0x3???*/ struct SurfMon surfMon;
     // sizeof: 0x3???
 };
 

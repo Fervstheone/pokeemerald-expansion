@@ -43,19 +43,20 @@ static EWRAM_DATA u16 sCurrentSurfMon = {0};
 
 static u16 GetSurfMonSpecies(u8 slot)
 {
-    if (gSaveBlock1Ptr->surfmonSpecies == SPECIES_NONE)
+    if (gSaveBlock1Ptr->surfMon.surfMonSpecies == SPECIES_NONE)
     {
         if (MonKnowsMove(&gPlayerParty[slot], MOVE_SURF))
         {
-            gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
-            return gSaveBlock1Ptr->surfmonSpecies;
+            gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES);
+            gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[slot], MON_DATA_IS_SHINY);
+            return gSaveBlock1Ptr->surfMon.surfMonSpecies;
         }
         else
             return 0xFFFF;
     }
     else
     {
-        return gSaveBlock1Ptr->surfmonSpecies;
+        return gSaveBlock1Ptr->surfMon.surfMonSpecies;
     }
 }
 
@@ -72,12 +73,9 @@ static u16 GetSurfablePokemonSpriteBySpecies(u8 slot)
     return 0xFFFF;
 }
 
-static void LoadSurfOverworldPalette(u32 personality, u8 slot)
+static void LoadSurfOverworldPalette(u32 personality, u8 slot, u8 isShiny)
 {
-    bool8 isShiny;
-    isShiny = IsMonShiny(&gPlayerParty[slot]);
-
-    if (isShiny){
+      if (isShiny){
         LoadCompressedSpritePalette(&sSurfablePokemonShinyPalettes[sCurrentSurfMon]);
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(sSurfablePokemonShinyPalettes[sCurrentSurfMon].tag), FALSE);
     }
@@ -92,14 +90,14 @@ u32 CreateSurfablePokemonSprite(void)
     u8 spriteId;
     struct Sprite *sprite;
     u8 slot = gFieldEffectArguments[3];
-    u32 personality = GetMonData(gPlayerParty, MON_DATA_PERSONALITY);
-
+    u32 personality = GetMonData(&gPlayerParty[slot], MON_DATA_PERSONALITY);
+    u8 isShiny = gSaveBlock1Ptr->surfMon.isShiny;
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 
     sCurrentSurfMon = GetSurfablePokemonSpriteBySpecies(slot);
     if (sCurrentSurfMon != 0xFFFF)
     {
-        LoadSurfOverworldPalette(personality, slot);
+        LoadSurfOverworldPalette(personality, slot, isShiny);
         spriteId = CreateSpriteAtEnd(&gSurfablePokemonOverworldSprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
         if (gSurfablePokemonOverlaySprites[sCurrentSurfMon].tileTag == 0xFFFF)
         {

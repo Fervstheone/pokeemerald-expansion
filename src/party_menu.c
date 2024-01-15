@@ -4034,7 +4034,8 @@ static void DisplayCantUseFlashMessage(void)
 static void FieldCallback_Surf(void)
 {
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
-    gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_SPECIES);
+    gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_SPECIES);
+    gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_IS_SHINY);
     FieldEffectStart(FLDEFF_USE_SURF);
 }
 

@@ -3073,7 +3073,8 @@ static void SurfFieldEffect_JumpOnSurfBlob(struct Task *task)
         gFieldEffectArguments[1] = task->tDestY;
         gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
         gFieldEffectArguments[3] = task->tMonId;
-        gSaveBlock1Ptr->surfmonSpecies = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_SPECIES);
+        gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_SPECIES);
+        gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_IS_SHINY);
         objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
         task->tState++;
     }
