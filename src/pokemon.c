@@ -837,7 +837,10 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     else if (otIdType == OT_ID_PRESET)
     {
         value = fixedOtId;
-        isShiny = GET_SHINY_VALUE(value, personality) < SHINY_ODDS;
+        if (GET_SHINY_VALUE(value, personality) < SHINY_ODDS)
+            isShiny = TRUE;
+        else
+            isShiny = FALSE;
     }
     else // Player is the OT
     {
@@ -868,7 +871,10 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
                 totalRerolls--;
             }
 
-            isShiny = GET_SHINY_VALUE(value, personality) < SHINY_ODDS;
+            if (GET_SHINY_VALUE(value, personality) < SHINY_ODDS)
+                isShiny = TRUE;
+            else
+                isShiny = FALSE;
         }
     }
 
@@ -2534,8 +2540,8 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_IS_SHINY:
         {
-            u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
-            retVal = (shinyValue < SHINY_ODDS) ^ boxMon->shinyModifier;
+            //u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
+            retVal = boxMon->shinyModifier;
             break;
         }
         case MON_DATA_HIDDEN_NATURE:
@@ -2945,10 +2951,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_IS_SHINY:
         {
-            u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
-            bool32 isShiny;
-            SET8(isShiny);
-            boxMon->shinyModifier = (shinyValue < SHINY_ODDS) ^ isShiny;
+            SET16(boxMon->shinyModifier);
             break;
         }
         case MON_DATA_HIDDEN_NATURE:
