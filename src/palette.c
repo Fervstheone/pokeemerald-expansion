@@ -11,6 +11,7 @@ enum
     NORMAL_FADE,
     FAST_FADE,
     HARDWARE_FADE,
+    TIME_OF_DAY_FADE,
 };
 
 // These are structs for some unused palette system.
@@ -52,6 +53,7 @@ static u8 UpdateNormalPaletteFade(void);
 static void BeginFastPaletteFadeInternal(u8);
 static u8 UpdateFastPaletteFade(void);
 static u8 UpdateHardwarePaletteFade(void);
+static u8 UpdateTimeOfDayPaletteFade(void);
 static void UpdateBlendRegisters(void);
 static bool8 IsSoftwarePaletteFadeFinishing(void);
 static void Task_BlendPalettesGradually(u8 taskId);
@@ -87,10 +89,172 @@ void LoadCompressedPalette(const u32 *src, u16 offset, u16 size)
     CpuCopy16(gPaletteDecompressionBuffer, &gPlttBufferFaded[offset], size);
 }
 
+static const u16 sCosTable[] = {
+    0x0400,
+    0x03FF,
+    0x03FE,
+    0x03FD,
+    0x03FA,
+    0x03F7,
+    0x03F4,
+    0x03EF,
+    0x03EB,
+    0x03E5,
+    0x03DF,
+    0x03D8,
+    0x03D1,
+    0x03C8,
+    0x03C0,
+    0x03B6,
+    0x03AD,
+    0x03A2,
+    0x0397,
+    0x038B,
+    0x037F,
+    0x0372,
+    0x0365,
+    0x0357,
+    0x0348,
+    0x0339,
+    0x0329,
+    0x0319,
+    0x0308,
+    0x02F7,
+    0x02E6,
+    0x02D4
+};
+
+static const u16 sSinTable[] = {
+    0x0000,
+    0x0019,
+    0x0033,
+    0x004D,
+    0x0067,
+    0x0081,
+    0x009B,
+    0x00B4,
+    0x00CE,
+    0x00E7,
+    0x0100,
+    0x0119,
+    0x0132,
+    0x014B,
+    0x0163,
+    0x017B,
+    0x0193,
+    0x01AB,
+    0x01C2,
+    0x01DA,
+    0x01F0,
+    0x0207,
+    0x021D,
+    0x0233,
+    0x0248,
+    0x025E,
+    0x0272,
+    0x0287,
+    0x029B,
+    0x02AE,
+    0x02C1,
+    0x02D4
+};
+
+//Chosen to provide the most amount of precision without overflowing in our use case
+typedef s32 fixed;
+#define FIX_SHIFT 10
+
+#define ONE        (fixed) (1  << FIX_SHIFT)
+#define THREE      (fixed) (3  << FIX_SHIFT)
+#define THIRTY_TWO (fixed) (32 << FIX_SHIFT)
+#define ONE_HALF   (fixed) (1  << (FIX_SHIFT-1))
+#define ONE_THIRD  (fixed) (0x155)
+#define TWO_THIRDS (fixed) (0x2AA)
+#define SQRT_1_3   (fixed) (0x24F)
+
+///Multiply two fixed point values
+static inline fixed FxMul(fixed fa, fixed fb) { return (fa*fb)>>FIX_SHIFT; }
+
+///Take a fixed point value and round it, clamp to 0 or 31, then shift down to integer
+static inline s32 RoundClampShift(fixed v) {
+    v += ONE_HALF;
+    if (v < 0)           return 0;
+    if (v >= THIRTY_TWO) return 31;
+    return v >> FIX_SHIFT;
+}
+
+/***
+ * Performs a hue shift on the colors in a given palette. Index must be from 0 to 63.
+ * Values 0-31 shift right, while values 32-63 shift left (but 32 is treated as 0, 33 as 1, etc.).
+ ***/
+void HueShiftMonPalette(u16* colors, u32 personality) {
+    //Use third personality byte to determine color;
+    //Limit the index to valid bounds
+    u32 index = (personality >> 16) & (64-1);
+
+    //sCosTable and sSinTable are two tables for precalculated cosine values, one after other, each with 32
+    //elements of two bytes. The values are represented in fixed point, and the table doesn't go very far around the
+    //circle (currently represent about +/-45 degrees).
+    //The index into the table is treated a little strangely. an index of 0 corresponds to cos(0) and sin(0).
+    //values of index after 32 are treated like -(index-32). for cosine, because cos(x) == cos(-x), I can just
+    //chop off bits after the first 5 and index into the table. For sine, sin(-x) == -sin(x), so I flip the sign of the
+    //value in the table at (index-32). This is all done to save space.
+    fixed cosA = sCosTable[index & 31],
+          sinA = index >= 32 ? -(fixed)(sSinTable[index-32]) : sSinTable[index];
+
+    //The following code performs an approximate hue shift on each color in the palette, taken from this post on stack
+    //overflow, optimized to work with this fixed point stuff: https://stackoverflow.com/a/8510751/963007
+    fixed val1 = ONE_THIRD + FxMul(cosA, TWO_THIRDS);
+    fixed val2 = FxMul(ONE - cosA, ONE_THIRD) - FxMul(SQRT_1_3, sinA);
+    fixed val3 = FxMul(ONE - cosA, ONE_THIRD) + FxMul(SQRT_1_3, sinA);
+
+    u8 i;
+    u16 color;
+    fixed r, g, b;
+    s32 rx, gx, bx;
+
+    for (i = 1; i < 16; i++) { //Skip past first color, which is transparency
+        color = colors[i];
+
+        //Unpack the color
+        r     = (color & 0x1F) << FIX_SHIFT;
+        color = color >> 5;
+        g     = (color & 0x1F) << FIX_SHIFT;
+        color = color >> 5;
+        b     = (color & 0x1F) << FIX_SHIFT;
+
+        //Hue shift, clamping at the max component value (31)
+        rx = RoundClampShift(FxMul(r, val1) + FxMul(g, val2) + FxMul(b, val3));
+        gx = RoundClampShift(FxMul(r, val3) + FxMul(g, val1) + FxMul(b, val2));
+        bx = RoundClampShift(FxMul(r, val2) + FxMul(g, val3) + FxMul(b, val1));
+
+        //Pack the color
+        colors[i] = rx | (gx << 5) | (bx << 10);
+    }
+}
+
+void LoadHueShiftedMonPalette(const u32 *src, u16 offset, u16 size, u32 personality)
+{
+    LZDecompressWram(src, gPaletteDecompressionBuffer);
+
+    HueShiftMonPalette((u16*) gPaletteDecompressionBuffer, personality);
+
+    CpuCopy16(gPaletteDecompressionBuffer, gPlttBufferUnfaded + offset, size);
+    CpuCopy16(gPaletteDecompressionBuffer, gPlttBufferFaded + offset, size);
+}
+
 void LoadPalette(const void *src, u16 offset, u16 size)
 {
     CpuCopy16(src, &gPlttBufferUnfaded[offset], size);
     CpuCopy16(src, &gPlttBufferFaded[offset], size);
+}
+
+// Drop in replacement for LoadPalette, uses CpuFastCopy, size must be 0 % 32
+void LoadPaletteFast(const void *src, u16 offset, u16 size) {
+    if ((u32)src & 3) // In case palette is not 4 byte aligned
+        return LoadPalette(src, offset, size);
+    CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
+    // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
+    CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
 }
 
 void FillPalette(u16 value, u16 offset, u16 size)
@@ -124,6 +288,8 @@ u8 UpdatePaletteFade(void)
         result = UpdateNormalPaletteFade();
     else if (gPaletteFade.mode == FAST_FADE)
         result = UpdateFastPaletteFade();
+    else if (gPaletteFade.mode == TIME_OF_DAY_FADE)
+        result = UpdateTimeOfDayPaletteFade();
     else
         result = UpdateHardwarePaletteFade();
 
@@ -193,6 +359,56 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
         gPaletteFade.bufferTransferDisabled = FALSE;
         CpuCopy32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
         sPlttBufferTransferPending = FALSE;
+        if (gPaletteFade.mode == HARDWARE_FADE && gPaletteFade.active)
+            UpdateBlendRegisters();
+        gPaletteFade.bufferTransferDisabled = temp;
+        return TRUE;
+    }
+}
+
+// Like normal palette fade but respects sprite/tile palettes immune to time of day fading
+bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, struct BlendSettings *bld0, struct BlendSettings *bld1, u16 weight, u16 color)
+{
+    u8 temp;
+
+    if (gPaletteFade.active)
+    {
+        return FALSE;
+    }
+    else
+    {
+        gPaletteFade.deltaY = 2;
+
+        if (delay < 0)
+        {
+            gPaletteFade.deltaY += (delay * -1);
+            delay = 0;
+        }
+
+        gPaletteFade_selectedPalettes = selectedPalettes;
+        gPaletteFade.delayCounter = delay;
+        gPaletteFade_delay = delay;
+        gPaletteFade.y = startY;
+        gPaletteFade.targetY = targetY;
+        gPaletteFade.active = 1;
+        gPaletteFade.mode = TIME_OF_DAY_FADE;
+
+        gPaletteFade.blendColor = color;
+        gPaletteFade.bld0 = bld0;
+        gPaletteFade.bld1 = bld1;
+        gPaletteFade.weight = weight;
+
+        if (startY < targetY)
+            gPaletteFade.yDec = 0;
+        else
+            gPaletteFade.yDec = 1;
+
+        UpdatePaletteFade();
+
+        temp = gPaletteFade.bufferTransferDisabled;
+        gPaletteFade.bufferTransferDisabled = 0;
+        CpuCopy32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
+        sPlttBufferTransferPending = 0;
         if (gPaletteFade.mode == HARDWARE_FADE && gPaletteFade.active)
             UpdateBlendRegisters();
         gPaletteFade.bufferTransferDisabled = temp;
@@ -404,6 +620,114 @@ static u8 PaletteStruct_GetPalNum(u16 id)
     return NUM_PALETTE_STRUCTS;
 }
 
+// Like normal palette fade, but respects sprite/tile palettes immune to time of day fading
+static u8 UpdateTimeOfDayPaletteFade(void)
+{
+    u16 paletteOffset;
+    u16 selectedPalettes;
+    u16 timePalettes = 0; // palettes passed to the time-blender
+    u16 copyPalettes;
+    u16 * src;
+    u16 * dst;
+
+    if (!gPaletteFade.active)
+        return PALETTE_FADE_STATUS_DONE;
+
+    if (IsSoftwarePaletteFadeFinishing())
+      return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
+
+    if (!gPaletteFade.objPaletteToggle)
+    {
+        if (gPaletteFade.delayCounter < gPaletteFade_delay)
+        {
+            gPaletteFade.delayCounter++;
+            return 2;
+        }
+        gPaletteFade.delayCounter = 0;
+    }
+
+    paletteOffset = 0;
+
+    if (!gPaletteFade.objPaletteToggle)
+    {
+        selectedPalettes = gPaletteFade_selectedPalettes;
+    }
+    else
+    {
+        selectedPalettes = gPaletteFade_selectedPalettes >> 16;
+        paletteOffset = 256;
+    }
+
+    src = gPlttBufferUnfaded + paletteOffset;
+    dst = gPlttBufferFaded + paletteOffset;
+
+    // First pply TOD blend to relevant subset of palettes
+    if (gPaletteFade.objPaletteToggle) { // Sprite palettes, don't blend those with tags
+      u8 i;
+      u16 j = 1;
+      for (i = 0; i < 16; i++, j <<= 1) { // Mask out palettes that should not be light blended
+        if ((selectedPalettes & j) && !(GetSpritePaletteTagByPaletteNum(i) >> 15))
+          timePalettes |= j;
+      }
+
+    } else { // tile palettes, don't blend [13, 15]
+      timePalettes = selectedPalettes & 0x1FFF;
+    }
+    TimeMixPalettes(timePalettes, src, dst, gPaletteFade.bld0, gPaletteFade.bld1, gPaletteFade.weight);
+
+    // palettes that were not blended above must be copied through
+    if ((copyPalettes = ~timePalettes)) {
+      u16 * src1 = src;
+      u16 * dst1 = dst;
+      while (copyPalettes) {
+        if (copyPalettes & 1)
+          CpuFastCopy(src1, dst1, 32);
+        copyPalettes >>= 1;
+        src1 += 16;
+        dst1 += 16;
+      }
+    }
+
+    // Then, blend from faded->faded with native BlendPalettes
+    BlendPalettesFine(selectedPalettes, dst, dst, gPaletteFade.y, gPaletteFade.blendColor);
+
+    gPaletteFade.objPaletteToggle ^= 1;
+
+    if (!gPaletteFade.objPaletteToggle)
+    {
+        if ((gPaletteFade.yDec && gPaletteFade.y == 0) || (!gPaletteFade.yDec && gPaletteFade.y == gPaletteFade.targetY))
+        {
+            gPaletteFade_selectedPalettes = 0;
+            gPaletteFade.softwareFadeFinishing = 1;
+        }
+        else
+        {
+            s8 val;
+
+            if (!gPaletteFade.yDec)
+            {
+                val = gPaletteFade.y;
+                val += gPaletteFade.deltaY;
+                if (val > gPaletteFade.targetY)
+                    val = gPaletteFade.targetY;
+                gPaletteFade.y = val;
+            }
+            else
+            {
+                val = gPaletteFade.y;
+                val -= gPaletteFade.deltaY;
+                if (val < 0)
+                    val = 0;
+                gPaletteFade.y = val;
+            }
+        }
+    }
+
+    // gPaletteFade.active cannot change since the last time it was checked. So this
+    // is equivalent to `return PALETTE_FADE_STATUS_ACTIVE;`
+    return PALETTE_FADE_STATUS_ACTIVE;
+}
+
 static u8 UpdateNormalPaletteFade(void)
 {
     u16 paletteOffset;
@@ -586,7 +910,6 @@ static u8 UpdateFastPaletteFade(void)
     if (IsSoftwarePaletteFadeFinishing())
         return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
 
-
     if (gPaletteFade.objPaletteToggle)
     {
         paletteOffsetStart = OBJ_PLTT_OFFSET;
@@ -720,7 +1043,6 @@ static u8 UpdateFastPaletteFade(void)
         gPaletteFade.mode = NORMAL_FADE;
         gPaletteFade.softwareFadeFinishing = TRUE;
     }
-
     // gPaletteFade.active cannot change since the last time it was checked. So this
     // is equivalent to `return PALETTE_FADE_STATUS_ACTIVE;`
     return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
@@ -828,15 +1150,234 @@ static bool8 IsSoftwarePaletteFadeFinishing(void)
     }
 }
 
-void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
-{
-    u16 paletteOffset;
+// optimized based on lucktyphlosion's BlendPalettesFine
+void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 color) {
+    s32 newR, newG, newB;
 
-    for (paletteOffset = 0; selectedPalettes; paletteOffset += 16)
-    {
-        if (selectedPalettes & 1)
-            BlendPalette(paletteOffset, 16, coeff, color);
-        selectedPalettes >>= 1;
+    if (!palettes)
+        return;
+
+    coeff *= 2;
+    newR = (color << 27) >> 27;
+    newG = (color << 22) >> 27;
+    newB = (color << 17) >> 27;
+
+    do {
+        if (palettes & 1) {
+            u16 *srcEnd = src + 16;
+            while (src != srcEnd) { // Transparency is blended (for backdrop reasons)
+                u32 srcColor = *src;
+                s32 r = (srcColor << 27) >> 27;
+                s32 g = (srcColor << 22) >> 27;
+                s32 b = (srcColor << 16) >> 26;
+
+                *dst++ = ((r + (((newR - r) * (s32)coeff) >> 5)) << 0)
+                       | ((g + (((newG - g) * (s32)coeff) >> 5)) << 5)
+                       | ((b + (((newB - (b & 31)) * (s32)coeff) >> 5)) << 10);
+                src++;
+            }
+        } else {
+            src += 16;
+            dst += 16;
+        }
+        palettes >>= 1;
+    } while (palettes);
+}
+
+void BlendPalettes(u32 palettes, u8 coeff, u16 color) {
+    BlendPalettesFine(palettes, gPlttBufferUnfaded, gPlttBufferFaded, coeff, color);
+}
+
+#define DEFAULT_LIGHT_COLOR 0x3f9f
+
+// Like BlendPalette, but ignores blendColor if the transparency high bit is set
+// Optimization help by lucktyphlosion
+void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor) {
+    s32 newR, newG, newB, defR, defG, defB;
+    u16 * src = gPlttBufferUnfaded + palOffset;
+    u16 * dst = gPlttBufferFaded + palOffset;
+    u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
+    u16 *srcEnd = src + 16;
+    u32 altBlendColor = *dst++ = *src++; // color 0 is copied through unchanged
+
+    coeff *= 2;
+    newR = (blendColor << 27) >> 27;
+    newG = (blendColor << 22) >> 27;
+    newB = (blendColor << 17) >> 27;
+
+    if (altBlendColor >> 15) { // Transparency high bit set; alt blend color
+        defR = (altBlendColor << 27) >> 27;
+        defG = (altBlendColor << 22) >> 27;
+        defB = (altBlendColor << 17) >> 27;
+    } else {
+        defR = (defaultBlendColor << 27) >> 27;
+        defG = (defaultBlendColor << 22) >> 27;
+        defB = (defaultBlendColor << 17) >> 27;
+        altBlendColor = 0;
+    }
+    while (src != srcEnd) {
+        u32 srcColor = *src;
+        s32 r = (srcColor << 27) >> 27;
+        s32 g = (srcColor << 22) >> 27;
+        s32 b = (srcColor << 16) >> 26;
+
+        if (srcColor >> 15) {
+            *dst = ((r + (((defR - r) * (s32)coeff) >> 5)) << 0)
+                 | ((g + (((defG - g) * (s32)coeff) >> 5)) << 5)
+                 | ((b + (((defB - (b & 31)) * (s32)coeff) >> 5)) << 10);
+        } else { // Use provided blend color
+            *dst = ((r + (((newR - r) * (s32)coeff) >> 5)) << 0)
+                 | ((g + (((newG - g) * (s32)coeff) >> 5)) << 5)
+                 | ((b + (((newB - (b & 31)) * (s32)coeff) >> 5)) << 10);
+        }
+        src++;
+        dst++;
+    }
+}
+
+// Blends a weighted average of two blend parameters
+// Parameters can be either blended (as in BlendPalettes) or tinted (as in TintPaletteRGB_Copy)
+void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *blend0, struct BlendSettings *blend1, u16 weight0) {
+    s32 r0, g0, b0, r1, g1, b1, defR, defG, defB, altR, altG, altB;
+    u32 color0, coeff0, color1, coeff1;
+    bool8 tint0, tint1;
+    u32 defaultColor = DEFAULT_LIGHT_COLOR;
+
+    if (!palettes)
+    return;
+
+    color0 = blend0->blendColor;
+    tint0 = blend0->isTint;
+    coeff0 = tint0 ? 8*2 : blend0->coeff*2;
+    color1 = blend1->blendColor;
+    tint1 = blend1->isTint;
+    coeff1 = tint1 ? 8*2 : blend1->coeff*2;
+
+    if (tint0) {
+        r0 = (color0 << 24) >> 24;
+        g0 = (color0 << 16) >> 24;
+        b0 = (color0 << 8) >> 24;
+    } else {
+        r0 = (color0 << 27) >> 27;
+        g0 = (color0 << 22) >> 27;
+        b0 = (color0 << 17) >> 27;
+    }
+    if (tint1) {
+        r1 = (color1 << 24) >> 24;
+        g1 = (color1 << 16) >> 24;
+        b1 = (color1 << 8) >> 24;
+    } else {
+        r1 = (color1 << 27) >> 27;
+        g1 = (color1 << 22) >> 27;
+        b1 = (color1 << 17) >> 27;
+    }
+    defR = (defaultColor << 27) >> 27;
+    defG = (defaultColor << 22) >> 27;
+    defB = (defaultColor << 17) >> 27;
+
+    do {
+        if (palettes & 1) {
+            u16 *srcEnd = src + 16;
+            u32 altBlendColor = *dst++ = *src++; // color 0 is copied through
+            if (altBlendColor >> 15) { // Transparency high bit set; alt blend color
+                altR = (altBlendColor << 27) >> 27;
+                altG = (altBlendColor << 22) >> 27;
+                altB = (altBlendColor << 17) >> 27;
+            } else {
+                altBlendColor = 0;
+            }
+            while (src != srcEnd) {
+                u32 srcColor = *src;
+                s32 r = (srcColor << 27) >> 27;
+                s32 g = (srcColor << 22) >> 27;
+                s32 b = (srcColor << 17) >> 27;
+                s32 r2, g2, b2;
+
+                if (srcColor >> 15) {
+                    if (altBlendColor) { // Use alternate blend color
+                        r2 = r + (((altR - r) * (s32)coeff1) >> 5);
+                        g2 = g + (((altG - g) * (s32)coeff1) >> 5);
+                        b2 = b + (((altB - b) * (s32)coeff1) >> 5);
+                        r  = r + (((altR - r) * (s32)coeff0) >> 5);
+                        g  = g + (((altG - g) * (s32)coeff0) >> 5);
+                        b  = b + (((altB - b) * (s32)coeff0) >> 5);
+                    } else { // Use default blend color
+                        r2 = r + (((defR - r) * (s32)coeff1) >> 5);
+                        g2 = g + (((defG - g) * (s32)coeff1) >> 5);
+                        b2 = b + (((defB - b) * (s32)coeff1) >> 5);
+                        r  = r + (((defR - r) * (s32)coeff0) >> 5);
+                        g  = g + (((defG - g) * (s32)coeff0) >> 5);
+                        b  = b + (((defB - b) * (s32)coeff0) >> 5);
+                    }
+                } else { // Use provided blend colors
+                    if (!tint1) { // blend-based
+                        r2 = (r + (((r1 - r) * (s32)coeff1) >> 5));
+                        g2 = (g + (((g1 - g) * (s32)coeff1) >> 5));
+                        b2 = (b + (((b1 - b) * (s32)coeff1) >> 5));
+                    } else { // tint-based
+                        r2 = (u16)((r1 * r)) >> 8;
+                        g2 = (u16)((g1 * g)) >> 8;
+                        b2 = (u16)((b1 * b)) >> 8;
+                        if (r2 > 31)
+                            r2 = 31;
+                        if (g2 > 31)
+                            g2 = 31;
+                        if (b2 > 31)
+                            b2 = 31;
+                    }
+                    if (!tint0) { // blend-based
+                        r = (r + (((r0 - r) * (s32)coeff0) >> 5));
+                        g = (g + (((g0 - g) * (s32)coeff0) >> 5));
+                        b = (b + (((b0 - b) * (s32)coeff0) >> 5));
+                    } else { // tint-based
+                        r = (u16)((r0 * r)) >> 8;
+                        g = (u16)((g0 * g)) >> 8;
+                        b = (u16)((b0 * b)) >> 8;
+                        if (r > 31)
+                            r = 31;
+                        if (g > 31)
+                            g = 31;
+                        if (b > 31)
+                            b = 31;
+                    }   
+                }
+                r  = r2 + (((r - r2) * (s32)weight0) >> 8);
+                g  = g2 + (((g - g2) * (s32)weight0) >> 8);
+                b  = b2 + (((b - b2) * (s32)weight0) >> 8);
+                *dst++ = RGB2(r, g, b);
+                // *dst++ = RGB2(r, g, b) | (srcColor >> 15) << 15;
+                src++;
+            }
+        } else {
+            src += 16;
+            dst += 16;
+        }
+        palettes >>= 1;
+    } while (palettes);
+}
+
+// Apply weighted average to palettes, preserving high bits of dst throughout
+void AvgPaletteWeighted(u16 *src0, u16 *src1, u16 *dst, u16 weight0) {
+    u16 *srcEnd = src0 + 16;
+    src0++;
+    src1++;
+    dst++; // leave dst transparency unchanged
+    while (src0 != srcEnd) {
+        u32 src0Color = *src0++;
+        s32 r0 = (src0Color << 27) >> 27;
+        s32 g0 = (src0Color << 22) >> 27;
+        s32 b0 = (src0Color << 17) >> 27;
+        u32 src1Color = *src1++;
+        s32 r1 = (src1Color << 27) >> 27;
+        s32 g1 = (src1Color << 22) >> 27;
+        s32 b1 = (src1Color << 17) >> 27;
+
+        // Average and bitwise-OR
+        r0 = r1 + (((r0 - r1) * weight0) >> 8);
+        g0 = g1 + (((g0 - g1) * weight0) >> 8);
+        b0 = b1 + (((b0 - b1) * weight0) >> 8);
+        *dst = (*dst & RGB_ALPHA) | RGB2(r0, g0, b0);  // preserve high bit of dst
+        dst++;
     }
 }
 
@@ -937,6 +1478,67 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 
         *palette++ = RGB2(r, g, b);
     }
+}
+
+// Tints from Unfaded to Faded, using a 15-bit GBA color
+void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
+  s32 newR = 0;
+  s32 newG = 0;
+  s32 newB = 0;
+  s32 rTone = 0;
+  s32 gTone = 0;
+  s32 bTone = 0;
+  u16 * src = gPlttBufferUnfaded + palOffset;
+  u16 * dst = gPlttBufferFaded + palOffset;
+  u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
+  u16 *srcEnd = src + 16;
+  u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through unchanged
+  u32 altBlendColor;
+
+  newR = ((blendColor << 27) >> 27) << 3;
+  newG = ((blendColor << 22) >> 27) << 3;
+  newB = ((blendColor << 17) >> 27) << 3;
+
+  if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
+    // Note that bit 0 of altBlendIndices specifies color 1
+    altBlendColor = src[14]; // color 15
+    if (altBlendColor >> 15) { // Set alternate blend color
+      rTone = ((altBlendColor << 27) >> 27) << 3;
+      gTone = ((altBlendColor << 22) >> 27) << 3;
+      bTone = ((altBlendColor << 17) >> 27) << 3;
+    } else { // Set default blend color
+      rTone = ((defaultBlendColor << 27) >> 27) << 3;
+      gTone = ((defaultBlendColor << 22) >> 27) << 3;
+      bTone = ((defaultBlendColor << 17) >> 27) << 3;
+    }
+  } else {
+    altBlendIndices = 0;
+  }
+  while (src != srcEnd) {
+    u32 srcColor = *src;
+    s32 r = (srcColor << 27) >> 27;
+    s32 g = (srcColor << 22) >> 27;
+    s32 b = (srcColor << 17) >> 27;
+
+    if (altBlendIndices & 1) {
+      r = (u16)((rTone * r)) >> 8;
+      g = (u16)((gTone * g)) >> 8;
+      b = (u16)((bTone * b)) >> 8;
+    } else { // Use provided blend color
+      r = (u16)((newR * r)) >> 8;
+      g = (u16)((newG * g)) >> 8;
+      b = (u16)((newB * b)) >> 8;
+    }
+    if (r > 31)
+        r = 31;
+    if (g > 31)
+        g = 31;
+    if (b > 31)
+        b = 31;
+    src++;
+    *dst++ = RGB2(r, g, b);
+    altBlendIndices >>= 1;
+  }
 }
 
 #define tCoeff       data[0]
