@@ -1482,7 +1482,12 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 
 // Tints from Unfaded to Faded, using a 15-bit GBA color
 void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
-  s32 newR, newG, newB, rTone, gTone, bTone;
+  s32 newR = 0;
+  s32 newG = 0;
+  s32 newB = 0;
+  s32 rTone = 0;
+  s32 gTone = 0;
+  s32 bTone = 0;
   u16 * src = gPlttBufferUnfaded + palOffset;
   u16 * dst = gPlttBufferFaded + palOffset;
   u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
