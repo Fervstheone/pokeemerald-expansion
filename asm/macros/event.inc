@@ -1771,7 +1771,7 @@
 
   @ Like callnative, but function expects a ctx
   .macro callfunc func:req
-  .byte 0xe3
+  .byte 0xe5
   .4byte \func
   .endm
 
