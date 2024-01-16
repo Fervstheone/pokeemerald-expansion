@@ -1,3 +1,4 @@
+#include "gba/defines.h"
 #include "global.h"
 #include "main.h"
 #include "battle.h"
@@ -170,7 +171,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u8 sanity; // 0x35
         u8 OTName[17]; // 0x36
         u32 OTID; // 0x48
-        u8 teraType;
+        //u8 teraType;
         u8 mintNature;
     } summary;
     u16 bgTilemapBuffers[PSS_PAGE_COUNT][2][0x400];
@@ -1546,7 +1547,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         break;
     default:
         sum->ribbonCount = GetMonData(mon, MON_DATA_RIBBON_COUNT);
-        sum->teraType = GetMonData(mon, MON_DATA_TERA_TYPE);
+        //sum->teraType = GetMonData(mon, MON_DATA_TERA_TYPE);
         sum->isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
         return TRUE;
     }

@@ -1473,17 +1473,17 @@ void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
-    s32 hpIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_HP_IV, NULL);
+    s32 hpIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_HP) ? 0 : GetMonData(mon, MON_DATA_HP_IV, NULL);;
     s32 hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    s32 attackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_ATK_IV, NULL);
+    s32 attackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_ATK) ? 0 : GetMonData(mon, MON_DATA_ATK_IV, NULL);
     s32 attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    s32 defenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_DEF_IV, NULL);
+    s32 defenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_DEF) ? 0 : GetMonData(mon, MON_DATA_DEF_IV, NULL);
     s32 defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    s32 speedIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPEED_IV, NULL);
+    s32 speedIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPEED) ? 0 : GetMonData(mon, MON_DATA_SPEED_IV, NULL);
     s32 speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    s32 spAttackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPATK_IV, NULL);
+    s32 spAttackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPATK) ? 0 : GetMonData(mon, MON_DATA_SPATK_IV, NULL);
     s32 spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    s32 spDefenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
+    s32 spDefenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_MIN_TRAINED_SPDEF) ? 0 : GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
     s32 spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);
@@ -2465,6 +2465,24 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_HYPER_TRAINED_SPDEF:
             retVal = substruct1->hyperTrainedSpDefense;
             break;
+        case MON_DATA_MIN_TRAINED_HP:
+            retVal = substruct1->minTrainedHP;
+            break;
+        case MON_DATA_MIN_TRAINED_ATK:
+            retVal = substruct1->minTrainedAttack;
+            break;
+        case MON_DATA_MIN_TRAINED_DEF:
+            retVal = substruct1->minTrainedDefense;
+            break;
+        case MON_DATA_MIN_TRAINED_SPEED:
+            retVal = substruct1->minTrainedSpeed;
+            break;
+        case MON_DATA_MIN_TRAINED_SPATK:
+            retVal = substruct1->minTrainedSpAttack;
+            break;
+        case MON_DATA_MIN_TRAINED_SPDEF:
+            retVal = substruct1->minTrainedSpDefense;
+            break;
         case MON_DATA_IS_SHADOW:
             retVal = substruct3->isShadow;
             break;
@@ -2474,19 +2492,19 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_GIGANTAMAX_FACTOR:
             retVal = substruct3->gigantamaxFactor;
             break;
-        case MON_DATA_TERA_TYPE:
-        {
-            if (substruct0->teraType == 0)
-            {
-                const u8 *types = gSpeciesInfo[substruct0->species].types;
-                retVal = (boxMon->personality & 0x1) == 0 ? types[0] : types[1];
-            }
-            else
-            {
-                retVal = substruct0->teraType - 1;
-            }
-            break;
-        }
+        //case MON_DATA_TERA_TYPE:
+        //{
+        //    if (substruct0->teraType == 0)
+        //    {
+        //        const u8 *types = gSpeciesInfo[substruct0->species].types;
+        //        retVal = (boxMon->personality & 0x1) == 0 ? types[0] : types[1];
+        //    }
+        //    else
+        //    {
+        //        retVal = substruct0->teraType - 1;
+        //    }
+        //    break;
+        //}
         default:
             break;
         }
@@ -2884,6 +2902,24 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_HYPER_TRAINED_SPDEF:
             SET8(substruct1->hyperTrainedSpDefense);
             break;
+        case MON_DATA_MIN_TRAINED_HP:
+            SET8(substruct1->minTrainedHP);
+            break;
+        case MON_DATA_MIN_TRAINED_ATK:
+            SET8(substruct1->minTrainedAttack);
+            break;
+        case MON_DATA_MIN_TRAINED_DEF:
+            SET8(substruct1->minTrainedDefense);
+            break;
+        case MON_DATA_MIN_TRAINED_SPEED:
+            SET8(substruct1->minTrainedSpeed);
+            break;
+        case MON_DATA_MIN_TRAINED_SPATK:
+            SET8(substruct1->minTrainedSpAttack);
+            break;
+        case MON_DATA_MIN_TRAINED_SPDEF:
+            SET8(substruct1->minTrainedSpDefense);
+            break;
         case MON_DATA_IS_SHADOW:
             SET8(substruct3->isShadow);
             break;
@@ -2893,13 +2929,13 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_GIGANTAMAX_FACTOR:
             SET8(substruct3->gigantamaxFactor);
             break;
-        case MON_DATA_TERA_TYPE:
-        {
-            u32 teraType;
-            SET8(teraType);
-            substruct0->teraType = 1 + teraType;
-            break;
-        }
+        //case MON_DATA_TERA_TYPE:
+        //{
+        //    u32 teraType;
+        //    SET8(teraType);
+        //    substruct0->teraType = 1 + teraType;
+        //    break;
+        //}
         default:
             break;
         }
