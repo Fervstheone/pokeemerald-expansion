@@ -617,6 +617,8 @@ extern const u8 BerryTree_EventScript_ItemUseWailmerPail[];
 extern const u8 BattleFrontier_OutsideEast_EventScript_WaterSudowoodo[];
 
 extern const u8 EventScript_SelectWithoutRegisteredItem[];
+extern const u8 EventScript_LWithoutRegisteredItem[];
+extern const u8 EventScript_RWithoutRegisteredItem[];
 
 // overworld
 extern const u8 EventScript_WhiteOut[];
@@ -643,5 +645,14 @@ extern const u8 VSSeeker_Text_BatteryNotChargedNeedXSteps[];
 extern const u8 VSSeeker_Text_NoTrainersWithinRange[];
 extern const u8 VSSeeker_Text_TrainersNotReady[];
 extern const u8 EventScript_VsSeekerChargingDone[];
+
+// Dexnav
+extern const u8 EventScript_StartDexNavBattle[];
+extern const u8 EventScript_NotFoundNearby[];
+extern const u8 EventScript_PokemonGotAway[];
+extern const u8 EventScript_LostSignal[];
+extern const u8 EventScript_TooDark[];
+extern const u8 EventScript_MovedTooFast[];
+
 
 #endif // GUARD_EVENT_SCRIPTS_H

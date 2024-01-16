@@ -514,7 +514,7 @@ struct SaveBlock2
              //u16 padding1:4;
              //u16 padding2;
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x8];
+    /*0x90*/ //u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ u32 gcnLinkFlags; // Read by Pokémon Colosseum/XD
@@ -1001,7 +1001,7 @@ struct SaveBlock1
     /*0x238*/ struct Pokemon playerParty[PARTY_SIZE];
     /*0x490*/ u32 money;
     /*0x494*/ u16 coins;
-    /*0x496*/ u16 registeredItem; // registered for use with SELECT button
+    /*0x496*/ //u16 registeredItemSelect;
     /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT];
     /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
     /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
@@ -1014,9 +1014,9 @@ struct SaveBlock1
               struct ItemSlot bagPocket_MegaStones[BAG_MEGASTONES_COUNT];
               struct ItemSlot bagPocket_ZCrystals[BAG_ZCRYSTALS_COUNT];
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
-    /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
+    /*0x988*/ //u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
     /*0x9BC*/ u16 berryBlenderRecords[3];
-    /*0x9C2*/ u8 unused_9C2[6];
+    /*0x9C2*/ //u8 unused_9C2[6];
     /*0x9C8*/ u16 trainerRematchStepCounter;
     /*0x9CA*/ u8 trainerRematches[MAX_REMATCH_ENTRIES];
     /*0xA2E*/ //u8 padding3[2];
@@ -1080,7 +1080,11 @@ struct SaveBlock1
     /*0x3???*/ struct TrainerHillSave trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
     /*0x3???*/ struct SurfMon surfMon;
-    // sizeof: 0x3???
+    /*0x3???*/ u8 dexNavSearchLevels[POKEMON_SLOTS_NUMBER];
+    /*0x3???*/ u8 dexNavChain;
+    /*0x3D88*/ u16 registeredItemL;
+    /*0x3D8A*/ u16 registeredItemR;
+    // sizeof: 0x3D8C
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

@@ -97,6 +97,7 @@ extern rng_value_t gRng2Value;
 //Sets the initial seed value of the pseudorandom number generator
 void SeedRng(u16 seed);
 void SeedRng2(u16 seed);
+u16 RandRange(u16 min, u16 max);
 
 void Shuffle8(void *data, size_t n);
 void Shuffle16(void *data, size_t n);

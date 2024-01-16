@@ -44,6 +44,7 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
+#include "constants/map_groups.h"
 #include "constants/items.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
@@ -182,7 +183,7 @@ void NewGameInitData(void)
     ResetPokemonStorageSystem();
     ClearRoamerData();
     ClearRoamerLocationData();
-    gSaveBlock1Ptr->registeredItem = ITEM_NONE;
+    //gSaveBlock1Ptr->registeredItem = 0;
     ClearBag();
     NewGameInitPCItems();
     ClearPokeblocks();
@@ -205,6 +206,10 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
     gSaveBlock1Ptr->surfMon.surfMonSpecies = SPECIES_NONE;
+    memset(gSaveBlock1Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock1Ptr->dexNavSearchLevels));
+    gSaveBlock1Ptr->dexNavChain = 0;
+    gSaveBlock1Ptr->registeredItemL = 0;
+    gSaveBlock1Ptr->registeredItemR = 0;
 }
 
 static void ResetMiniGamesRecords(void)

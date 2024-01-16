@@ -92,7 +92,7 @@
 #define MAX_STAT_STAGE    12
 
 // Shiny odds
-#define SHINY_ODDS 8 // Actual probability is SHINY_ODDS/65536
+#define SHINY_ODDS 16 // Actual probability is SHINY_ODDS/65536
 
 // Ribbon IDs used by TV and Pokénav
 #define CHAMPION_RIBBON       0
@@ -172,6 +172,8 @@
 #define MON_MALE       0x00
 #define MON_FEMALE     0xFE
 #define MON_GENDERLESS 0xFF
+
+#define HIDDEN_NATURE_NONE      26  // 25 natures. not 0xFF to conserve bits
 
 // Constants for AdjustFriendship
 #define FRIENDSHIP_EVENT_GROW_LEVEL       0
