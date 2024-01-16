@@ -723,6 +723,16 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_TM98] = {gItemIcon_TM, gItemIconPalette_ElectricTMHM}, 
     [ITEM_TM99] = {gItemIcon_TM, gItemIconPalette_IceTMHM}, 
     [ITEM_TM100]= {gItemIcon_TM, gItemIconPalette_FightingTMHM},
+
+    [ITEM_HM01] = {gItemIcon_HM, gItemIconPalette_NormalTMHM},
+    [ITEM_HM02] = {gItemIcon_HM, gItemIconPalette_FlyingTMHM},
+    [ITEM_HM03] = {gItemIcon_HM, gItemIconPalette_WaterTMHM},
+    [ITEM_HM04] = {gItemIcon_HM, gItemIconPalette_NormalTMHM},
+    [ITEM_HM05] = {gItemIcon_HM, gItemIconPalette_NormalTMHM},
+    [ITEM_HM06] = {gItemIcon_HM, gItemIconPalette_FightingTMHM},
+    [ITEM_HM07] = {gItemIcon_HM, gItemIconPalette_WaterTMHM},
+    [ITEM_HM08] = {gItemIcon_HM, gItemIconPalette_WaterTMHM},
+    
     // Charms
     [ITEM_OVAL_CHARM] = {gItemIcon_OvalCharm, gItemIconPalette_OvalCharm},
     [ITEM_SHINY_CHARM] = {gItemIcon_ShinyCharm, gItemIconPalette_ShinyCharm},

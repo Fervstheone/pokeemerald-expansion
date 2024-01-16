@@ -2644,6 +2644,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         #endif
         .power = 50,
         .type = TYPE_NORMAL,
+        .recoil = 25,
         .pp = 1,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
