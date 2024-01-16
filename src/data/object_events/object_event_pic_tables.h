@@ -1031,7 +1031,7 @@ static const struct SpriteFrameImage sPicTable_GameboyKid[] = {
 };
 
 static const struct SpriteFrameImage sPicTable_ContestJudge[] = {
-    overworld_ascending_frames(gObjectEventPic_ContestJudge, 2, 4),
+    overworld_ascending_frames(gObjectEventPic_ContestJudge, 4, 4),
     };
 
 static const struct SpriteFrameImage sPicTable_BrendanWatering[] = {
