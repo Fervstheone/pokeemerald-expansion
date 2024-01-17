@@ -1082,7 +1082,7 @@ struct SaveBlock1
     /*0x3???*/ struct TrainerHillSave trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
     /*0x3???*/ struct SurfMon surfMon;
-    /*0x3???*/ u8 dexNavSearchLevels[20];
+    /*0x3???*/ u8 dexNavSearchLevels[POKEMON_SLOTS_NUMBER];
     /*0x3???*/ u8 dexNavChain;
     /*0x3D88*/ u16 registeredItemL;
     /*0x3D8A*/ u16 registeredItemR;
