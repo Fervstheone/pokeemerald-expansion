@@ -3032,6 +3032,10 @@ static void SurfFieldEffect_Init(struct Task *task)
     gPlayerAvatar.preventStep = TRUE;
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
     PlayerGetDestCoords(&task->tDestX, &task->tDestY);
+    gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_SPECIES);
+    gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_IS_SHINY);
+    gSaveBlock1Ptr->surfMon.personality = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_PERSONALITY);
+    gSaveBlock1Ptr->surfMon.slot = task->tMonId;
     MoveCoords(gObjectEvents[gPlayerAvatar.objectEventId].movementDirection, &task->tDestX, &task->tDestY);
     task->tState++;
 }
@@ -3072,9 +3076,6 @@ static void SurfFieldEffect_JumpOnSurfBlob(struct Task *task)
         gFieldEffectArguments[0] = task->tDestX;
         gFieldEffectArguments[1] = task->tDestY;
         gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
-        gFieldEffectArguments[3] = task->tMonId;
-        gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_SPECIES);
-        gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[task->tMonId], MON_DATA_IS_SHINY);
         objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
         task->tState++;
     }

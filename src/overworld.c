@@ -914,6 +914,8 @@ if (I_VS_SEEKER_CHARGING != 0)
 void ResetInitialPlayerAvatarState(void)
 {
     gSaveBlock1Ptr->surfMon.surfMonSpecies = SPECIES_NONE;
+    gSaveBlock1Ptr->surfMon.isShiny = FALSE;
+    gSaveBlock1Ptr->surfMon.personality = 0;
     sInitialPlayerAvatarState.direction = DIR_SOUTH;
     sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_ON_FOOT;
 }

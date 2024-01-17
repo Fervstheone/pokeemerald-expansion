@@ -1,0 +1,2 @@
+Known Bugs
+-If you have two mons of same species using surf and use surf from the menu, the personality color of the used overrides the personality of the one used in directly in the overworld. Entering battles or open bag/party or anything else resets to the correct color

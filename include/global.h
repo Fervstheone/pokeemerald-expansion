@@ -918,7 +918,9 @@ struct WonderCardMetadata
 struct SurfMon
 {
     u16 surfMonSpecies;
-    u8  isShiny;
+    u8  isShiny:1;
+    u8  slot:7;
+    u32 personality;
 
 };
 

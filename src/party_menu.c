@@ -4037,6 +4037,7 @@ static void FieldCallback_Surf(void)
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
     gSaveBlock1Ptr->surfMon.surfMonSpecies = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_SPECIES);
     gSaveBlock1Ptr->surfMon.isShiny = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_IS_SHINY);
+    gSaveBlock1Ptr->surfMon.personality = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_PERSONALITY);
     FieldEffectStart(FLDEFF_USE_SURF);
 }
 
