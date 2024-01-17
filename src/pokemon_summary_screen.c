@@ -148,7 +148,6 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u16 species; // 0x0
         u16 species2; // 0x2
         u8 isEgg:1; // 0x4
-        u8 isShiny:1;
         u8 level;
         u8 ribbonCount;
         u8 ailment;
@@ -1606,7 +1605,6 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
     default:
         sum->ribbonCount = GetMonData(mon, MON_DATA_RIBBON_COUNT);
         sum->fatefulEncounter = GetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER);
-        sum->isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
         if (sum->isEgg)
         {
             sMonSummaryScreen->minPageIndex = PSS_PAGE_MEMO;
@@ -2671,6 +2669,7 @@ static void PrintNotEggInfo(void)
 {
     u8 x;
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
+    bool8 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
 
     GetMonNickname(mon, gStringVar1);
@@ -2692,7 +2691,7 @@ static void PrintNotEggInfo(void)
             break;
         }
     }
-    if (IsMonShiny(mon))
+    if (isShiny)
         PrintTextOnWindow(PSS_LABEL_PANE_LEFT_TOP, sText_Shiny, 62, 18, 0, PSS_COLOR_SHINY_STARS);
     #if CONFIG_FATEFUL_ENCOUNTER_MARK
     if (summary->fatefulEncounter)
@@ -3956,7 +3955,7 @@ static void SwapMovesTypeSprites(u8 moveIndex1, u8 moveIndex2)
 static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
 {
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    bool8 isShiny = summary->isShiny;
+    bool8 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
     
     switch (*state)
     {
@@ -3992,9 +3991,9 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
     case 1:
 
         if (!isShiny)
-            LoadHueShiftedMonSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(summary->species2, summary->isShiny, summary->pid), summary->pid, summary->species2);
+            LoadHueShiftedMonSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(summary->species2, isShiny, summary->pid), summary->pid, summary->species2);
         else
-            LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(summary->species2, summary->isShiny, summary->pid), summary->species2);
+            LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(summary->species2, isShiny, summary->pid), summary->species2);
         SetMultiuseSpriteTemplateToPokemon(summary->species2, B_POSITION_OPPONENT_LEFT);
         (*state)++;
         return 0xFF;

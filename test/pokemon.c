@@ -59,6 +59,9 @@ TEST("Shininess independent from PID and OTID")
     EXPECT_EQ(pid, GetMonData(&mon, MON_DATA_PERSONALITY));
     EXPECT_EQ(otId, GetMonData(&mon, MON_DATA_OT_ID));
     EXPECT_EQ(!isShiny, GetMonData(&mon, MON_DATA_IS_SHINY));
+    data = isShiny;
+    SetMonData(&mon, MON_DATA_IS_SHINY, &data);
+    EXPECT_EQ(isShiny, GetMonData(&mon, MON_DATA_IS_SHINY));
 }
 
 TEST("Hyper Training increases stats without affecting IVs")

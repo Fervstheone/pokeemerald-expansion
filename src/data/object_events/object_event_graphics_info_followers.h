@@ -124,9 +124,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #if P_FAMILY_MANKEY
   [SPECIES_MANKEY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Mankey, gDummySpriteAffineAnimTable},
   [SPECIES_PRIMEAPE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Primeape, gDummySpriteAffineAnimTable},
-#if P_GEN_9_CROSS_EVOS
-  [SPECIES_ANNIHILAPE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Annihilape, gDummySpriteAffineAnimTable},
-#endif //P_GEN_9_CROSS_EVOS
+//#if P_GEN_9_CROSS_EVOS
+//  [SPECIES_ANNIHILAPE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Annihilape, gDummySpriteAffineAnimTable},
+//#endif //P_GEN_9_CROSS_EVOS
 #endif //P_FAMILY_MANKEY
 #if P_FAMILY_GROWLITHE
   [SPECIES_GROWLITHE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Growlithe, gDummySpriteAffineAnimTable},
@@ -503,9 +503,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #if P_FAMILY_WOOPER
   [SPECIES_WOOPER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Wooper, gDummySpriteAffineAnimTable},
   [SPECIES_QUAGSIRE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Quagsire, gDummySpriteAffineAnimTable},
-#if P_PALDEAN_FORMS
-  [SPECIES_CLODSIRE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Clodsire, gDummySpriteAffineAnimTable},
-#endif //P_PALDEAN_FORMS
+//#if P_PALDEAN_FORMS
+//  [SPECIES_CLODSIRE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Clodsire, gDummySpriteAffineAnimTable},
+//#endif //P_PALDEAN_FORMS
 #endif //P_FAMILY_WOOPER
 #if P_FAMILY_MURKROW
   [SPECIES_MURKROW] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Murkrow, gDummySpriteAffineAnimTable},
@@ -553,9 +553,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FAMILY_WOBBUFFET
 #if P_FAMILY_GIRAFARIG
   [SPECIES_GIRAFARIG] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Girafarig, gDummySpriteAffineAnimTable},
-#if P_GEN_9_CROSS_EVOS
-  [SPECIES_FARIGIRAF] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Farigiraf, gDummySpriteAffineAnimTable},
-#endif //P_GEN_9_CROSS_EVOS
+//#if P_GEN_9_CROSS_EVOS
+//  [SPECIES_FARIGIRAF] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Farigiraf, gDummySpriteAffineAnimTable},
+//#endif //P_GEN_9_CROSS_EVOS
 #endif //P_FAMILY_GIRAFARIG
 #if P_FAMILY_PINECO
   [SPECIES_PINECO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_SPOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pineco, gDummySpriteAffineAnimTable},
@@ -563,9 +563,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FAMILY_PINECO
 #if P_FAMILY_DUNSPARCE
   [SPECIES_DUNSPARCE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_SPOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dunsparce, gDummySpriteAffineAnimTable},
-#if P_GEN_9_CROSS_EVOS
-  [SPECIES_DUDUNSPARCE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dudunsparce, gDummySpriteAffineAnimTable},
-#endif //P_GEN_9_CROSS_EVOS
+//#if P_GEN_9_CROSS_EVOS
+//  [SPECIES_DUDUNSPARCE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dudunsparce, gDummySpriteAffineAnimTable},
+//#endif //P_GEN_9_CROSS_EVOS
 #endif //P_FAMILY_DUNSPARCE
 #if P_FAMILY_GLIGAR
   [SPECIES_GLIGAR] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_NONE, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Gligar, gDummySpriteAffineAnimTable},
@@ -1450,9 +1450,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #if P_FAMILY_PAWNIARD
   [SPECIES_PAWNIARD] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pawniard, gDummySpriteAffineAnimTable},
   [SPECIES_BISHARP] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Bisharp, gDummySpriteAffineAnimTable},
-#if P_GEN_9_CROSS_EVOS
-  [SPECIES_KINGAMBIT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Kingambit, gDummySpriteAffineAnimTable},
-#endif //P_GEN_9_CROSS_EVOS
+//#if P_GEN_9_CROSS_EVOS
+//  [SPECIES_KINGAMBIT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Kingambit, gDummySpriteAffineAnimTable},
+//#endif //P_GEN_9_CROSS_EVOS
 #endif //P_FAMILY_PAWNIARD
 #if P_FAMILY_BOUFFALANT
   [SPECIES_BOUFFALANT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Bouffalant, gDummySpriteAffineAnimTable},
@@ -1676,9 +1676,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FAMILY_PHANTUMP
 #if P_FAMILY_PUMPKABOO
   [SPECIES_PUMPKABOO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pumpkaboo, gDummySpriteAffineAnimTable},
-  [SPECIES_PUMPKABOO_SUPER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pumpkaboo_super, gDummySpriteAffineAnimTable},
+  //[SPECIES_PUMPKABOO_SUPER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pumpkaboo_super, gDummySpriteAffineAnimTable},
   [SPECIES_GOURGEIST] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Gourgeist, gDummySpriteAffineAnimTable},
-  [SPECIES_GOURGEIST_SUPER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Gourgeist_super, gDummySpriteAffineAnimTable},
+  //[SPECIES_GOURGEIST_SUPER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Gourgeist_super, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_PUMPKABOO
 #if P_FAMILY_BERGMITE
   [SPECIES_BERGMITE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Bergmite, gDummySpriteAffineAnimTable},
@@ -1761,10 +1761,10 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_CRABOMINABLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Crabominable, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_CRABRAWLER
 #if P_FAMILY_ORICORIO
-  [SPECIES_ORICORIO_BAILE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_baile, gDummySpriteAffineAnimTable},
-  [SPECIES_ORICORIO_POM_POM] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_pom_pom, gDummySpriteAffineAnimTable},
-  [SPECIES_ORICORIO_PAU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_pau, gDummySpriteAffineAnimTable},
-  [SPECIES_ORICORIO_SENSU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_sensu, gDummySpriteAffineAnimTable},
+  //[SPECIES_ORICORIO_BAILE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_baile, gDummySpriteAffineAnimTable},
+  //[SPECIES_ORICORIO_POM_POM] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_pom_pom, gDummySpriteAffineAnimTable},
+  //[SPECIES_ORICORIO_PAU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_pau, gDummySpriteAffineAnimTable},
+  //[SPECIES_ORICORIO_SENSU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Oricorio_sensu, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ORICORIO
 #if P_FAMILY_CUTIEFLY
   [SPECIES_CUTIEFLY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Cutiefly, gDummySpriteAffineAnimTable},
@@ -1772,13 +1772,13 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FAMILY_CUTIEFLY
 #if P_FAMILY_ROCKRUFF
   [SPECIES_ROCKRUFF] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Rockruff, gDummySpriteAffineAnimTable},
-  [SPECIES_LYCANROC_MIDDAY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_midday, gDummySpriteAffineAnimTable},
-  [SPECIES_LYCANROC_MIDNIGHT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_midnight, gDummySpriteAffineAnimTable},
-  [SPECIES_LYCANROC_DUSK] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_dusk, gDummySpriteAffineAnimTable},
+  //[SPECIES_LYCANROC_MIDDAY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_midday, gDummySpriteAffineAnimTable},
+  //[SPECIES_LYCANROC_MIDNIGHT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_midnight, gDummySpriteAffineAnimTable},
+  //[SPECIES_LYCANROC_DUSK] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Lycanroc_dusk, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ROCKRUFF
 #if P_FAMILY_WISHIWASHI
-  [SPECIES_WISHIWASHI_SOLO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Wishiwashi_solo, gDummySpriteAffineAnimTable},
-  [SPECIES_WISHIWASHI_SCHOOL] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Wishiwashi_school, gDummySpriteAffineAnimTable},
+  //[SPECIES_WISHIWASHI_SOLO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Wishiwashi_solo, gDummySpriteAffineAnimTable},
+  //[SPECIES_WISHIWASHI_SCHOOL] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Wishiwashi_school, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_WISHIWASHI
 #if P_FAMILY_MAREANIE
   [SPECIES_MAREANIE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Mareanie, gDummySpriteAffineAnimTable},
@@ -1834,7 +1834,7 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_PYUKUMUKU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Pyukumuku, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_PYUKUMUKU
 #if P_FAMILY_TYPE_NULL
-  [SPECIES_TYPE_NULL] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Type_null, gDummySpriteAffineAnimTable},
+  [SPECIES_TYPE_NULL] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Typenull, gDummySpriteAffineAnimTable},
   [SPECIES_SILVALLY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Silvally, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TYPE_NULL
 #if P_FAMILY_MINIOR
@@ -1867,16 +1867,16 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_KOMMO_O] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Kommo_o, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_JANGMO_O
 #if P_FAMILY_TAPU_KOKO
-  [SPECIES_TAPU_KOKO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapu_koko, gDummySpriteAffineAnimTable},
+  [SPECIES_TAPU_KOKO] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapukoko, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TAPU_KOKO
 #if P_FAMILY_TAPU_LELE
-  [SPECIES_TAPU_LELE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapu_lele, gDummySpriteAffineAnimTable},
+  [SPECIES_TAPU_LELE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapulele, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TAPU_LELE
 #if P_FAMILY_TAPU_BULU
-  [SPECIES_TAPU_BULU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapu_bulu, gDummySpriteAffineAnimTable},
+  [SPECIES_TAPU_BULU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapubulu, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TAPU_BULU
 #if P_FAMILY_TAPU_FINI
-  [SPECIES_TAPU_FINI] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapu_fini, gDummySpriteAffineAnimTable},
+  [SPECIES_TAPU_FINI] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Tapufini, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TAPU_FINI
 #if P_FAMILY_COSMOG
   [SPECIES_COSMOG] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Cosmog, gDummySpriteAffineAnimTable},
@@ -1911,7 +1911,7 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_NECROZMA_DUSK_MANE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Necrozma_dusk_mane, gDummySpriteAffineAnimTable},
   [SPECIES_NECROZMA_DAWN_WINGS] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Necrozma_dawn_wings, gDummySpriteAffineAnimTable},
 #if P_ULTRA_BURST_FORMS
-  [SPECIES_NECROZMA_ULTRA] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Necrozma_ultra, gDummySpriteAffineAnimTable},
+  //[SPECIES_NECROZMA_ULTRA] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Necrozma_ultra, gDummySpriteAffineAnimTable},
 #endif //P_ULTRA_BURST_FORMS
 #endif //P_FUSION_FORMS
 #endif //P_FAMILY_NECROZMA
@@ -1996,9 +1996,9 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_APPLIN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Applin, gDummySpriteAffineAnimTable},
   [SPECIES_FLAPPLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Flapple, gDummySpriteAffineAnimTable},
   [SPECIES_APPLETUN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Appletun, gDummySpriteAffineAnimTable},
-#if P_GEN_9_CROSS_EVOS
-  [SPECIES_DIPPLIN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dipplin, gDummySpriteAffineAnimTable},
-#endif //P_GEN_9_CROSS_EVOS
+//#if P_GEN_9_CROSS_EVOS
+//  [SPECIES_DIPPLIN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dipplin, gDummySpriteAffineAnimTable},
+//#endif //P_GEN_9_CROSS_EVOS
 #endif //P_FAMILY_APPLIN
 #if P_FAMILY_SILICOBRA
   [SPECIES_SILICOBRA] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Silicobra, gDummySpriteAffineAnimTable},
@@ -2013,8 +2013,8 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FAMILY_ARROKUDA
 #if P_FAMILY_TOXEL
   [SPECIES_TOXEL] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Toxel, gDummySpriteAffineAnimTable},
-  [SPECIES_TOXTRICITY_AMPED] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Toxtricity_amped, gDummySpriteAffineAnimTable},
-  [SPECIES_TOXTRICITY_LOW_KEY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Toxtricity_low_key, gDummySpriteAffineAnimTable},
+  //[SPECIES_TOXTRICITY_AMPED] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Toxtricity_amped, gDummySpriteAffineAnimTable},
+  //[SPECIES_TOXTRICITY_LOW_KEY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Toxtricity_low_key, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_TOXEL
 #if P_FAMILY_SIZZLIPEDE
   [SPECIES_SIZZLIPEDE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Sizzlipede, gDummySpriteAffineAnimTable},
@@ -2056,16 +2056,16 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_STONJOURNER] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Stonjourner, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_STONJOURNER
 #if P_FAMILY_EISCUE
-  [SPECIES_EISCUE_ICE_FACE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eiscue_ice_face, gDummySpriteAffineAnimTable},
-  [SPECIES_EISCUE_NOICE_FACE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eiscue_noice_face, gDummySpriteAffineAnimTable},
+  //[SPECIES_EISCUE_ICE_FACE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eiscue_ice_face, gDummySpriteAffineAnimTable},
+  //[SPECIES_EISCUE_NOICE_FACE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eiscue_noice_face, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_EISCUE
 #if P_FAMILY_INDEEDEE
-  [SPECIES_INDEEDEE_MALE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Indeedee_male, gDummySpriteAffineAnimTable},
-  [SPECIES_INDEEDEE_FEMALE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Indeedee_female, gDummySpriteAffineAnimTable},
+  //[SPECIES_INDEEDEE_MALE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Indeedee_male, gDummySpriteAffineAnimTable},
+  //[SPECIES_INDEEDEE_FEMALE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Indeedee_female, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_INDEEDEE
 #if P_FAMILY_MORPEKO
-  [SPECIES_MORPEKO_FULL_BELLY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Morpeko_full_belly, gDummySpriteAffineAnimTable},
-  [SPECIES_MORPEKO_HANGRY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Morpeko_hangry, gDummySpriteAffineAnimTable},
+  //[SPECIES_MORPEKO_FULL_BELLY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Morpeko_full_belly, gDummySpriteAffineAnimTable},
+  //[SPECIES_MORPEKO_HANGRY] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Morpeko_hangry, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_MORPEKO
 #if P_FAMILY_CUFANT
   [SPECIES_CUFANT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Cufant, gDummySpriteAffineAnimTable},
@@ -2092,21 +2092,21 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
   [SPECIES_DRAGAPULT] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Dragapult, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_DREEPY
 #if P_FAMILY_ZACIAN
-  [SPECIES_ZACIAN_HERO_OF_MANY_BATTLES] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zacian_hero_of_many_battles, gDummySpriteAffineAnimTable},
-  [SPECIES_ZACIAN_CROWNED_SWORD] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zacian_crowned_sword, gDummySpriteAffineAnimTable},
+  //[SPECIES_ZACIAN_HERO_OF_MANY_BATTLES] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zacian_hero_of_many_battles, gDummySpriteAffineAnimTable},
+  //[SPECIES_ZACIAN_CROWNED_SWORD] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zacian_crowned_sword, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ZACIAN
 #if P_FAMILY_ZAMAZENTA
-  [SPECIES_ZAMAZENTA_HERO_OF_MANY_BATTLES] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zamazenta_hero_of_many_battles, gDummySpriteAffineAnimTable},
-  [SPECIES_ZAMAZENTA_CROWNED_SHIELD] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zamazenta_crowned_shield, gDummySpriteAffineAnimTable},
+  //[SPECIES_ZAMAZENTA_HERO_OF_MANY_BATTLES] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zamazenta_hero_of_many_battles, gDummySpriteAffineAnimTable},
+  //[SPECIES_ZAMAZENTA_CROWNED_SHIELD] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zamazenta_crowned_shield, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ZAMAZENTA
 #if P_FAMILY_ETERNATUS
   [SPECIES_ETERNATUS] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eternatus, gDummySpriteAffineAnimTable},
-  [SPECIES_ETERNATUS_ETERNAMAX] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eternatus_eternamax, gDummySpriteAffineAnimTable},
+  //[SPECIES_ETERNATUS_ETERNAMAX] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Eternatus_eternamax, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ETERNATUS
 #if P_FAMILY_KUBFU
-  [SPECIES_KUBFU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Kubfu, gDummySpriteAffineAnimTable},
-  [SPECIES_URSHIFU_SINGLE_STRIKE_STYLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Urshifu_single_strike_style, gDummySpriteAffineAnimTable},
-  [SPECIES_URSHIFU_RAPID_STRIKE_STYLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Urshifu_rapid_strike_style, gDummySpriteAffineAnimTable},
+  //[SPECIES_KUBFU] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Kubfu, gDummySpriteAffineAnimTable},
+  //[SPECIES_URSHIFU_SINGLE_STRIKE_STYLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Urshifu_single_strike_style, gDummySpriteAffineAnimTable},
+  //[SPECIES_URSHIFU_RAPID_STRIKE_STYLE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Urshifu_rapid_strike_style, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_KUBFU
 #if P_FAMILY_ZARUDE
   [SPECIES_ZARUDE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Zarude, gDummySpriteAffineAnimTable},
@@ -2131,8 +2131,8 @@ const struct ObjectEventGraphicsInfo gPokemonObjectGraphics[] = {
 #endif //P_FUSION_FORMS
 #endif //P_FAMILY_CALYREX
 #if P_FAMILY_ENAMORUS
-  [SPECIES_ENAMORUS_INCARNATE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Enamorus_incarnate, gDummySpriteAffineAnimTable},
-  [SPECIES_ENAMORUS_THERIAN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Enamorus_therian, gDummySpriteAffineAnimTable},
+  //[SPECIES_ENAMORUS_INCARNATE] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Enamorus_incarnate, gDummySpriteAffineAnimTable},
+  //[SPECIES_ENAMORUS_THERIAN] = {0xFFFF, OBJ_EVENT_PAL_TAG_DYNAMIC, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 2, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Following, sPicTable_Enamorus_therian, gDummySpriteAffineAnimTable},
 #endif //P_FAMILY_ENAMORUS
 };
 
