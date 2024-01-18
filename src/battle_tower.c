@@ -150,7 +150,7 @@ const u16 gBattleFrontierHeldItems[] =
 #include "data/battle_frontier/battle_frontier_trainers.h"
 #include "data/battle_frontier/battle_frontier_mons.h"
 
-const u8 gTowerMaleFacilityClasses[30] =
+const u16 gTowerMaleFacilityClasses[30] =
 {
     FACILITY_CLASS_RUIN_MANIAC,
     FACILITY_CLASS_TUBER_M,
@@ -184,7 +184,7 @@ const u8 gTowerMaleFacilityClasses[30] =
     FACILITY_CLASS_HIKER
 };
 
-const u8 gTowerFemaleFacilityClasses[20] =
+const u16 gTowerFemaleFacilityClasses[20] =
 {
     FACILITY_CLASS_AROMA_LADY,
     FACILITY_CLASS_TUBER_F,
@@ -267,7 +267,7 @@ const u16 gTowerFemaleTrainerGfxIds[20] =
 };
 
 // Excludes the unused RS_FACILITY_CLASS_BOARDER_1 and _2
-static const u8 sRubyFacilityClassToEmerald[RS_FACILITY_CLASSES_COUNT - 2][2] =
+static const u16 sRubyFacilityClassToEmerald[RS_FACILITY_CLASSES_COUNT - 2][2] =
 {
     {RS_FACILITY_CLASS_AQUA_LEADER_ARCHIE, FACILITY_CLASS_AQUA_LEADER_ARCHIE},
     {RS_FACILITY_CLASS_AQUA_GRUNT_M, FACILITY_CLASS_AQUA_GRUNT_M},
@@ -1128,8 +1128,8 @@ static void UNUSED GetRandomScaledFrontierTrainerIdRange(u8 challengeNum, u8 bat
 void SetBattleFacilityTrainerGfxId(u16 trainerId, u8 tempVarId)
 {
     u32 i;
-    u8 facilityClass;
-    u8 trainerObjectGfxId;
+    u16 facilityClass;
+    u16 trainerObjectGfxId;
 
     SetFacilityPtrsGetLevel();
     if (trainerId == TRAINER_EREADER)
@@ -1225,7 +1225,7 @@ void SetEReaderTrainerGfxId(void)
 u16 GetBattleFacilityTrainerGfxId(u16 trainerId)
 {
     u32 i;
-    u8 facilityClass;
+    u16 facilityClass;
     u16 trainerObjectGfxId;
 
     SetFacilityPtrsGetLevel();
@@ -1402,7 +1402,7 @@ u8 GetFrontierTrainerFrontSpriteId(u16 trainerId)
 
 u8 GetFrontierOpponentClass(u16 trainerId)
 {
-    u8 trainerClass = 0;
+    u16 trainerClass = 0;
     SetFacilityPtrsGetLevel();
 
     if (trainerId == TRAINER_EREADER)
@@ -1449,7 +1449,7 @@ u8 GetFrontierOpponentClass(u16 trainerId)
 
 static u8 GetFrontierTrainerFacilityClass(u16 trainerId)
 {
-    u8 facilityClass;
+    u16 facilityClass;
     SetFacilityPtrsGetLevel();
 
     if (trainerId == TRAINER_EREADER)
@@ -1542,7 +1542,7 @@ void GetFrontierTrainerName(u8 *dst, u16 trainerId)
 static bool8 IsFrontierTrainerFemale(u16 trainerId)
 {
     u32 i;
-    u8 facilityClass;
+    u16 facilityClass;
 
     SetFacilityPtrsGetLevel();
     if (trainerId == TRAINER_EREADER)
@@ -3521,8 +3521,8 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
 
 u16 FacilityClassToGraphicsId(u8 facilityClass)
 {
-    u8 trainerObjectGfxId;
-    u8 i;
+    u16 trainerObjectGfxId;
+    u16 i;
 
     // Search male classes.
     for (i = 0; i < ARRAY_COUNT(gTowerMaleFacilityClasses); i++)

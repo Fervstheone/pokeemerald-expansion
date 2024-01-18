@@ -2226,6 +2226,7 @@ static void CreateDomeOpponentMon(u8 monPartyId, u16 tournamentTrainerId, u8 tou
     #else
     u8 fixedIv = GetDomeTrainerMonIvs(tournamentTrainerId); // BUG: Using the wrong ID. As a result, all Pokémon have ivs of 3.
     #endif
+    u8 ability = gFacilityTrainerMons[DOME_MONS[tournamentTrainerId][tournamentMonId]].ability;
     u8 level = SetFacilityPtrsGetLevel();
     CreateMonWithEVSpreadNatureOTID(&gEnemyParty[monPartyId],
                                          gFacilityTrainerMons[DOME_MONS[tournamentTrainerId][tournamentMonId]].species,
@@ -2242,7 +2243,7 @@ static void CreateDomeOpponentMon(u8 monPartyId, u16 tournamentTrainerId, u8 tou
         if (gBattleMoves[gFacilityTrainerMons[DOME_MONS[tournamentTrainerId][tournamentMonId]].moves[i]].effect == EFFECT_FRUSTRATION)
             friendship = 0;
     }
-
+    SetMonData(&gEnemyParty[monPartyId], MON_DATA_ABILITY_NUM, &ability);
     SetMonData(&gEnemyParty[monPartyId], MON_DATA_FRIENDSHIP, &friendship);
     SetMonData(&gEnemyParty[monPartyId], MON_DATA_HELD_ITEM,
                &gBattleFrontierHeldItems[gFacilityTrainerMons[DOME_MONS[tournamentTrainerId][tournamentMonId]].itemTableId]);
