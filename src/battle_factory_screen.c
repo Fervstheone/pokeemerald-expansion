@@ -1774,6 +1774,7 @@ static void CreateFrontierFactorySelectableMons(u8 firstMonId)
             SetMonMoveAvoidReturn(&sFactorySelectScreen->mons[i + firstMonId].monData, gFacilityTrainerMons[monId].moves[j], j);
         SetMonData(&sFactorySelectScreen->mons[i + firstMonId].monData, MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&sFactorySelectScreen->mons[i + firstMonId].monData, MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
+        SetMonData(&sFactorySelectScreen->mons[i + firstMonId].monData, MON_DATA_ABILITY_NUM, &gFacilityTrainerMons[monId].ability);
     }
 }
 

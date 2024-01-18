@@ -593,6 +593,7 @@ static void GenerateInitialRentalMons(void)
             continue;
 
         gSaveBlock2Ptr->frontier.rentalMons[i].monId = monId;
+        gSaveBlock2Ptr->frontier.rentalMons[i].abilityNum = gFacilityTrainerMons[monId].ability;
         species[i] = gFacilityTrainerMons[monId].species;
         heldItems[i] = gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId];
         monIds[i] = monId;
@@ -771,6 +772,7 @@ void FillFactoryBrainParty(void)
     u8 challengeNum = gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode] / FRONTIER_STAGES_PER_CHALLENGE;
     fixedIV = GetFactoryMonFixedIV(challengeNum + 2, FALSE);
     monLevel = SetFacilityPtrsGetLevel();
+    u8 abilityNum;
     i = 0;
     otId = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
 
@@ -818,8 +820,10 @@ void FillFactoryBrainParty(void)
                                              otId);
 
         friendship = 0;
+        abilityNum = gFacilityTrainerMons[monId].ability;
         for (k = 0; k < MAX_MON_MOVES; k++)
             SetMonMoveAvoidReturn(&gEnemyParty[i], gFacilityTrainerMons[monId].moves[k], k);
+        SetMonData(&gEnemyParty[i], MON_DATA_ABILITY_NUM, &abilityNum);
         SetMonData(&gEnemyParty[i], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
         i++;

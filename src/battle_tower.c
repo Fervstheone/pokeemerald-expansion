@@ -1607,6 +1607,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     u8 bfMonCount;
     const u16 *monSet = NULL;
     u32 otID = 0;
+    u8 ability;
 
     if (trainerId < FRONTIER_TRAINERS_COUNT)
     {
@@ -1711,7 +1712,8 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
             if (gBattleMoves[gFacilityTrainerMons[monId].moves[j]].effect == EFFECT_FRUSTRATION)
                 friendship = 0;  // Frustration is more powerful the lower the pokemon's friendship is.
         }
-
+        ability = gFacilityTrainerMons[monId].ability;
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_ABILITY_NUM, &ability);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
 
@@ -1845,7 +1847,7 @@ static void FillFactoryFrontierTrainerParty(u16 trainerId, u8 firstMonId)
         friendship = 0;
         for (j = 0; j < MAX_MON_MOVES; j++)
             SetMonMoveAvoidReturn(&gEnemyParty[firstMonId + i], gFacilityTrainerMons[monId].moves[j], j);
-
+        SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_ABILITY_NUM, &gFacilityTrainerMons[monId].ability);
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
     }
