@@ -1,4 +1,7 @@
+#include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
+#include "item_use.h"
 
 #if I_USE_EVO_HELD_ITEMS_FROM_BAG == TRUE
     #define EVO_HELD_ITEM_TYPE ITEM_USE_PARTY_MENU
@@ -177,6 +180,7 @@ const struct Item gItems[] =
                                        "Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_POKE_BALL - FIRST_BALL,
     },
@@ -190,6 +194,7 @@ const struct Item gItems[] =
                                        "than a Poké Ball."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_GREAT_BALL - FIRST_BALL,
     },
@@ -203,6 +208,7 @@ const struct Item gItems[] =
                                        "than a Great Ball."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_ULTRA_BALL - FIRST_BALL,
     },
@@ -216,6 +222,7 @@ const struct Item gItems[] =
                                        "without fail."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_MASTER_BALL - FIRST_BALL,
     },
@@ -229,6 +236,7 @@ const struct Item gItems[] =
                                        "of some event."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_PREMIER_BALL - FIRST_BALL,
     },
@@ -242,6 +250,7 @@ const struct Item gItems[] =
                                        "caught Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_HEAL_BALL - FIRST_BALL,
     },
@@ -255,6 +264,7 @@ const struct Item gItems[] =
                                        "Bug-type Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_NET_BALL - FIRST_BALL,
     },
@@ -268,6 +278,7 @@ const struct Item gItems[] =
                                        "Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_NEST_BALL - FIRST_BALL,
     },
@@ -281,6 +292,7 @@ const struct Item gItems[] =
                                        "on the ocean floor."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_DIVE_BALL - FIRST_BALL,
     },
@@ -294,6 +306,7 @@ const struct Item gItems[] =
                                        "dark place."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_DUSK_BALL - FIRST_BALL,
     },
@@ -307,6 +320,7 @@ const struct Item gItems[] =
                                        "taking many turns."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_TIMER_BALL - FIRST_BALL,
     },
@@ -320,6 +334,7 @@ const struct Item gItems[] =
                                        "first turn."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_QUICK_BALL - FIRST_BALL,
     },
@@ -333,6 +348,7 @@ const struct Item gItems[] =
                                        "caught before."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_REPEAT_BALL - FIRST_BALL,
     },
@@ -346,6 +362,7 @@ const struct Item gItems[] =
                                        "more friendly."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_LUXURY_BALL - FIRST_BALL,
     },
@@ -359,6 +376,7 @@ const struct Item gItems[] =
                                        "level Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_LEVEL_BALL - FIRST_BALL,
     },
@@ -372,6 +390,7 @@ const struct Item gItems[] =
                                        "up Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_LURE_BALL - FIRST_BALL,
     },
@@ -385,6 +404,7 @@ const struct Item gItems[] =
                                        "Stone users."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_MOON_BALL - FIRST_BALL,
     },
@@ -398,6 +418,7 @@ const struct Item gItems[] =
                                        "when caught."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_FRIEND_BALL - FIRST_BALL,
     },
@@ -411,6 +432,7 @@ const struct Item gItems[] =
                                        "opposite gender."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_LOVE_BALL - FIRST_BALL,
     },
@@ -424,6 +446,7 @@ const struct Item gItems[] =
                                        "Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_FAST_BALL - FIRST_BALL,
     },
@@ -437,6 +460,7 @@ const struct Item gItems[] =
                                        "Pokémon."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_HEAVY_BALL - FIRST_BALL,
     },
@@ -455,6 +479,7 @@ const struct Item gItems[] =
         #endif
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_DREAM_BALL - FIRST_BALL,
     },
@@ -468,6 +493,7 @@ const struct Item gItems[] =
                                        "Safari Zone."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_SAFARI_BALL - FIRST_BALL,
     },
@@ -481,6 +507,7 @@ const struct Item gItems[] =
                                        "Contest."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_SPORT_BALL - FIRST_BALL,
     },
@@ -493,6 +520,7 @@ const struct Item gItems[] =
                                        "the Pal Park."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_PARK_BALL - FIRST_BALL,
     },
@@ -505,6 +533,7 @@ const struct Item gItems[] =
                                        "catch Ultra Beasts."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_BEAST_BALL - FIRST_BALL,
     },
@@ -518,6 +547,7 @@ const struct Item gItems[] =
                                        "of some event."),
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeBall,
         .battleUsage = EFFECT_ITEM_THROW_BALL,
         .secondaryId = ITEM_CHERISH_BALL - FIRST_BALL,
     },
@@ -11457,75 +11487,171 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_HEALTH_MOCHI] =
+    [ITEM_HEALTH_BOOSTER] =
     {
-        .name = _("Health Mochi"),
+        .name = _("HP Booster"),
         .price = 500,
-        .description = sHealthFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "HP potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_HpMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_HP,
         .flingPower = 30,
     },
 
-    [ITEM_MUSCLE_MOCHI] =
+    [ITEM_MUSCLE_BOOSTER] =
     {
-        .name = _("Muscle Mochi"),
+        .name = _("Muscle Bstr."),
         .price = 500,
-        .description = sMuscleFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "Atk potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_AtkMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_ATK,
         .flingPower = 30,
     },
 
-    [ITEM_RESIST_MOCHI] =
+    [ITEM_RESIST_BOOSTER] =
     {
-        .name = _("Resist Mochi"),
+        .name = _("Resist Bstr."),
         .price = 500,
-        .description = sResistFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "Def potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_DefMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_DEF,
         .flingPower = 30,
     },
 
-    [ITEM_GENIUS_MOCHI] =
+    [ITEM_GENIUS_BOOSTER] =
     {
-        .name = _("Genius Mochi"),
+        .name = _("Genius Bstr."),
         .price = 500,
-        .description = sGeniusFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "SpAtk potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_SpatkMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_SPATK,
         .flingPower = 30,
     },
 
-    [ITEM_CLEVER_MOCHI] =
+    [ITEM_CLEVER_BOOSTER] =
     {
-        .name = _("Clever Mochi"),
+        .name = _("Clever Bstr."),
         .price = 500,
-        .description = sCleverFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "SpDef potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_SpdefMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_SPDEF,
         .flingPower = 30,
     },
 
-    [ITEM_SWIFT_MOCHI] =
+    [ITEM_SWIFT_BOOSTER] =
     {
-        .name = _("Swift Mochi"),
+        .name = _("Swift Bstr."),
         .price = 500,
-        .description = sSwiftFeatherDesc,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "maximize a Pokémon\n"
+                                       "Speed potential."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
-        .effect = gItemEffect_SpeedMochi,
+        .fieldUseFunc = ItemUseOutOfBattle_HyperTrain,
+        .secondaryId = STAT_SPEED,
+        .flingPower = 30,
+    },
+
+        [ITEM_HEALTH_SUPRESSOR] =
+    {
+        .name = _("Health Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "HP potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_HP,
+        .flingPower = 30,
+    },
+
+    [ITEM_MUSCLE_SUPRESSOR] =
+    {
+        .name = _("Muscle Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "Atk potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_ATK,
+        .flingPower = 30,
+    },
+
+    [ITEM_RESIST_SUPRESSOR] =
+    {
+        .name = _("Resist Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "Def potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_DEF,
+        .flingPower = 30,
+    },
+
+    [ITEM_GENIUS_SUPRESSOR] =
+    {
+        .name = _("Genius Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "SpAtk potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_SPATK,
+        .flingPower = 30,
+    },
+
+    [ITEM_CLEVER_SUPRESSOR] =
+    {
+        .name = _("Clever Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "SpDef potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_SPDEF,
+        .flingPower = 30,
+    },
+
+    [ITEM_SWIFT_SUPRESSOR] =
+    {
+        .name = _("Swift Supr."),
+        .price = 500,
+        .description = COMPOUND_STRING("An item that fully\n"
+                                       "minimize a Pokémon\n"
+                                       "Speed potential."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_MinTrain,
+        .secondaryId = STAT_SPEED,
         .flingPower = 30,
     },
 
