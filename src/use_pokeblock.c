@@ -1005,7 +1005,7 @@ static void AddPokeblockToConditions(struct Pokeblock *pokeblock, struct Pokemon
         for (i = 0; i < CONDITION_COUNT; i++)
         {
             data = GetMonData(mon, sConditionToMonData[i]);
-            stat = data +  sInfo->pokeblockStatBoosts[i];
+            stat = data +  sInfo->pokeblockStatBoosts[i]/2;
             if (stat < 0)
                 stat = 0;
             if (stat > MAX_CONDITION)

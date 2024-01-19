@@ -1399,7 +1399,7 @@ void FogHorizontal_InitAll(void)
 
 void FogHorizontal_Main(void)
 {
-    u32 paletteNum = 0;
+    u32 UNUSED paletteNum = 0;
     gWeatherPtr->fogHScrollPosX = (gSpriteCoordOffsetX - gWeatherPtr->fogHScrollOffset) & 0xFF;
     if (++gWeatherPtr->fogHScrollCounter > 3)
     {
