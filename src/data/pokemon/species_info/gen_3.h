@@ -5898,7 +5898,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         ICON(Feebas, 2),
         FOOTPRINT(Feebas)
         LEARNSETS(Feebas),
-        .evolutions = EVOLUTION({EVO_BEAUTY, 170, SPECIES_MILOTIC},
+        .evolutions = EVOLUTION({EVO_BEAUTY, 90, SPECIES_MILOTIC},
                                 {EVO_TRADE_ITEM, ITEM_PRISM_SCALE, SPECIES_MILOTIC},
                                 {EVO_ITEM, ITEM_PRISM_SCALE, SPECIES_MILOTIC}),
     },
