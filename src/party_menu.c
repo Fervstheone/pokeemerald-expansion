@@ -7737,10 +7737,10 @@ void IsLastMonThatKnowsSurf(void)
     }
 }
 
-static const u8 sText_AskBoost[] = _("Would you like to Boost {STR_VAR_1}'s\n{STR_VAR_2} Stat to it's maximum potential?");
-static const u8 sText_AskSupress[] = _("Would you like to Suppress {STR_VAR_1}'s\n{STR_VAR_2} Stat to it's minimum potential?");
-static const u8 sText_HyperTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} Stat was fully Boosted!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_MinTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} Stat was fully Supressed!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_AskBoost[] = _("Would you like to Boost {STR_VAR_1}'s\n{STR_VAR_2} to it's maximum potential?");
+static const u8 sText_AskSupress[] = _("Would you like to Suppress {STR_VAR_1}'s\n{STR_VAR_2} to it's minimum potential?");
+static const u8 sText_HyperTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} was fully Boosted!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_MinTrained[] = _("{STR_VAR_1}'s {STR_VAR_2} was fully Supressed!{PAUSE_UNTIL_PRESS}");
 
 const u8 *const gStatTextPointers[NUM_STATS] =
 {
@@ -7768,9 +7768,12 @@ static void Task_HyperTrain(u8 taskId)
     {
     case 0:
 
-        if(tStat < NUM_STATS
+        if((tStat < NUM_STATS
          && !GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)
          && (GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) < MAX_PER_STAT_IVS || GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)))
+         || (tStat < NUM_STATS
+         && !GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)
+         && GetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat)))
             canTrain = TRUE;
 
         if(!canTrain)
@@ -7845,9 +7848,10 @@ static void Task_HyperTrain(u8 taskId)
                 }
                 else
                 {
-                    SetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
-                    SetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
-                    CalculateMonStats(&gPlayerParty[gPartyMenu.slotId]);
+                    SetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
+                    if (GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) < MAX_PER_STAT_IVS)
+                        SetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
+                    CalculateMonStats(&gPlayerParty[tMonId]);
                 }
             }
         RemoveBagItem(gSpecialVar_ItemId, 1);
@@ -7866,10 +7870,14 @@ static void Task_MinTrain(u8 taskId)
     {
     case 0:
     
-    if(tStat < NUM_STATS
+    if((tStat < NUM_STATS
      && !GetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat)
      && (GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) != 0 || GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)))
+     || (tStat < NUM_STATS
+     && !GetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat)
+     && GetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat)))
         canTrain = TRUE;
+
         if(!canTrain)
         {
             gPartyMenuUseExitCallback = FALSE;
@@ -7944,7 +7952,8 @@ static void Task_MinTrain(u8 taskId)
             else 
             {
                 SetMonData(&gPlayerParty[tMonId], MON_DATA_HYPER_TRAINED_HP + tStat, &boostData);
-                SetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
+                if(GetMonData(&gPlayerParty[tMonId], MON_DATA_HP_IV + tStat) != 0)
+                    SetMonData(&gPlayerParty[tMonId], MON_DATA_MIN_TRAINED_HP + tStat, &minData);
                 CalculateMonStats(&gPlayerParty[tMonId]);
             }
         }

@@ -145,9 +145,8 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     /*0x0C*/ struct Pokemon currentMon;
     /*0x70*/ struct PokeSummary
     {
-        u16 species; // 0x0
-        u16 species2; // 0x2
-        u8 isEgg:1; // 0x4
+        u16 species; 
+        u16 species2; 
         u8 level;
         u8 ribbonCount;
         u8 ailment;
@@ -188,6 +187,19 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u8 spatkIV;
         u8 spdefIV;
         u8 speedIV;
+        u16 hyperTrainedHp:1;
+        u16 minTrainedHp:1;
+        u16 hyperTrainedAtk:1;
+        u16 minTrainedAtk:1;
+        u16 hyperTrainedDef:1;
+        u16 minTrainedDef:1;
+        u16 hyperTrainedSpatk:1;
+        u16 minTrainedSpatk:1;
+        u16 hyperTrainedSpdef:1;
+        u16 minTrainedSpdef:1;
+        u16 hyperTrainedSpeed:1;
+        u16 minTrainedSpeed:1;
+        u16 isEgg:1; 
         u8 hpEV;
         u8 atkEV;
         u8 defEV;
@@ -218,6 +230,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     bool8 handleDeoxys;
     s16 switchCounter; // Used for various switch statement cases that decompress/load graphics or pokemon data
 } *sMonSummaryScreen = NULL;
+
 EWRAM_DATA u8 gLastViewedMonIndex = 0;
 static EWRAM_DATA u8 sMoveSlotToReplace = 0;
 ALIGNED(4) static EWRAM_DATA u8 sAnimDelayTaskId = 0;
@@ -509,6 +522,9 @@ static const u8 sTextColors[][3] =
     [PSS_COLOR_ORANGE]                  = {0, 11, 12},
     [PSS_COLOR_LIGHT_RED]               = {0, 13, 14}
 };
+
+static const u8 sSummaryAButtonBitmap[] = INCBIN_U8("graphics/summary_screen/a_button.4bpp");
+static const u8 sSummaryBButtonBitmap[] = INCBIN_U8("graphics/summary_screen/b_button.4bpp");
 
 static void (*const sTextPrinterFunctions[])(void) =
 {
@@ -1593,6 +1609,18 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         sum->spatkIV = GetMonData(mon, MON_DATA_SPATK_IV);
         sum->spdefIV = GetMonData(mon, MON_DATA_SPDEF_IV);
         sum->speedIV = GetMonData(mon, MON_DATA_SPEED_IV);
+        sum->hyperTrainedHp = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP);
+        sum->minTrainedHp = GetMonData(mon, MON_DATA_MIN_TRAINED_HP);
+        sum->hyperTrainedAtk = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK);
+        sum->minTrainedAtk = GetMonData(mon, MON_DATA_MIN_TRAINED_ATK);
+        sum->hyperTrainedDef = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF);
+        sum->minTrainedDef = GetMonData(mon, MON_DATA_MIN_TRAINED_DEF);
+        sum->hyperTrainedSpatk = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK);
+        sum->minTrainedSpatk = GetMonData(mon, MON_DATA_MIN_TRAINED_SPATK);
+        sum->hyperTrainedSpdef = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF);
+        sum->minTrainedSpdef = GetMonData(mon, MON_DATA_MIN_TRAINED_SPDEF);
+        sum->hyperTrainedSpeed = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED);
+        sum->minTrainedSpeed = GetMonData(mon, MON_DATA_MIN_TRAINED_SPEED);
         break;
     case 6:
         sum->hpEV = GetMonData(mon, MON_DATA_HP_EV);
@@ -3370,7 +3398,22 @@ static void PrintSkillsPage(void)
     }
     else if (sMonSummaryScreen->currStatIndex == 1)
     {
-        ConvertIntToDecimalStringN(gStringVar1, summary->hpIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedHp == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->hpIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            //ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            //StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedHp == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->hpIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            //ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            //StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->hpIV, STR_CONV_MODE_LEFT_ALIGN, 2);
     }
     else
     {
@@ -3391,7 +3434,22 @@ static void PrintSkillsPage(void)
     if (sMonSummaryScreen->currStatIndex == 0)
         ConvertIntToDecimalStringN(gStringVar1, summary->atk, STR_CONV_MODE_LEFT_ALIGN, 3);
     else if (sMonSummaryScreen->currStatIndex == 1)
-        ConvertIntToDecimalStringN(gStringVar1, summary->atkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedAtk == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->atkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedAtk == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->atkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->atkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
     else
         ConvertIntToDecimalStringN(gStringVar1, summary->atkEV, STR_CONV_MODE_LEFT_ALIGN, 3);
     x = GetStringCenterAlignXOffset(1, gStringVar1, 72) + 76;
@@ -3405,7 +3463,22 @@ static void PrintSkillsPage(void)
     if (sMonSummaryScreen->currStatIndex == 0)
         ConvertIntToDecimalStringN(gStringVar1, summary->def, STR_CONV_MODE_LEFT_ALIGN, 3);
     else if (sMonSummaryScreen->currStatIndex == 1)
-        ConvertIntToDecimalStringN(gStringVar1, summary->defIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedDef == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->defIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedDef == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->defIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->defIV, STR_CONV_MODE_LEFT_ALIGN, 2);
     else
         ConvertIntToDecimalStringN(gStringVar1, summary->defEV, STR_CONV_MODE_LEFT_ALIGN, 3);
     x = GetStringCenterAlignXOffset(1, gStringVar1, 72) + 76;
@@ -3419,7 +3492,22 @@ static void PrintSkillsPage(void)
     if (sMonSummaryScreen->currStatIndex == 0)
         ConvertIntToDecimalStringN(gStringVar1, summary->spatk, STR_CONV_MODE_LEFT_ALIGN, 3);
     else if (sMonSummaryScreen->currStatIndex == 1)
-        ConvertIntToDecimalStringN(gStringVar1, summary->spatkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedSpatk == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->spatkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedSpatk == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->spatkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->spatkIV, STR_CONV_MODE_LEFT_ALIGN, 2);
     else
         ConvertIntToDecimalStringN(gStringVar1, summary->spatkEV, STR_CONV_MODE_LEFT_ALIGN, 3);
     x = GetStringCenterAlignXOffset(1, gStringVar1, 72) + 76;
@@ -3433,7 +3521,22 @@ static void PrintSkillsPage(void)
     if (sMonSummaryScreen->currStatIndex == 0)
         ConvertIntToDecimalStringN(gStringVar1, summary->spdef, STR_CONV_MODE_LEFT_ALIGN, 3);
     else if (sMonSummaryScreen->currStatIndex == 1)
-        ConvertIntToDecimalStringN(gStringVar1, summary->spdefIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedSpdef == 1)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->spdefIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedSpdef)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->spdefIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->spdefIV, STR_CONV_MODE_LEFT_ALIGN, 2);
     else
         ConvertIntToDecimalStringN(gStringVar1, summary->spdefEV, STR_CONV_MODE_LEFT_ALIGN, 3);
     x = GetStringCenterAlignXOffset(1, gStringVar1, 72) + 76;
@@ -3447,7 +3550,23 @@ static void PrintSkillsPage(void)
     if (sMonSummaryScreen->currStatIndex == 0)
         ConvertIntToDecimalStringN(gStringVar1, summary->speed, STR_CONV_MODE_LEFT_ALIGN, 3);
     else if (sMonSummaryScreen->currStatIndex == 1)
-        ConvertIntToDecimalStringN(gStringVar1, summary->speedIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+        if(summary->hyperTrainedSpeed)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->speedIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureUp);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else if(summary->minTrainedSpeed)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, summary->speedIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, sText_NatureDown);
+            ConvertIntToDecimalStringN(gStringVar2, 31, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringAppend(gStringVar1, gStringVar2);
+        }
+        else
+            ConvertIntToDecimalStringN(gStringVar1, summary->speedIV, STR_CONV_MODE_LEFT_ALIGN, 2);
+
     else
         ConvertIntToDecimalStringN(gStringVar1, summary->speedEV, STR_CONV_MODE_LEFT_ALIGN, 3);
     x = GetStringCenterAlignXOffset(1, gStringVar1, 72) + 76;
