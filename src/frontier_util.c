@@ -1785,9 +1785,13 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
     switch (whichText)
     {
     case FRONTIER_BEFORE_TEXT:
+        #ifndef FREE_BATTLE_TOWER_E_READER
         if (trainerId == TRAINER_EREADER)
             FrontierSpeechToString(gSaveBlock2Ptr->frontier.ereaderTrainer.greeting);
         else if (trainerId == TRAINER_FRONTIER_BRAIN)
+        #else
+        if (trainerId == TRAINER_FRONTIER_BRAIN)
+        #endif
             CopyFrontierBrainText(FALSE);
         else if (trainerId < FRONTIER_TRAINERS_COUNT)
             FrontierSpeechToString(gFacilityTrainers[trainerId].speechBefore);
@@ -1797,11 +1801,15 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
             BufferApprenticeChallengeText(trainerId - TRAINER_RECORD_MIXING_APPRENTICE);
         break;
     case FRONTIER_PLAYER_LOST_TEXT:
+        #ifndef FREE_BATTLE_TOWER_E_READER
         if (trainerId == TRAINER_EREADER)
         {
             FrontierSpeechToString(gSaveBlock2Ptr->frontier.ereaderTrainer.farewellPlayerLost);
         }
         else if (trainerId == TRAINER_FRONTIER_BRAIN)
+        #else
+        if (trainerId == TRAINER_FRONTIER_BRAIN)
+        #endif
         {
             CopyFrontierBrainText(FALSE);
         }
@@ -1827,7 +1835,9 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
     case FRONTIER_PLAYER_WON_TEXT:
         if (trainerId == TRAINER_EREADER)
         {
+            #ifndef FREE_BATTLE_TOWER_E_READER
             FrontierSpeechToString(gSaveBlock2Ptr->frontier.ereaderTrainer.farewellPlayerWon);
+            #endif
         }
         else if (trainerId == TRAINER_FRONTIER_BRAIN)
         {
@@ -2346,6 +2356,7 @@ static void Print2PRecord(s32 position, s32 x, s32 y, struct RankingHall2P *hall
 
 static void Fill1PRecords(struct RankingHall1P *dst, s32 hallFacilityId, s32 lvlMode)
 {
+    #ifndef FREE_RECORD_MIXING_HALL_RECORDS
     s32 i, j;
     struct RankingHall1P record1P[HALL_RECORDS_COUNT + 1];
     struct PlayerHallRecords *playerHallRecords = AllocZeroed(sizeof(struct PlayerHallRecords));
@@ -2376,10 +2387,12 @@ static void Fill1PRecords(struct RankingHall1P *dst, s32 hallFacilityId, s32 lvl
     }
 
     Free(playerHallRecords);
+    #endif
 }
 
 static void Fill2PRecords(struct RankingHall2P *dst, s32 lvlMode)
 {
+    #ifndef FREE_RECORD_MIXING_HALL_RECORDS
     s32 i, j;
     struct RankingHall2P record2P[HALL_RECORDS_COUNT + 1];
     struct PlayerHallRecords *playerHallRecords = AllocZeroed(sizeof(struct PlayerHallRecords));
@@ -2410,6 +2423,7 @@ static void Fill2PRecords(struct RankingHall2P *dst, s32 lvlMode)
     }
 
     Free(playerHallRecords);
+    #endif
 }
 
 static void PrintHallRecords(s32 hallFacilityId, s32 lvlMode)
@@ -2459,6 +2473,7 @@ void ScrollRankingHallRecordsWindow(void)
 
 void ClearRankingHallRecords(void)
 {
+    #ifndef FREE_RECORD_MIXING_HALL_RECORDS
     s32 i, j, k;
 
     // UB: Passing 0 as a pointer instead of a pointer holding a value of 0.
@@ -2493,6 +2508,7 @@ void ClearRankingHallRecords(void)
             gSaveBlock2Ptr->hallRecords2P[j][k].winStreak = 0;
         }
     }
+    #endif
 }
 
 void SaveGameFrontier(void)

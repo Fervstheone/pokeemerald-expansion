@@ -1669,15 +1669,21 @@ const struct BerryTree gBlankBerryTree = {};
 
 void SetEnigmaBerry(u8 *src)
 {
+    #ifndef FREE_ENIGMA_BERRY
     u32 i;
     u8 *dest = (u8 *)&gSaveBlock1Ptr->enigmaBerry;
 
     for (i = 0; i < sizeof(gSaveBlock1Ptr->enigmaBerry); i++)
         dest[i] = src[i];
+    #endif
 }
-
+#ifndef FREE_ENIGMA_BERRY
 static u32 GetEnigmaBerryChecksum(struct EnigmaBerry *enigmaBerry)
+#else
+static UNUSED u32 GetEnigmaBerryChecksum(struct EnigmaBerry *enigmaBerry)
+#endif
 {
+    #ifndef FREE_ENIGMA_BERRY
     u32 i;
     u32 checksum;
     u8 *dest;
@@ -1688,23 +1694,35 @@ static u32 GetEnigmaBerryChecksum(struct EnigmaBerry *enigmaBerry)
         checksum += dest[i];
 
     return checksum;
+    #else
+    return 0;
+    #endif
 }
+
 
 bool32 IsEnigmaBerryValid(void)
 {
-    if (!gSaveBlock1Ptr->enigmaBerry.berry.growthDuration)
+    #ifndef FREE_ENIGMA_BERRY
+    if (!gSaveBlock1Ptr->enigmaBerry.berry.stageDuration)
         return FALSE;
     if (!gSaveBlock1Ptr->enigmaBerry.berry.maxYield)
         return FALSE;
     if (GetEnigmaBerryChecksum(&gSaveBlock1Ptr->enigmaBerry) != gSaveBlock1Ptr->enigmaBerry.checksum)
         return FALSE;
     return TRUE;
+    #else
+    return FALSE;
+    #endif
 }
 
 const struct Berry *GetBerryInfo(u8 berry)
 {
     if (berry == ITEM_TO_BERRY(ITEM_ENIGMA_BERRY_E_READER) && IsEnigmaBerryValid())
+        #ifndef FREE_ENIGMA_BERRY
         return (struct Berry *)(&gSaveBlock1Ptr->enigmaBerry.berry);
+        #else
+        return &gBerries[0];    //never reached, but will appease the compiler gods
+        #endif
     else
     {
         if (berry == BERRY_NONE || berry > ITEM_TO_BERRY(LAST_BERRY_INDEX))

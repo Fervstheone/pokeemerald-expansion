@@ -90,7 +90,8 @@
 // Battle Frontier level modes.
 #define FRONTIER_LVL_50         0
 #define FRONTIER_LVL_OPEN       1
-#define FRONTIER_LVL_MODE_COUNT 2
+#define FRONTIER_LVL_LEGEND     2
+#define FRONTIER_LVL_MODE_COUNT 3
 #define FRONTIER_LVL_TENT       FRONTIER_LVL_MODE_COUNT // Special usage for indicating Battle Tent
 
 #define TRAINER_ID_LENGTH 4

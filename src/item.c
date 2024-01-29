@@ -915,7 +915,11 @@ static const u8 *ItemId_GetPluralName(u16 itemId)
 const u8 *ItemId_GetEffect(u32 itemId)
 {
     if (itemId == ITEM_ENIGMA_BERRY_E_READER)
+        #ifndef FREE_ENIGMA_BERRY
         return gSaveBlock1Ptr->enigmaBerry.itemEffect;
+        #else
+        return 0;
+        #endif
     else
         return gItemsInfo[SanitizeItemId(itemId)].effect;
 }

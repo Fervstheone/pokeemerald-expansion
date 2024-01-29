@@ -186,9 +186,9 @@ BattleFrontier_Lounge2_Text_DomeAceGoldMons::
 	.string "when he's serious?\p"
 	.string "When he's demonstrating his strategy,\n"
 	.string "he uses these three Pokémon:\p"
-	.string "A Dragon & Flying Eon Pokémon,\n"
+	.string "A Dragon & Psychic Eon Pokémon,\n"
 	.string "a Water & Ground Mud Fish Pokémon,\l"
-	.string "and a Steel- & Psychic-type Iron Leg\l"
+	.string "and a Steel & Psychic-type Iron Leg\l"
 	.string "Pokémon.$"
 
 BattleFrontier_Lounge2_Text_FactoryHeadIsThere::
