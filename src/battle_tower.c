@@ -2958,7 +2958,11 @@ void ValidateEReaderTrainer(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void SetEReaderTrainerChecksum(struct BattleTowerEReaderTrainer *ereaderTrainer)
+#else
+static UNUSED void SetEReaderTrainerChecksum(struct BattleTowerEReaderTrainer *ereaderTrainer)
+#endif
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     s32 i;

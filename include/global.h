@@ -20,16 +20,16 @@
 
 // free saveblock 1 defines
 //#define FREE_TRAINER_HILL             //frees up trainer hill data. 28 bytes.                          WARNING THIS HAS BEEN SHOWN TO BREAK MULTI BATTLES
-//#define FREE_MYSTERY_EVENT_BUFFERS    //frees up mystery event and ramScript. roughly 1880 bytes       Needed by FREE_BATTLE_TOWER_E_READER
+#define FREE_MYSTERY_EVENT_BUFFERS    //frees up mystery event and ramScript. roughly 1880 bytes       Needed by FREE_BATTLE_TOWER_E_READER
 //#define FREE_MATCH_CALL                 //frees up match call data. 104 bytes
 #define FREE_UNION_ROOM_CHAT            //frees up field unk3C88. 210 bytes
 #define FREE_ENIGMA_BERRY               //frees up enigma berry. 52 bytes
 #define FREE_LINK_BATTLE_RECORDS        //frees link battle record data. 88 bytes
                                         // saveblock1 total: 1846 bytes
 //free saveblock 2 defines
-//#define FREE_BATTLE_TOWER_E_READER    //frees up battle tower e reader trainer data. 188 bytes.        WARNING THIS HAS BEEN SHOWN TO BREAK THE POKÉ MARTS' QUESTIONNAIRE
+#define FREE_BATTLE_TOWER_E_READER    //frees up battle tower e reader trainer data. 188 bytes.        WARNING THIS HAS BEEN SHOWN TO BREAK THE POKÉ MARTS' QUESTIONNAIRE
 #define FREE_POKEMON_JUMP               //frees up pokemon jump data. 16 bytes
-#define FREE_RECORD_MIXING_HALL_RECORDS //frees up hall records for record mixing. 1032 bytes
+//#define FREE_RECORD_MIXING_HALL_RECORDS //frees up hall records for record mixing. 1032 bytes
                                         // saveblock2 total: 1236 bytes
                                         
                                         //grand total: 3082
@@ -217,7 +217,7 @@ struct Pokedex
     /*0x04*/ u32 unownPersonality; // set when you first see Unown
     /*0x08*/ u32 spindaPersonality; // set when you first see Spinda
     /*0x0C*/ u32 unknown3;
-    /*0x10*/ u8 filler[0x68]; // Previously Dex Flags, feel free to remove.
+    ///*0x10*/ u8 filler[0x68]; // Previously Dex Flags, feel free to remove.
 };
 
 struct PokemonJumpRecords
@@ -465,8 +465,8 @@ struct BattleFrontier
     /*0xEF1*/ u8 opponentTrainerIds[FRONTIER_LVL_MODE_COUNT][TRAINER_ID_LENGTH];
     /*0xEF9*/ u8 unk_EF9:7; // Never read
     /*0xEF9*/ u8 savedGame:1;
-    /*0xEFA*/ u8 unused_EFA;
-    /*0xEFB*/ u8 unused_EFB;
+    /*0xEFA*/ //u8 unused_EFA;
+    /*0xEFB*/ //u8 unused_EFB;
     /*0xEFC*/ struct DomeMonData domePlayerPartyData[FRONTIER_PARTY_SIZE];
 };
 

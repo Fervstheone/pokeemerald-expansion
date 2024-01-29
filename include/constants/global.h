@@ -71,7 +71,7 @@
 #define OBJECT_EVENT_TEMPLATES_COUNT 64
 #define DECOR_MAX_SECRET_BASE 16
 #define DECOR_MAX_PLAYERS_HOUSE 12
-#define APPRENTICE_COUNT 4
+#define APPRENTICE_COUNT 3
 #define APPRENTICE_MAX_QUESTIONS 9
 #define MAX_REMATCH_ENTRIES 100 // only REMATCH_TABLE_ENTRIES (78) are used
 #define NUM_CONTEST_WINNERS 13
@@ -85,7 +85,7 @@
 // Excludes link modes. See RANKING_HALL_* in include/constants/battle_frontier.h
 #define HALL_FACILITIES_COUNT 9
 // Received via record mixing, 1 for each player other than yourself
-#define HALL_RECORDS_COUNT 3
+#define HALL_RECORDS_COUNT 1
 
 // Battle Frontier level modes.
 #define FRONTIER_LVL_50         0

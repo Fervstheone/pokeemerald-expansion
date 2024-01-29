@@ -37,6 +37,8 @@ struct WonderNews *GetSavedWonderNews(void)
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     return &gSaveBlock1Ptr->mysteryGift.news;
+    #else
+    return 0;
     #endif
 }
 
@@ -44,6 +46,8 @@ struct WonderCard *GetSavedWonderCard(void)
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     return &gSaveBlock1Ptr->mysteryGift.card;
+    #else
+    return 0;
     #endif
 }
 
@@ -51,6 +55,8 @@ struct WonderCardMetadata *GetSavedWonderCardMetadata(void)
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     return &gSaveBlock1Ptr->mysteryGift.cardMetadata;
+    #else
+    return 0;
     #endif
 }
 
@@ -58,6 +64,8 @@ struct WonderNewsMetadata *GetSavedWonderNewsMetadata(void)
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     return &gSaveBlock1Ptr->mysteryGift.newsMetadata;
+    #else
+    return 0;
     #endif
 }
 
@@ -65,6 +73,8 @@ u16 *GetQuestionnaireWordsPtr(void)
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     return gSaveBlock1Ptr->mysteryGift.questionnaireWords;
+    #else
+    return 0;
     #endif
 }
 
@@ -103,7 +113,11 @@ bool32 ValidateSavedWonderNews(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static bool32 ValidateWonderNews(const struct WonderNews *news)
+#else
+static UNUSED bool32 ValidateWonderNews(const struct WonderNews *news)
+#endif
 {
     if (news->id == 0)
         return FALSE;
@@ -132,7 +146,11 @@ static void ClearSavedWonderNews(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void ClearSavedWonderNewsMetadata(void)
+#else
+static UNUSED void ClearSavedWonderNewsMetadata(void)
+#endif
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     CpuFill32(0, GetSavedWonderNewsMetadata(), sizeof(gSaveBlock1Ptr->mysteryGift.newsMetadata));
@@ -207,7 +225,11 @@ bool32 ValidateSavedWonderCard(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static bool32 ValidateWonderCard(const struct WonderCard *card)
+#else
+static UNUSED bool32 ValidateWonderCard(const struct WonderCard *card)
+#endif
 {
     if (card->flagId == 0)
         return FALSE;
@@ -238,7 +260,11 @@ bool32 IsSendingSavedWonderCardAllowed(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void ClearSavedWonderCard(void)
+#else
+static UNUSED void ClearSavedWonderCard(void)
+#endif
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     CpuFill32(0, &gSaveBlock1Ptr->mysteryGift.card, sizeof(gSaveBlock1Ptr->mysteryGift.card));
@@ -246,7 +272,11 @@ static void ClearSavedWonderCard(void)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void ClearSavedWonderCardMetadata(void)
+#else
+static UNUSED void ClearSavedWonderCardMetadata(void)
+#endif
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     CpuFill32(0, GetSavedWonderCardMetadata(), sizeof(gSaveBlock1Ptr->mysteryGift.cardMetadata));
@@ -342,7 +372,11 @@ static bool32 IsStampInMetadata(const struct WonderCardMetadata *metadata, const
     return FALSE;
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static bool32 ValidateStamp(const u16 *stamp)
+#else
+static UNUSED bool32 ValidateStamp(const u16 *stamp)
+#endif
 {
     if (stamp[STAMP_ID] == 0)
         return FALSE;
@@ -353,13 +387,18 @@ static bool32 ValidateStamp(const u16 *stamp)
     return TRUE;
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static int GetNumStampsInSavedCard(void)
+#else
+static UNUSED int GetNumStampsInSavedCard(void)
+#endif
 {
-    struct WonderCard *card;
+    
     if (!ValidateSavedWonderCard())
         return 0;
 
     #ifndef FREE_BATTLE_TOWER_E_READER
+    struct WonderCard *card;
     card = &gSaveBlock1Ptr->mysteryGift.card;
     if (card->type != CARD_TYPE_STAMP)
         return 0;
@@ -688,7 +727,11 @@ void MysteryGift_TryIncrementStat(u32 stat, u32 trainerId)
     #endif
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void ClearSavedTrainerIds(void)
+#else
+static UNUSED void ClearSavedTrainerIds(void)
+#endif
 {
     #ifndef FREE_BATTLE_TOWER_E_READER
     CpuFill32(0, gSaveBlock1Ptr->mysteryGift.trainerIds, sizeof(gSaveBlock1Ptr->mysteryGift.trainerIds));
@@ -727,7 +770,11 @@ static bool32 RecordTrainerId(u32 trainerId, u32 *trainerIds, int size)
     }
 }
 
+#ifndef FREE_BATTLE_TOWER_E_READER
 static void IncrementCardStatForNewTrainer(u32 stat, u32 trainerId, u32 *trainerIds, int size)
+#else
+static UNUSED void IncrementCardStatForNewTrainer(u32 stat, u32 trainerId, u32 *trainerIds, int size)
+#endif
 {
     if (RecordTrainerId(trainerId, trainerIds, size))
         IncrementCardStat(stat);
