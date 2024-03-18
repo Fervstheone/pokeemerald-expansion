@@ -20,6 +20,8 @@
 
 static bool8 CheckPyramidBagHasItem(u16 itemId, u16 count);
 static bool8 CheckPyramidBagHasSpace(u16 itemId, u16 count);
+static const u8 *ItemId_GetPluralName(u16);
+static bool32 DoesItemHavePluralName(u16);
 
 EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
 
@@ -93,25 +95,10 @@ void CopyItemNameHandlePlural(u16 itemId, u8 *dst, u32 quantity)
     if (quantity < 2)
         return;
 
-    if (ItemId_GetPocket(itemId) == POCKET_BERRIES)
-        GetBerryCountString(dst, gBerries[itemId - FIRST_BERRY_INDEX].name, quantity);
+    if (DoesItemHavePluralName(itemId))
+        StringCopy(dst, ItemId_GetPluralName(itemId));
     else
         StringAppend(end, sText_s);
-}
-
-void GetBerryCountString(u8 *dst, const u8 *berryName, u32 quantity)
-{
-    const u8 *berryString;
-    u8 *txtPtr;
-
-    if (quantity < 2)
-        berryString = gText_Berry;
-    else
-        berryString = gText_Berries;
-
-    txtPtr = StringCopy(dst, berryName);
-    *txtPtr = CHAR_SPACE;
-    StringCopy(txtPtr + 1, berryString);
 }
 
 bool8 IsBagPocketNonEmpty(u8 pocket)
@@ -173,15 +160,24 @@ bool8 HasAtLeastOneBerry(void)
 
 bool8 CheckBagHasSpace(u16 itemId, u16 count)
 {
-    u8 i;
-    u8 pocket = ItemId_GetPocket(itemId) - 1;
-    u16 ownedCount;
-
     if (ItemId_GetPocket(itemId) == POCKET_NONE)
         return FALSE;
 
     if (InBattlePyramid() || FlagGet(FLAG_STORING_ITEMS_IN_PYRAMID_BAG) == TRUE)
         return CheckPyramidBagHasSpace(itemId, count);
+
+    return GetFreeSpaceForItemInBag(itemId) >= count;
+}
+
+u32 GetFreeSpaceForItemInBag(u16 itemId)
+{
+    u8 i;
+    u8 pocket = ItemId_GetPocket(itemId) - 1;
+    u16 ownedCount;
+    u32 spaceForItem = 0;
+
+    if (ItemId_GetPocket(itemId) == POCKET_NONE)
+        return 0;
 
     // Check space in any existing item slots that already contain this item
     for (i = 0; i < gBagPockets[pocket].capacity; i++)
@@ -189,41 +185,14 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
         if (gBagPockets[pocket].itemSlots[i].itemId == itemId)
         {
             ownedCount = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
-            if (ownedCount + count <= MAX_BAG_ITEM_CAPACITY)
-                return TRUE;
-            if (pocket == TMHM_POCKET || pocket == BERRIES_POCKET)
-                return FALSE;
-            count -= (MAX_BAG_ITEM_CAPACITY - ownedCount);
-            if (count == 0)
-                break; //should be return TRUE, but that doesn't match
+            spaceForItem += max(0, MAX_BAG_ITEM_CAPACITY - ownedCount);
         }
-    }
-
-    // Check space in empty item slots
-    if (count > 0)
-    {
-        for (i = 0; i < gBagPockets[pocket].capacity; i++)
+        else if (gBagPockets[pocket].itemSlots[i].itemId == ITEM_NONE)
         {
-            if (gBagPockets[pocket].itemSlots[i].itemId == 0)
-            {
-                if (count > MAX_BAG_ITEM_CAPACITY)
-                {
-                    if (pocket == TMHM_POCKET || pocket == BERRIES_POCKET)
-                        return FALSE;
-                    count -= MAX_BAG_ITEM_CAPACITY;
-                }
-                else
-                {
-                    count = 0; //should be return TRUE, but that doesn't match
-                    break;
-                }
-            }
+            spaceForItem += MAX_BAG_ITEM_CAPACITY;
         }
-        if (count > 0)
-            return FALSE; // No more item slots. The bag is full
     }
-
-    return TRUE;
+    return spaceForItem;
 }
 
 bool8 AddBagItem(u16 itemId, u16 count)
@@ -879,55 +848,72 @@ static u16 SanitizeItemId(u16 itemId)
 
 const u8 *ItemId_GetName(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].name;
+    if (DECAP_ENABLED && DECAP_MIRRORING && !DECAP_ITEM_NAMES)
+        return ROM_MIRROR_PTR(gItemsInfo[SanitizeItemId(itemId)].name);
+    else
+        return gItemsInfo[SanitizeItemId(itemId)].name;
 }
 
 u32 ItemId_GetPrice(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].price;
+    return gItemsInfo[SanitizeItemId(itemId)].price;
+}
+
+static bool32 DoesItemHavePluralName(u16 itemId)
+{
+    return (gItemsInfo[SanitizeItemId(itemId)].pluralName[0] != '\0');
+}
+
+static const u8 *ItemId_GetPluralName(u16 itemId)
+{
+    return gItemsInfo[SanitizeItemId(itemId)].pluralName;
 }
 
 const u8 *ItemId_GetEffect(u32 itemId)
 {
     if (itemId == ITEM_ENIGMA_BERRY_E_READER)
+    #if FREE_ENIGMA_BERRY == FALSE
         return gSaveBlock1Ptr->enigmaBerry.itemEffect;
+    #else
+        return 0;
+    #endif //FREE_ENIGMA_BERRY
     else
-        return gItems[SanitizeItemId(itemId)].effect;
+        return gItemsInfo[SanitizeItemId(itemId)].effect;
 }
 
 u32 ItemId_GetHoldEffect(u32 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].holdEffect;
+    return gItemsInfo[SanitizeItemId(itemId)].holdEffect;
 }
 
 u32 ItemId_GetHoldEffectParam(u32 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].holdEffectParam;
+    return gItemsInfo[SanitizeItemId(itemId)].holdEffectParam;
 }
 
 const u8 *ItemId_GetDescription(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].description;
+    return gItemsInfo[SanitizeItemId(itemId)].description;
 }
 
 u8 ItemId_GetImportance(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].importance;
+    return gItemsInfo[SanitizeItemId(itemId)].importance;
 }
 
 u8 ItemId_GetPocket(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].pocket;
+    return gItemsInfo[SanitizeItemId(itemId)].pocket;
 }
 
 u8 ItemId_GetType(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].type;
+    return gItemsInfo[SanitizeItemId(itemId)].type;
 }
 
 ItemUseFunc ItemId_GetFieldFunc(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].fieldUseFunc;
+    return gItemsInfo[SanitizeItemId(itemId)].fieldUseFunc;
 }
 
 // Returns an item's battle effect script ID.
@@ -959,17 +945,17 @@ u8 ItemId_GetBattleUsage(u16 itemId)
         }
     }
     else
-        return gItems[item].battleUsage;
+        return gItemsInfo[item].battleUsage;
 }
 
 u8 ItemId_GetSecondaryId(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].secondaryId;
+    return gItemsInfo[SanitizeItemId(itemId)].secondaryId;
 }
 
 u32 ItemId_GetFlingPower(u32 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].flingPower;
+    return gItemsInfo[SanitizeItemId(itemId)].flingPower;
 }
 
 
@@ -985,11 +971,11 @@ u32 GetItemStatus1Mask(u16 itemId)
         case ITEM3_BURN:
             return STATUS1_BURN;
         case ITEM3_POISON:
-            return STATUS1_POISON | STATUS1_TOXIC_POISON;
+            return STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER;
         case ITEM3_SLEEP:
             return STATUS1_SLEEP;
         case ITEM3_STATUS_ALL:
-            return STATUS1_ANY;
+            return STATUS1_ANY | STATUS1_TOXIC_COUNTER;
     }
     return 0;
 }
