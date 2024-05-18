@@ -2394,7 +2394,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .palette = gMonPalette_Hydrapple,
         .shinyPalette = gMonShinyPalette_Hydrapple,
         .iconSprite = gMonIcon_Hydrapple,
-        .iconPalIndex = 1,
+        .iconPalIndex = 5,
         //FOOTPRINT(Hydrapple)
         .levelUpLearnset = sHydrappleLevelUpLearnset,
         .teachableLearnset = sHydrappleTeachableLearnset,
@@ -4350,7 +4350,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .palette = gMonPalette_Pincurchin,
         .shinyPalette = gMonShinyPalette_Pincurchin,
         .iconSprite = gMonIcon_Pincurchin,
-        .iconPalIndex = 0,
+        .iconPalIndex = 2,
         FOOTPRINT(Pincurchin)
         .levelUpLearnset = sPincurchinLevelUpLearnset,
         .teachableLearnset = sPincurchinTeachableLearnset,
@@ -5116,7 +5116,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .palette = gMonPalette_Arctozolt,
         .shinyPalette = gMonShinyPalette_Arctozolt,
         .iconSprite = gMonIcon_Arctozolt,
-        .iconPalIndex = 2,
+        .iconPalIndex = 0,
         FOOTPRINT(Arctozolt)
         .levelUpLearnset = sArctozoltLevelUpLearnset,
         .teachableLearnset = sArctozoltTeachableLearnset,
@@ -5389,8 +5389,8 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .backAnimId = BACK_ANIM_NONE,
         .palette = gMonPalette_Archaludon,
         .shinyPalette = gMonShinyPalette_Archaludon,
-        //.iconSprite = gMonIcon_Archaludon,
-        //.iconPalIndex = 0,
+        .iconSprite = gMonIcon_Archaludon,
+        .iconPalIndex = 0,
         //FOOTPRINT(Archaludon)
         .levelUpLearnset = sArchaludonLevelUpLearnset,
         .teachableLearnset = sArchaludonTeachableLearnset,
