@@ -623,153 +623,6 @@ static const u8 sFrontierBrainObjEventGfx[NUM_FRONTIER_FACILITIES][2] =
     [FRONTIER_FACILITY_PYRAMID] = {OBJ_EVENT_GFX_BRANDON, FALSE},
 };
 
-const u16 gFrontierBannedSpecies[] =
-{
-#if P_FAMILY_MEW
-    SPECIES_MEW, 
-#endif
-#if P_FAMILY_MEWTWO
-    SPECIES_MEWTWO,
-#endif
-#if P_FAMILY_HO_OH
-    SPECIES_HO_OH, 
-#endif
-#if P_FAMILY_LUGIA 
-    SPECIES_LUGIA, 
-#endif
-#if P_FAMILY_CELEBI
-    SPECIES_CELEBI,
-#endif
-#if P_FAMILY_KYOGRE 
-    SPECIES_KYOGRE, 
-#endif
-#if P_FAMILY_GROUDON 
-    SPECIES_GROUDON, 
-#endif
-#if P_FAMILY_RAYQUAZA 
-    SPECIES_RAYQUAZA, 
-#endif
-#if P_FAMILY_JIRACHI 
-    SPECIES_JIRACHI, 
-#endif
-#if P_FAMILY_DEOXYS
-    SPECIES_DEOXYS,
-#endif
-#if P_FAMILY_DIALGA
-    SPECIES_DIALGA, 
-#endif
-#if P_FAMILY_PALKIA
-    SPECIES_PALKIA, 
-#endif
-#if P_FAMILY_GIRATINA
-    SPECIES_GIRATINA, 
-#endif
-#if P_FAMILY_MANAPHY
-    SPECIES_MANAPHY, 
-    SPECIES_PHIONE, 
-#endif
-#if P_FAMILY_DARKRAI
-    SPECIES_DARKRAI, 
-#endif
-#if P_FAMILY_SHAYMIN
-    SPECIES_SHAYMIN, 
-#endif
-#if P_FAMILY_ARCEUS
-    SPECIES_ARCEUS,
-#endif
-#if P_FAMILY_VICTINI 
-    SPECIES_VICTINI, 
-#endif
-#if P_FAMILY_RESHIRAM
-    SPECIES_RESHIRAM, 
-#endif
-#if P_FAMILY_ZEKROM 
-    SPECIES_ZEKROM, 
-#endif
-#if P_FAMILY_KYUREM 
-    SPECIES_KYUREM, 
-#endif
-#if P_FAMILY_KELDEO 
-    SPECIES_KELDEO, 
-#endif
-#if P_FAMILY_MELOETTA 
-    SPECIES_MELOETTA, 
-#endif
-#if P_FAMILY_GENESECT
-    SPECIES_GENESECT,
-#endif
-#if P_FAMILY_XERNEAS
-    SPECIES_XERNEAS, 
-#endif
-#if P_FAMILY_YVELTAL
-    SPECIES_YVELTAL, 
-#endif
-#if P_FAMILY_ZYGARDE
-    SPECIES_ZYGARDE, 
-#endif
-#if P_FAMILY_DIANCIE
-    SPECIES_DIANCIE, 
-#endif
-#if P_FAMILY_HOOPA 
-    SPECIES_HOOPA, 
-#endif
-#if P_FAMILY_VOLCANION
-    SPECIES_VOLCANION,
-#endif
-#if P_FAMILY_COSMOG
-    SPECIES_COSMOG, 
-#endif
-#if P_FAMILY_COSMOEM
-    SPECIES_COSMOEM, 
-#endif
-#if P_FAMILY_SOLGALEO
-    SPECIES_SOLGALEO, 
-#endif
-#if P_FAMILY_LUNALA
-    SPECIES_LUNALA, 
-#endif
-#if P_FAMILY_NECROZMA 
-    SPECIES_NECROZMA, 
-#endif
-#if P_FAMILY_MAGEARNA
-    SPECIES_MAGEARNA, 
-#endif
-#if P_FAMILY_MARSHADOW
-    SPECIES_MARSHADOW, 
-#endif
-#if P_FAMILY_ZERAORA
-    SPECIES_ZERAORA, 
-#endif
-#if P_FAMILY_MELTAN
-    SPECIES_MELTAN, 
-#endif
-#if P_FAMILY_MELMETA
-    SPECIES_MELMETAL,
-#endif
-#if P_FAMILY_ZACIAN
-    SPECIES_ZACIAN, 
-#endif
-#if P_FAMILY_ZAMAZENTA
-    SPECIES_ZAMAZENTA, 
-#endif
-#if P_FAMILY_ETERNATUS
-    SPECIES_ETERNATUS, 
-#endif
-#if P_FAMILY_CALYREX
-    SPECIES_CALYREX, 
-#endif
-#if P_FAMILY_ZARUDE
-    SPECIES_ZARUDE,
-#endif
-#if P_FAMILY_KORAIDON 
-    SPECIES_KORAIDON, 
-#endif
-#if P_FAMILY_MIRAIDON
-    SPECIES_MIRAIDON,
-#endif
-    0xFFFF
-};
-
 static const u8 *const sRecordsWindowChallengeTexts[][2] =
 {
     [RANKING_HALL_TOWER_SINGLES] = {gText_BattleTower2,  gText_FacilitySingle},
@@ -2032,26 +1885,20 @@ static void CheckBattleTypeFlag(void)
 
 #define SPECIES_PER_LINE 3
 
-static u8 AppendCaughtBannedMonSpeciesName(u16 species, u8 count, s32 numBannedMonsCaught)
+static void AppendCaughtBannedMonSpeciesName(u16 species, u8 count, s32 numBannedMonsCaught)
 {
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
+    if (numBannedMonsCaught == count)
+        StringAppend(gStringVar1, gText_SpaceAndSpace);
+    else if (numBannedMonsCaught > count)
+        StringAppend(gStringVar1, gText_CommaSpace);
+    if ((count % SPECIES_PER_LINE) == 0)
     {
-        count++;
-        if (numBannedMonsCaught == count)
-            StringAppend(gStringVar1, gText_SpaceAndSpace);
-        else if (numBannedMonsCaught > count)
-            StringAppend(gStringVar1, gText_CommaSpace);
-        if ((count % SPECIES_PER_LINE) == 0)
-        {
-            if (count == SPECIES_PER_LINE)
-                StringAppend(gStringVar1, gText_NewLine);
-            else
-                StringAppend(gStringVar1, gText_LineBreak);
-        }
-        StringAppend(gStringVar1, GetSpeciesName(species));
+        if (count == SPECIES_PER_LINE)
+            StringAppend(gStringVar1, gText_NewLine);
+        else
+            StringAppend(gStringVar1, gText_LineBreak);
     }
-
-    return count;
+    StringAppend(gStringVar1, GetSpeciesName(species));
 }
 
 static void AppendIfValid(u16 species, u16 heldItem, u16 hp, u8 lvlMode, u8 monLevel, u16 *speciesArray, u16 *itemsArray, u8 *count)
@@ -2060,13 +1907,7 @@ static void AppendIfValid(u16 species, u16 heldItem, u16 hp, u8 lvlMode, u8 monL
 
     if (species == SPECIES_EGG || species == SPECIES_NONE)
         return;
-
-    for (i = 0; gFrontierBannedSpecies[i] != 0xFFFF
-      && gFrontierBannedSpecies[i] != GET_BASE_SPECIES_ID(species)
-      && IsSpeciesEnabled(gFrontierBannedSpecies[i]); i++)
-        ;
-
-    if (gFrontierBannedSpecies[i] != 0xFFFF)
+    if (gSpeciesInfo[species].isFrontierBanned)
         return;
     if (lvlMode == FRONTIER_LVL_50 && monLevel > FRONTIER_MAX_LEVEL_50)
         return;
@@ -2152,28 +1993,41 @@ static void CheckPartyIneligibility(void)
 
     if (numEligibleMons < toChoose)
     {
-        s32 i;
-        s32 caughtBannedMons = 0;
-        s32 species = gFrontierBannedSpecies[0];
-        for (i = 0; species != 0xFFFF; i++, species = gFrontierBannedSpecies[i])
+        u32 i;
+        u32 baseSpecies = 0;
+        u32 totalCaughtBanned = 0;
+        u32 caughtBanned[100] = {0};
+
+        for (i = 0; i < NUM_SPECIES; i++)
         {
-            if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
-                caughtBannedMons++;
+            if (totalCaughtBanned >= ARRAY_COUNT(caughtBanned))
+                break;
+            baseSpecies = GET_BASE_SPECIES_ID(i);
+            if (baseSpecies == i)
+            {
+                if (gSpeciesInfo[baseSpecies].isFrontierBanned)
+                {
+                    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(baseSpecies), FLAG_GET_CAUGHT))
+                    {
+                        caughtBanned[totalCaughtBanned] = baseSpecies;
+                        totalCaughtBanned++;
+                    }
+                }
+            }
         }
         gStringVar1[0] = EOS;
         gSpecialVar_0x8004 = TRUE;
-        count = 0;
-        for (i = 0; gFrontierBannedSpecies[i] != 0xFFFF; i++)
-            count = AppendCaughtBannedMonSpeciesName(gFrontierBannedSpecies[i], count, caughtBannedMons);
+        for (i = 0; i < totalCaughtBanned; i++)
+            AppendCaughtBannedMonSpeciesName(caughtBanned[i], i+1, totalCaughtBanned);
 
-        if (count == 0)
+        if (totalCaughtBanned == 0)
         {
             StringAppend(gStringVar1, gText_Space2);
             StringAppend(gStringVar1, gText_Are);
         }
         else
         {
-            if (count % SPECIES_PER_LINE == SPECIES_PER_LINE - 1)
+            if (totalCaughtBanned % SPECIES_PER_LINE == SPECIES_PER_LINE - 1)
                 StringAppend(gStringVar1, gText_LineBreak);
             else
                 StringAppend(gStringVar1, gText_Space2);
